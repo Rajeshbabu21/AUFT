@@ -1,0 +1,15 @@
+.img-cont{
+ height: 100vh;
+ width: 100wh;
+}
+
+.img-cont img{
+ height: 100vh;
+ /* object-fit: cover; */
+
+
+}
+
+.heading{
+ font-size: 45px;
+}
