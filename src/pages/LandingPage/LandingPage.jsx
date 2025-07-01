@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import "./landingpage.css"
 import Footer from '../../components/Footer/Footer'
+import FAQ from '../../components/FAQ/FAQ'
 
 const LandingPage = () => {
   return (
@@ -71,7 +72,11 @@ const LandingPage = () => {
             </p>
           </div>
         </div>
+
+
+        
       </div>
+      
 
       <Footer/>
     </div>

@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <div>
       <div class='bg-slate-900 sm:py-16 py-8'>
-        <div class='max-w-[80%] m-auto w-full text-white'>
+        <div class='w-[900px] m-auto  text-white'>
           <div class='flex flex-col justify-center items-center sm:py-16 py-8 gap-5 border-b'>
             <h1 class='font-semibold text-2xl sm:text-4xl'>
               Join Our Marketplace
