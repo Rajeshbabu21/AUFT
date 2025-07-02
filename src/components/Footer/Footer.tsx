@@ -3,31 +3,31 @@ import React from 'react'
 const Footer = () => {
   return (
     <div>
-      <div class='bg-slate-900 sm:py-16 py-8'>
-        <div class='max-w-[80%] m-auto w-full text-white'>
-          <div class='flex flex-col justify-center items-center sm:py-16 py-8 gap-5 border-b'>
-            <h1 class='font-semibold text-2xl sm:text-4xl'>
+      <div className='bg-slate-900 sm:py-16 py-8'>
+        <div className='max-w-[80%] m-auto w-full text-white'>
+          <div className='flex flex-col justify-center items-center sm:py-16 py-8 gap-5 border-b'>
+            <h1 className='font-semibold text-2xl sm:text-4xl'>
               Join Our AUFT Family
             </h1>
-            <p class='sm:text-lg text-sm text-center font-medium text-blue-200'>
+            <p className='sm:text-lg text-sm text-center font-medium text-blue-200'>
               Nourishing Young Football Talents
             </p>
             <a href='/signup'>
-              <div class='btn bg-company items-center gap-2 inline-flex border-none rounded-none h-auto py-2 px-14 sm:px-20 w-auto'>
-                <p class='font-black text-xl sm:text-2xl lg:text-4xl text-white p-2'>
+              <div className='btn bg-company items-center gap-2 inline-flex border-none rounded-none h-auto py-2 px-14 sm:px-20 w-auto'>
+                <p className='font-black text-xl sm:text-2xl lg:text-4xl text-white p-2'>
                   JOIN THE COMMUNITY
                 </p>
               </div>
             </a>
           </div>
-          <div class='flex flex-col sm:py-16 py-8 sm:gap-10 gap-5 text-blue-200'>
-            <div class='flex sm:flex-row flex-col sm:gap-0 gap-4 justify-between items-center'>
+          <div className='flex flex-col sm:py-16 py-8 sm:gap-10 gap-5 text-blue-200'>
+            <div className='flex sm:flex-row flex-col sm:gap-0 gap-4 justify-between items-center'>
               <a href='/'>
-                <span class='flex flex-col justify-center font-black text-4xl'>
+                <span className='flex flex-col justify-center font-black text-4xl'>
                   AUFT
                 </span>
               </a>
-              <div class='flex items-center sm:gap-10 gap-6'>
+              <div className='flex items-center sm:gap-10 gap-6'>
                 <a
                   target='_blank'
                   rel='noopener noreferrer'
@@ -37,7 +37,7 @@ const Footer = () => {
                     role='img'
                     viewBox='0 0 24 24'
                     xmlns='http://www.w3.org/2000/svg'
-                    class='h-5 w-5'
+                    className='h-5 w-5'
                     fill='rgb(191 219 254)'
                   >
                     <title>Facebook</title>
@@ -53,7 +53,7 @@ const Footer = () => {
                     role='img'
                     viewBox='0 0 24 24'
                     xmlns='http://www.w3.org/2000/svg'
-                    class='h-5 w-5'
+                    className='h-5 w-5'
                     fill='rgb(191 219 254)'
                   >
                     <title>LinkedIn</title>
@@ -69,7 +69,7 @@ const Footer = () => {
                     role='img'
                     viewBox='0 0 24 24'
                     xmlns='http://www.w3.org/2000/svg'
-                    class='h-5 w-5'
+                    className='h-5 w-5'
                     fill='rgb(191 219 254)'
                   >
                     <title>Instagram</title>
@@ -85,7 +85,7 @@ const Footer = () => {
                     role='img'
                     viewBox='0 0 24 24'
                     xmlns='http://www.w3.org/2000/svg'
-                    class='h-5 w-5'
+                    className='h-5 w-5'
                     fill='rgb(191 219 254)'
                   >
                     <title>X</title>
@@ -101,7 +101,7 @@ const Footer = () => {
                     role='img'
                     viewBox='0 0 24 24'
                     xmlns='http://www.w3.org/2000/svg'
-                    class='h-5 w-5'
+                    className='h-5 w-5'
                     fill='rgb(191 219 254)'
                   >
                     <title>TikTok</title>
@@ -109,20 +109,20 @@ const Footer = () => {
                   </svg>
                 </a>
               </div>
-              <div class='flex flex-col items-end sm:gap-2 gap-1'>
-                <a class=' sm:text-base text-sm' href='/terms-of-use.pdf'>
-                  <span class='flex flex-col justify-center font-black text-4xl'>
+              <div className='flex flex-col items-end sm:gap-2 gap-1'>
+                <a className=' sm:text-base text-sm' href='/terms-of-use.pdf'>
+                  <span className='flex flex-col justify-center font-black text-4xl'>
                     Football
                   </span>
                 </a>
-                <a class=' sm:text-base text-sm' href='/privacy-policy.pdf'>
-                  <span class='flex flex-col justify-center font-black text-4xl'>
+                <a className=' sm:text-base text-sm' href='/privacy-policy.pdf'>
+                  <span className='flex flex-col justify-center font-black text-4xl'>
                     is LIFE
                   </span>
                 </a>
               </div>
             </div>
-            <div class='flex justify-center text-center sm:text-base text-xs'>
+            <div className='flex justify-center text-center sm:text-base text-xs'>
               © 2025 Anna University Football Team . All rights reserved.
             </div>
           </div>
