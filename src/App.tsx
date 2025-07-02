@@ -20,6 +20,7 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import LandingPage from './pages/LandingPage/LandingPage';
 import PointTables from './pages/Tables/PointTables';
+import Stats from "./pages/Stats/Stats";
 export default function App() {
   return (
     <>
@@ -36,6 +37,7 @@ export default function App() {
             <Route path='/profile' element={<UserProfiles />} />
             <Route path='/calendar' element={<Calendar />} />
             <Route path='/blank' element={<Blank />} />
+            <Route path='/stats' element={<Stats />} />
 
             {/* Forms */}
             <Route path='/form-elements' element={<FormElements />} />

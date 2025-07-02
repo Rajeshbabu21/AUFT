@@ -9,6 +9,7 @@ import {
   GridIcon,
   HorizontaLDots,
   TableIcon,
+  PieChartIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 
@@ -30,6 +31,12 @@ const navItems: NavItem[] = [
     name: 'Match Schedule',
     path: '/calendar',
   },
+
+  {
+    icon: <PieChartIcon />,
+    name: 'Player Statistics',
+    path: '/stats',
+  },
   // {
   //   icon: <UserCircleIcon />,
   //   name: 'User Profile',
@@ -41,17 +48,16 @@ const navItems: NavItem[] = [
   //   subItems: [{ name: 'Form Elements', path: '/form-elements', pro: false }],
   // },
   {
-    name: 'Fixtures',
+    name: 'Results',
     icon: <TableIcon />,
     subItems: [{ name: 'Match Tables', path: '/basic-tables', pro: false }],
   },
   {
-    name: 'Results',
+    name: 'Fixtures',
     icon: <TableIcon />,
-    path: '/point-tables'
+    path: '/point-tables',
     // subItems: [{ name: 'Points Tables', path: '/basic-tables', pro: false }],
   },
-  
 ]
 
 const othersItems: NavItem[] = [

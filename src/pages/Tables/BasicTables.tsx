@@ -12,7 +12,7 @@ export default function BasicTables() {
       />
       <PageBreadcrumb pageTitle="Match table" />
       <div className="space-y-6">
-        <ComponentCard title="FIXTURES">
+        <ComponentCard title="" >
           <BasicTableOne />
         </ComponentCard>
       </div>
