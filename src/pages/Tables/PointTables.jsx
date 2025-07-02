@@ -6,7 +6,7 @@ import BasicTableOne from '../../components/tables/BasicTables/BasicTableOne'
 const PointTables = () => {
   return (
     <>
-      <PageBreadcrumb pageTitle='Basic Tables' />
+      <PageBreadcrumb pageTitle='Points table' />
       <div className='space-y-6'>
         <ComponentCard title='Basic Table 1'>
           <BasicTableOne />

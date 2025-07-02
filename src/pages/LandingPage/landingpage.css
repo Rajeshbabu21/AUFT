@@ -1,10 +1,14 @@
 .img-cont{
  height: 100vh;
- width: 100wh;
+ /* width: 100wh; */
 }
 
 .img-cont img{
  height: 100vh;
+ max-width: 100%;
+  /* height: 100vh; */
+  /* width: auto; */
+
  /* object-fit: cover; */
 
 
@@ -12,4 +16,27 @@
 
 .heading{
  font-size: 45px;
+}
+
+@media (max-width: 992px) {
+ .heading {
+   font-size: 30px;
+ }
+
+ .img-cont img {
+   height: 100vh;
+   width: 100vw;
+   object-fit: cover;
+ }
+}
+
+/* Mobile (width <= 600px) */
+@media (max-width: 600px) {
+ 
+
+ .img-cont img {
+   height: 100vh;
+   width: 100vw;
+   object-fit: cover;
+ }
 }

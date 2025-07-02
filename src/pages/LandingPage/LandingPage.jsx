@@ -3,6 +3,7 @@ import Navbar from '../../components/Navbar/Navbar'
 import "./landingpage.css"
 import Footer from '../../components/Footer/Footer'
 import FAQ from '../../components/FAQ/FAQ'
+// import {Image} from "../../../public/images/"
 
 const LandingPage = () => {
   return (

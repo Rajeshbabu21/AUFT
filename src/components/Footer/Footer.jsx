@@ -4,23 +4,23 @@ const Footer = () => {
   return (
     <div>
       <div class='bg-slate-900 sm:py-16 py-8'>
-        <div class='w-[900px] m-auto  text-white'>
+        <div class='max-w-[80%] m-auto w-full text-white'>
           <div class='flex flex-col justify-center items-center sm:py-16 py-8 gap-5 border-b'>
             <h1 class='font-semibold text-2xl sm:text-4xl'>
-              Join Our Marketplace
+              Join Our AUFT Family
             </h1>
             <p class='sm:text-lg text-sm text-center font-medium text-blue-200'>
-              Enter the waitlist to Empor and get access to the marketplace.
+              Nourishing Young Football Talents
             </p>
-            <a href='signup'>
+            <a href='/signup'>
               <div class='btn bg-company items-center gap-2 inline-flex border-none rounded-none h-auto py-2 px-14 sm:px-20 w-auto'>
                 <p class='font-black text-xl sm:text-2xl lg:text-4xl text-white p-2'>
-                  JOIN OUR TEAM
+                  JOIN THE COMMUNITY
                 </p>
               </div>
             </a>
           </div>
-          <div class='flex flex-col justify-content-evenly sm:py-16 py-8 sm:gap-10 gap-5 text-blue-200'>
+          <div class='flex flex-col sm:py-16 py-8 sm:gap-10 gap-5 text-blue-200'>
             <div class='flex sm:flex-row flex-col sm:gap-0 gap-4 justify-between items-center'>
               <a href='/'>
                 <span class='flex flex-col justify-center font-black text-4xl'>
@@ -44,7 +44,7 @@ const Footer = () => {
                     <path d='M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z'></path>
                   </svg>
                 </a>
-                {/* <a
+                <a
                   target='_blank'
                   rel='noopener noreferrer'
                   href='https://www.linkedin.com/company/emporca'
@@ -59,7 +59,7 @@ const Footer = () => {
                     <title>LinkedIn</title>
                     <path d='M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z'></path>
                   </svg>
-                </a> */}
+                </a>
                 <a
                   target='_blank'
                   rel='noopener noreferrer'
@@ -109,16 +109,21 @@ const Footer = () => {
                   </svg>
                 </a>
               </div>
-              <div class=''>
-                <a href='/'>
-                  <span class=' font-black text-4xl'>
-                    Football 
+              <div class='flex flex-col items-end sm:gap-2 gap-1'>
+                <a class=' sm:text-base text-sm' href='/terms-of-use.pdf'>
+                  <span class='flex flex-col justify-center font-black text-4xl'>
+                    Football
+                  </span>
+                </a>
+                <a class=' sm:text-base text-sm' href='/privacy-policy.pdf'>
+                  <span class='flex flex-col justify-center font-black text-4xl'>
+                    is LIFE
                   </span>
                 </a>
               </div>
             </div>
             <div class='flex justify-center text-center sm:text-base text-xs'>
-              © 2024 Anna University Football Team. All rights reserved.
+              © 2025 Anna University Football Team . All rights reserved.
             </div>
           </div>
         </div>
