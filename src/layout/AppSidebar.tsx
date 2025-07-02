@@ -47,11 +47,14 @@ const navItems: NavItem[] = [
     icon: <TableIcon />,
     subItems: [{ name: 'Match Tables', path: '/basic-tables', pro: false }],
   },
+
   {
     name: 'Fixtures',
     icon: <TableIcon />,
-    path: '/point-tables',
-    // subItems: [{ name: 'Points Tables', path: '/basic-tables', pro: false }],
+    subItems: [
+      { name: 'Match Tables', path: '/point-tables', pro: false },
+      { name: 'Match Results', path: '/results', pro: false },
+    ],
   },
   {
     icon: <PieChartIcon />,

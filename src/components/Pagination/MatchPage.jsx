@@ -20,6 +20,13 @@ const matchWeeks = [
         image1: '/images/user/user-21.jpg',
         image2: '/images/user/user-21.jpg',
       },
+      {
+        home: 'Bournemouth',
+        away: 'Newcastle United',
+        time: '19:30',
+        image1: '/images/user/user-21.jpg',
+        image2: '/images/user/user-21.jpg',
+      },
     ],
   },
   {
@@ -74,27 +81,151 @@ const matchWeeks = [
         image2: '/images/user/user-21.jpg',
         // image: '/images/user/user-21.jpg',
       },
-      { home: 'Burnley', away: 'Nottingham Forest', time: '19:30',
+      {
+        home: 'Burnley',
+        away: 'Nottingham Forest',
+        time: '19:30',
         image1: '/images/user/user-21.jpg',
         image2: '/images/user/user-21.jpg',
         // image: '/images/user/user-21.jpg',
-       },
+      },
     ],
   },
   {
     week: 5,
     date: 'Sat 13 Sep',
     matches: [
-      { home: 'Brighton', away: 'Tottenham', time: '19:30',
+      {
+        home: 'Brighton',
+        away: 'Tottenham',
+        time: '19:30',
         image1: '/images/user/user-21.jpg',
         image2: '/images/user/user-21.jpg',
         // image: '/images/user/user-21.jpg',
-       },
-      { home: 'Burnley', away: 'Nottingham Forest', time: '19:30',
+      },
+      {
+        home: 'Burnley',
+        away: 'Nottingham Forest',
+        time: '19:30',
         image1: '/images/user/user-21.jpg',
         image2: '/images/user/user-21.jpg',
         // image: '/images/user/user-21.jpg',
-       },
+      },
+    ],
+  },
+
+  {
+    week: 6,
+    date: 'Sat 13 Sep',
+    matches: [
+      {
+        home: 'Brighton',
+        away: 'Tottenham',
+        time: '19:30',
+        image1: '/images/user/user-21.jpg',
+        image2: '/images/user/user-21.jpg',
+        // image: '/images/user/user-21.jpg',
+      },
+      {
+        home: 'Burnley',
+        away: 'Nottingham Forest',
+        time: '19:30',
+        image1: '/images/user/user-21.jpg',
+        image2: '/images/user/user-21.jpg',
+        // image: '/images/user/user-21.jpg',
+      },
+    ],
+  },
+
+  {
+    week: 7,
+    date: 'Sat 13 Sep',
+    matches: [
+      {
+        home: 'Brighton',
+        away: 'Tottenham',
+        time: '19:30',
+        image1: '/images/user/user-21.jpg',
+        image2: '/images/user/user-21.jpg',
+        // image: '/images/user/user-21.jpg',
+      },
+      {
+        home: 'Burnley',
+        away: 'Nottingham Forest',
+        time: '19:30',
+        image1: '/images/user/user-21.jpg',
+        image2: '/images/user/user-21.jpg',
+        // image: '/images/user/user-21.jpg',
+      },
+    ],
+  },
+
+  {
+    week: 8,
+    date: 'Sat 13 Sep',
+    matches: [
+      {
+        home: 'Brighton',
+        away: 'Tottenham',
+        time: '19:30',
+        image1: '/images/user/user-21.jpg',
+        image2: '/images/user/user-21.jpg',
+        // image: '/images/user/user-21.jpg',
+      },
+      {
+        home: 'Burnley',
+        away: 'Nottingham Forest',
+        time: '19:30',
+        image1: '/images/user/user-21.jpg',
+        image2: '/images/user/user-21.jpg',
+        // image: '/images/user/user-21.jpg',
+      },
+    ],
+  },
+
+  {
+    week: 9,
+    date: 'Sat 13 Sep',
+    matches: [
+      {
+        home: 'Brighton',
+        away: 'Tottenham',
+        time: '19:30',
+        image1: '/images/user/user-21.jpg',
+        image2: '/images/user/user-21.jpg',
+        // image: '/images/user/user-21.jpg',
+      },
+      {
+        home: 'Burnley',
+        away: 'Nottingham Forest',
+        time: '19:30',
+        image1: '/images/user/user-21.jpg',
+        image2: '/images/user/user-21.jpg',
+        // image: '/images/user/user-21.jpg',
+      },
+    ],
+  },
+
+  {
+    week: 10,
+    date: 'Sat 13 Sep',
+    matches: [
+      {
+        home: 'Brighton',
+        away: 'Tottenham',
+        time: '19:30',
+        image1: '/images/user/user-21.jpg',
+        image2: '/images/user/user-21.jpg',
+        // image: '/images/user/user-21.jpg',
+      },
+      {
+        home: 'Burnley',
+        away: 'Nottingham Forest',
+        time: '19:30',
+        image1: '/images/user/user-21.jpg',
+        image2: '/images/user/user-21.jpg',
+        // image: '/images/user/user-21.jpg',
+      },
     ],
   },
 ]
@@ -121,8 +252,10 @@ const MatchPage = () => {
         onNext={handleNext}
       />
 
-      <div className='mt-6 space-y-4'>
+      {/* <div className='mt-6 space-y-4'>
+        
         {currentWeek.matches.map((match, index) => (
+
           <div
             key={index}
             className='flex justify-between items-center   p-4 rounded-md'
@@ -132,13 +265,42 @@ const MatchPage = () => {
             <span className='font-bold'>{match.time}</span>
             <span>{match.away}</span>
             <img className='w-10 h-10' src={match.image2} alt='' />
-            {/* <hr className='bg-blue-400' />  */}
             
           
           </div>
           
+          
         ))}
         
+      </div> */}
+
+      <div className='mt-6 space-y-4'>
+        {currentWeek.matches.map((match, index) => (
+          <div key={index}>
+            <div className='flex justify-between items-center bg-gray-100 dark:bg-gray-800 p-4 rounded-md shadow-sm'>
+              <img
+                className='w-10 h-10 rounded-full'
+                src={match.image1}
+                alt={match.home}
+              />
+              <span className='font-medium  dark:text-white/90'>
+                {match.home}
+              </span>
+              <span className='font-bold text-gray-700 dark:text-white'>
+                {match.time}
+              </span>
+              <span className='font-medium  dark:text-white/90'>
+                {match.away}
+              </span>
+              <img
+                className='w-10 h-10 rounded-full'
+                src={match.image2}
+                alt={match.away}
+              />
+            </div>
+            <hr className='border-gray-500  dark:border-gray-600' />
+          </div>
+        ))}
       </div>
     </div>
   )

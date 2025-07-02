@@ -184,7 +184,7 @@ export default function BasicTableOne() {
               <TableRow key={order.id}>
                 <TableCell className='px-5 py-4 sm:px-6 text-start'>
                   <div className='flex items-center gap-3'>
-                    <p>{order.user.pos}</p>
+                    <p className=' dark:text-white/90'>{order.user.pos}</p>
                     <div className='w-10 h-10 overflow-hidden rounded-full'>
                       <img
                         width={40}

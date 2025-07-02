@@ -21,6 +21,8 @@ import Home from "./pages/Dashboard/Home";
 import LandingPage from './pages/LandingPage/LandingPage';
 import PointTables from './pages/Tables/PointTables';
 import Stats from "./pages/Stats/Stats";
+
+import MatchResults from './components/MatchResults/MatchResults';
 export default function App() {
   return (
     <>
@@ -38,6 +40,7 @@ export default function App() {
             <Route path='/calendar' element={<Calendar />} />
             <Route path='/blank' element={<Blank />} />
             <Route path='/stats' element={<Stats />} />
+            <Route path='/results' element={<MatchResults />} />
 
             {/* Forms */}
             <Route path='/form-elements' element={<FormElements />} />
