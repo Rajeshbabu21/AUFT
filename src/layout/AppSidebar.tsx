@@ -32,11 +32,6 @@ const navItems: NavItem[] = [
     path: '/calendar',
   },
 
-  {
-    icon: <PieChartIcon />,
-    name: 'Player Statistics',
-    path: '/stats',
-  },
   // {
   //   icon: <UserCircleIcon />,
   //   name: 'User Profile',
@@ -57,6 +52,11 @@ const navItems: NavItem[] = [
     icon: <TableIcon />,
     path: '/point-tables',
     // subItems: [{ name: 'Points Tables', path: '/basic-tables', pro: false }],
+  },
+  {
+    icon: <PieChartIcon />,
+    name: 'Player Statistics',
+    path: '/stats',
   },
 ]
 
