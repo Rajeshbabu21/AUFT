@@ -22,7 +22,8 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import PointTables from './pages/Tables/PointTables';
 import Stats from "./pages/Stats/Stats";
 
-import MatchResults from './components/MatchResults/MatchResults';
+// import MatchResults from './components/MatchResults/MatchResults';
+import MatchResults from "./components/MatchResults/MatchResults"
 export default function App() {
   return (
     <>

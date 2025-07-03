@@ -20,7 +20,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    "typeRoots": ["./node_modules/@types", "./src/@types"]
   },
   "include": ["src", "src/components/Pagination .jsx"]
 }
