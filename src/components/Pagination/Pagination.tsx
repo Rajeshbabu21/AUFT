@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Pagination = ({ currentWeek, onPrev, onNext, date }) => {
+const Pagination :React.FC = ({ currentWeek, onPrev, onNext, date }) => {
   return (
     <div className='flex flex-col items-center gap-1 my-6'>
       <div className='flex items-center gap-4'>
