@@ -18,11 +18,14 @@ import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
-import LandingPage from './pages/LandingPage/LandingPage';
+// import LandingPage from './pages/LandingPage/LandingPage';
+import LandingPage from "./pages/LandingPage/LandingPage"
 import PointTables from './pages/Tables/PointTables';
-import Stats from "./pages/Stats/Stats";
+// import Stats from "./pages/Stats/Stats";
+import Stats from "./pages/Stats/Stats"
 
 // import MatchResults from './components/MatchResults/MatchResults';
+// import MatchResults from "./components/MatchResults/MatchResults"
 import MatchResults from "./components/MatchResults/MatchResults"
 export default function App() {
   return (

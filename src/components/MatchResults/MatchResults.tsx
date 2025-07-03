@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MatchResults = () => {
+const MatchResults:React.FC = () => {
   return (
     <div>MatchResults</div>
   )
