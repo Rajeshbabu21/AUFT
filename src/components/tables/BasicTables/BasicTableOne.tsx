@@ -34,7 +34,7 @@ const tableData: Order[] = [
       pos: 1,
       image: '/images/user/user-17.jpg',
       name: 'NB',
-      // role: 'Captain',
+      
     },
     projectName: 1,
     team: {
@@ -54,7 +54,7 @@ const tableData: Order[] = [
       pos: 2,
       image: '/images/user/user-18.jpg',
       name: 'MIT',
-      // role: 'Forward',
+      
     },
     projectName: 2,
     team: {
@@ -197,9 +197,9 @@ export default function BasicTableOne() {
                       <span className='block font-medium text-gray-800 text-theme-sm dark:text-white/90'>
                         {order.user.name}
                       </span>
-                      <span className='block text-gray-500 text-theme-xs dark:text-gray-400'>
+                      {/* <span className='block text-gray-500 text-theme-xs dark:text-gray-400'>
                         {order.user.role}
-                      </span>
+                      </span> */}
                     </div>
                   </div>
                 </TableCell>
