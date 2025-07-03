@@ -14,7 +14,7 @@ interface Order {
     pos: number
     image: string
     name: string
-    role: string
+    // role: string
   }
   projectName: number
   // team: number;
