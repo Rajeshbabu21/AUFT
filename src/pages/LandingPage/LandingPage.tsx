@@ -1,11 +1,10 @@
 import React from 'react'
 import Navbar from '../../components/Navbar/Navbar'
-import "./landingpage.css"
+import './landingpage.css'
 import Footer from '../../components/Footer/Footer'
 import FAQ from '../../components/FAQ/FAQ'
-// import {Image} from "../../../public/images/"
 
-const LandingPage = () => {
+const LandingPage: React.FC = () => {
   return (
     <div>
       <Navbar />
@@ -15,7 +14,6 @@ const LandingPage = () => {
       </div>
 
       <div className='mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8'>
-       {/* <h1>WHAT'S A-LIGUE ? </h1> */}
         <div className='relative isolate overflow-hidden px-6 pt-16 bg-gree  sm:rounded-3xl sm:px-16 md:pt-24 lg:flex lg:gap-x-30 lg:px-24 lg:pt-0'>
           <div className='mx-auto max-w-lg text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left'>
             <h2 className=' font-semibold tracking-tight heading  sm:text-4xl'>
@@ -73,13 +71,9 @@ const LandingPage = () => {
             </p>
           </div>
         </div>
-
-
-        
       </div>
-      
 
-      <Footer/>
+      <Footer />
     </div>
   )
 }
