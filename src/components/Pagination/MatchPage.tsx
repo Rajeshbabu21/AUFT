@@ -230,7 +230,7 @@ const matchWeeks = [
   },
 ]
 
-const MatchPage = () => {
+const MatchPage: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const handlePrev = () => {
