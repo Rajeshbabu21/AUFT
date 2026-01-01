@@ -37,6 +37,7 @@ def login_users(form_data:OAuth2PasswordRequestForm = Depends()):
         .select("*")
         .eq("email", form_data.username)
         .execute()
+        
     )
     user = response.data
 
