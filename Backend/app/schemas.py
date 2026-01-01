@@ -12,4 +12,20 @@ class matches(BaseModel):
         status:str
         match_week:int
 
-        
+class Users(BaseModel):
+        name:str
+        email:str
+        password:str
+        team:str
+        is_active:Optional[bool]=True
+
+class Token(BaseModel):
+        access_token: str
+        token_type: str
+
+class TokenData(BaseModel):
+        email: Optional[str] = None
+
+class UserLogin(BaseModel):
+        email: str
+        password: str
