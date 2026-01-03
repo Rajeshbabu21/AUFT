@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from app.db import supabase
 
 
-def fetch_matches():
+async def fetch_matches():
     """
     Fetch all matches with related team and badge info.
     """

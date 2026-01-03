@@ -1,6 +1,6 @@
 from app.db import supabase
 
-def points_table():
+async def points_table():
     """
     Fetch all points table data with related team and badge info.
     """

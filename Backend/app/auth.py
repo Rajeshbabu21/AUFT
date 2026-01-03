@@ -62,3 +62,14 @@ def current_user(token:str=Depends(oauth2_scheme)):
 def get_current_active_user(current_user: dict = Depends(current_user)):
     return current_user
 
+
+def current_admin(token:str=Depends(oauth2_scheme)):
+    token_data = verfiy_token(token)
+    response = supabase.table("users").select("*").eq("email",token_data.email).execute()
+    user = response.data
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user[0]
+
+def get_current_active_admin(current_user: dict = Depends(current_admin)):
+    return current_admin

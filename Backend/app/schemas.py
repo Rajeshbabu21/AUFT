@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import date, time
+import uuid
+from uuid import UUID
 
 class matches(BaseModel):
         id:int
@@ -29,3 +31,19 @@ class TokenData(BaseModel):
 class UserLogin(BaseModel):
         email: str
         password: str
+
+class adminLogin(BaseModel):
+        name: str
+        password: str
+
+# for images
+class Image(BaseModel):
+        id: UUID
+        image_url: str
+        image_type:Optional[str] = None
+
+class TeamCreate(BaseModel):
+        team_code:str
+        team_name: str
+        logo_url: Optional[str] = None
+        badge_image_id: UUID
