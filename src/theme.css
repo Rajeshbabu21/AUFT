@@ -1,0 +1,269 @@
+/* Global Theme - Slate-900 with Blue Accent */
+
+:root {
+  --color-primary-bg: #0f172a; /* slate-900 */
+  --color-secondary-bg: #1e293b; /* slate-800 */
+  --color-tertiary-bg: #334155; /* slate-700 */
+  --color-accent-blue: #3b82f6; /* blue-600 */
+  --color-text-primary: #ffffff; /* white */
+  --color-text-secondary: #bfdbfe; /* blue-200 */
+  --color-text-muted: #94a3b8; /* slate-400 */
+  --color-border: #475569; /* slate-600 */
+}
+
+/* Global Styles */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: var(--color-primary-bg);
+  color: var(--color-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+/* Main Content Background */
+main,
+.main-content,
+.page-content,
+.content-wrapper {
+  background: linear-gradient(135deg, var(--color-primary-bg) 0%, var(--color-secondary-bg) 100%);
+  min-height: 100vh;
+  color: var(--color-text-primary);
+}
+
+/* Sidebar and App Layout Theming */
+.xl\:flex {
+  background: var(--color-primary-bg);
+}
+
+.bg-gray-50,
+.dark\:bg-gray-900 {
+  background-color: var(--color-primary-bg) !important;
+}
+
+.dark\:bg-gray-800 {
+  background-color: var(--color-secondary-bg) !important;
+}
+
+.text-gray-900,
+.dark\:text-white {
+  color: var(--color-text-primary) !important;
+}
+
+.text-gray-600,
+.dark\:text-gray-300,
+.text-gray-400,
+.dark\:text-gray-400 {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Border Colors */
+.border-gray-200,
+.dark\:border-gray-700 {
+  border-color: var(--color-border) !important;
+}
+
+/* Card Styling */
+.bg-white,
+.dark\:bg-gray-800 {
+  background-color: var(--color-secondary-bg) !important;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  color: var(--color-text-primary);
+}
+
+.shadow-md,
+.shadow-lg {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Buttons */
+.btn,
+button {
+  transition: all 0.3s ease;
+}
+
+.bg-blue-600,
+.bg-blue-700 {
+  background: linear-gradient(to right, var(--color-accent-blue), #2563eb);
+  border: none;
+  color: white;
+}
+
+.bg-blue-600:hover,
+.bg-blue-700:hover {
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
+}
+
+/* Links */
+a {
+  color: var(--color-text-secondary);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-text-primary);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-primary);
+}
+
+/* Tables */
+table {
+  background-color: var(--color-secondary-bg);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+th {
+  background-color: var(--color-primary-bg);
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+td {
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+/* Forms */
+input,
+textarea,
+select {
+  background-color: var(--color-primary-bg);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-accent-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Modal/Dialog */
+.modal,
+.dialog,
+.popup {
+  background-color: var(--color-secondary-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+/* Dropdown */
+.dropdown,
+.menu {
+  background-color: var(--color-secondary-bg);
+  border: 1px solid var(--color-border);
+}
+
+.dropdown-item,
+.menu-item {
+  color: var(--color-text-primary);
+}
+
+.dropdown-item:hover,
+.menu-item:hover {
+  background-color: var(--color-tertiary-bg);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-primary-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-tertiary-bg);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-slideInDown {
+  animation: slideInDown 0.6s ease-out;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Utility Classes */
+.text-accent {
+  color: var(--color-text-secondary);
+}
+
+.bg-accent {
+  background-color: var(--color-accent-blue);
+}
+
+.border-accent {
+  border-color: var(--color-accent-blue);
+}
+
+/* Dark mode already applied by default */
+.dark {
+  color-scheme: dark;
+}

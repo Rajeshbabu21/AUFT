@@ -31,3 +31,5 @@ FRONTEND
 6 . Real Time Chatting Using Web Sockets (Optional)
 
   
+python -m uv sync
+pip install "passlib[bcrypt]>=1.7.4"

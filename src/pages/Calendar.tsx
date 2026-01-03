@@ -7,6 +7,7 @@ import { EventInput, DateSelectArg, EventClickArg } from "@fullcalendar/core";
 import { Modal } from "../components/ui/modal";
 import { useModal } from "../hooks/useModal";
 import PageMeta from "../components/common/PageMeta";
+import "./calendar.css";
 
 interface CalendarEvent extends EventInput {
   extendedProps: {

@@ -41,9 +41,20 @@ class Image(BaseModel):
         id: UUID
         image_url: str
         image_type:Optional[str] = None
+        image_data: Optional[str] = None
 
 class TeamCreate(BaseModel):
         team_code:str
         team_name: str
         logo_url: Optional[str] = None
         badge_image_id: UUID
+
+class UpdatePoints(BaseModel):
+        matches_played: Optional[int] = None
+        wins: Optional[int] = None
+        draws: Optional[int] = None
+        losses: Optional[int] = None
+        points: Optional[int] = None
+        position: Optional[int] = None
+        qualified: Optional[bool] = None
+        goal_Diif: Optional[int] = None

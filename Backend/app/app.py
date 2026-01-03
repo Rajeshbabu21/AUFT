@@ -1,13 +1,13 @@
-from fastapi import FastAPI,HTTPException,Depends,status,UploadFile
+from fastapi import FastAPI,HTTPException,Depends,status,UploadFile,File,Response
 from app.db import supabase
 from app.matches import fetch_matches
-from app.points import points_table
-from app.schemas import Users,UserLogin
+from app.points import delete_points, delete_points, points_table,update_points_table
+from app.schemas import TeamCreate, UpdatePoints, Users,UserLogin
 from app.auth import verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES,get_password_hash,get_current_active_user,current_user,current_admin,get_current_active_admin
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
-from app.images import fetch_images,insert_image,get_image
-from click import UUID
+from app.images import fetch_images,insert_image,get_image,insert_team
+from uuid import UUID
 
 
 app=FastAPI()
@@ -136,7 +136,7 @@ async def get_points_table_endpoint():
     """
     Endpoint to get all points table data with related team and badge information.
     """
-    data = points_table()
+    data = await points_table()
     return data
     
 @app.get("/images")
@@ -144,14 +144,47 @@ async def get_images():
     """
     Endpoint to get all images.
     """
-    data = fetch_images()
+    data = await fetch_images()
     return data
 
-@app.get("/upload-image")
-def upload_image(file:UploadFile,image_type:str=None):
+@app.post("/upload-image")
+async def upload_image(file:UploadFile= File(...), image_type:str=None):
     """
     Endpoint to upload a new image.
     """
-    data = insert_image(file,image_type)
+    data = await insert_image(file,image_type)
     return data
+
+@app.get("/images/{image_id}",response_model=None)
+async def get_single_image(image_id: UUID):
+    """
+    Endpoint to fetch a single image by ID.
+    """
+    data = await get_image(image_id)
+    return  data
+
+@app.post("/teams")
+async def create_team(team:TeamCreate):
+    """
+    Endpoint to create a new team.
+    """
+    data = await insert_team(team)
+    return data
+
+@app.put("/points-table/{id}")
+async def update_points_table_endpoint(id: UUID, points_update: UpdatePoints):
+    """
+    Endpoint to update a points table entry by ID.
+    """
+    data = await update_points_table(id, points_update)
+    return data
+
+@app.delete("/points-table/{id}")
+async def delete_points_table_endpoint(id: UUID):
+    """
+    Endpoint to delete a points table entry by ID.
+    """
+    data = await delete_points(id)
+    return data
+
 

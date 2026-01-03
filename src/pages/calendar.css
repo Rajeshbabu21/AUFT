@@ -1,0 +1,236 @@
+/* FullCalendar Theme - Dark Slate with Visible Grid */
+
+.fc {
+  background-color: transparent !important;
+  color: #ffffff;
+  font-family: inherit;
+}
+
+/* Calendar Container */
+.fc-root {
+  background-color: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+/* Header */
+.fc-header-toolbar {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #475569;
+}
+
+.fc-toolbar {
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.fc-toolbar-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Button Styling */
+.fc-button-primary {
+  background-color: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+  color: white !important;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.fc-button-primary:hover {
+  background-color: #2563eb !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+}
+
+.fc-button-primary.fc-button-active {
+  background-color: #1e40af !important;
+  border-color: #1e40af !important;
+}
+
+/* Day Grid - Visible Borders */
+.fc-daygrid {
+  border: 2px solid #475569 !important;
+}
+
+.fc-daygrid-day {
+  border: 1px solid #475569 !important;
+  background-color: #0f172a;
+  min-height: 100px;
+  padding: 0.75rem;
+}
+
+.fc-daygrid-day:hover {
+  background-color: #1e293b;
+}
+
+/* Day Cell Content */
+.fc-daygrid-day-frame {
+  background-color: #0f172a;
+}
+
+.fc-daygrid-day-number {
+  color: #bfdbfe;
+  font-weight: 600;
+  padding: 0.5rem;
+}
+
+.fc-daygrid-day.fc-day-other .fc-daygrid-day-number {
+  color: #64748b;
+}
+
+.fc-daygrid-day.fc-day-today {
+  background-color: rgba(59, 130, 246, 0.1);
+  border: 1px solid #3b82f6 !important;
+}
+
+.fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+  color: #60a5fa;
+  font-weight: 700;
+}
+
+/* Event Styling */
+.fc-event {
+  background-color: transparent !important;
+  border: none !important;
+  margin: 0.25rem 0 !important;
+}
+
+.fc-daygrid-event {
+  margin: 0.25rem !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+.fc-event-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.25rem !important;
+}
+
+/* Event Colors */
+.fc-event.danger {
+  background-color: #ef4444 !important;
+}
+
+.fc-event.success {
+  background-color: #10b981 !important;
+}
+
+.fc-event.primary {
+  background-color: #3b82f6 !important;
+}
+
+.fc-event.warning {
+  background-color: #f59e0b !important;
+}
+
+.fc-col-header {
+  background-color: #1e293b;
+  border-bottom: 2px solid #475569 !important;
+  border-top: 2px solid #475569 !important;
+}
+
+.fc-col-header-cell {
+  padding: 1rem 0.5rem !important;
+  color: #bfdbfe;
+  font-weight: 700;
+  border-right: 1px solid #475569 !important;
+}
+
+.fc-col-header-cell:last-child {
+  border-right: none !important;
+}
+
+/* Time Grid - Horizontal and Vertical Lines */
+.fc-timegrid {
+  border: 2px solid #475569 !important;
+}
+
+.fc-timegrid-slot {
+  border-top: 1px solid #475569 !important;
+  height: 3rem;
+}
+
+.fc-timegrid-slot:first-child {
+  border-top: none !important;
+}
+
+.fc-col {
+  border-right: 1px solid #475569 !important;
+}
+
+.fc-col:last-child {
+  border-right: none !important;
+}
+
+.fc-timegrid-cell {
+  border-bottom: 1px solid #475569 !important;
+}
+
+/* Time Label */
+.fc-time-area {
+  background-color: #0f172a;
+  border-right: 2px solid #475569 !important;
+}
+
+.fc-timegrid-slot-label {
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+/* Now Indicator */
+.fc-timegrid-now-indicator-line {
+  border-top-color: #ef4444 !important;
+  border-top-width: 2px !important;
+}
+
+.fc-timegrid-now-indicator-arrow {
+  border-color: #ef4444 !important;
+}
+
+/* Weekends */
+.fc-daygrid-day.fc-day-sat,
+.fc-daygrid-day.fc-day-sun {
+  background-color: rgba(15, 23, 42, 0.5);
+}
+
+/* Today Highlight */
+.fc-daygrid-day.fc-day-today {
+  background-color: rgba(59, 130, 246, 0.15);
+}
+
+/* Popover / Tooltip */
+.fc-popover {
+  background-color: #1e293b !important;
+  border: 2px solid #475569 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.fc-popover-header {
+  background-color: #0f172a !important;
+  border-bottom: 2px solid #475569 !important;
+  color: #ffffff;
+}
+
+.fc-popover-body {
+  background-color: #1e293b;
+  color: #bfdbfe;
+}
+
+/* Scrollable Content */
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
