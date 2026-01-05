@@ -15,8 +15,10 @@ async def points_table():
             draws,
             losses,
             qualified,
+            goal_Diif,
             teams:team_id(
             team_name,
+            team_code,
             images:badge_image_id(
             image_url)
             )"""))\

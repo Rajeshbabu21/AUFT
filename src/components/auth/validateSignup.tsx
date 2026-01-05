@@ -1,14 +1,14 @@
-const ValidateSignup = (value: {firstName:string,lastName:string, email: string; password: string }) => {
+const ValidateSignup = (value: {name:string, email: string; password: string,team:string }) => {
 
  
-  const errors: { email?: string; password?: string; firstName?:string;lastName?:string } = {}
+  const errors: { email?: string; password?: string; name?:string;team?:string } = {}
 
-  if (!value.firstName.trim()) {
-    errors.firstName = 'First name is required'
+  if (!value.name.trim()) {
+    errors.name = 'Name is required'
   }
 
-  if (!value.lastName.trim()) {
-    errors.lastName = 'Last name is required'
+  if (!value.team.trim()) {
+    errors.team = 'Team is required'
   }
 
   if (!value.email.trim()) {

@@ -32,4 +32,6 @@ FRONTEND
 
   
 python -m uv sync
-pip install "passlib[bcrypt]>=1.7.4"
+
+python -m pip uninstall bcrypt -y
+python -m pip install bcrypt==3.2.2

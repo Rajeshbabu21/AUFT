@@ -2,20 +2,21 @@ import { useState } from 'react'
 import ValidateSignup from './validateSignup';
 
 type FormValues = {
- firstName: string,
-  lastName: string,
+  
+ name: string,
   email: string
   password: string
+  team: string | number | undefined;
 }
 
 type Errors = Partial<FormValues>
 
 const useFormSignup = () => {
   const [value, setValue] = useState<FormValues>({
-    firstName: '',
-    lastName: '',
+    name: '',
     email: '',
     password: '',
+    team: '',
   })
 
   const [errors, setErrors] = useState<Errors>({})

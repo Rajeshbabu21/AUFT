@@ -8,9 +8,25 @@ from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
 from app.images import fetch_images,insert_image,get_image,insert_team
 from uuid import UUID
+from fastapi.middleware.cors import CORSMiddleware
+import hashlib
 
 
 app=FastAPI()
+origins = [
+    "http://localhost:3000", # The default port for Create React App
+    "http://localhost:5173", # The default port for Vite React app
+    # Add the production URL of your React app here when deploying
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get("/ping")
 
 async def ping():
@@ -31,7 +47,7 @@ def create_user(users:Users):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
-@app.post("/admin_users")
+@app.post("/user_login")
 def login_users(form_data:OAuth2PasswordRequestForm = Depends()):
     response = (
         supabase
@@ -85,15 +101,16 @@ def create_user(users:Users):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
+ 
 @app.post("/admin_login")
 def login_admin(form_data:OAuth2PasswordRequestForm = Depends()):
     response = (
         supabase
         .table("admin")
         .select("*")
-        .eq("name", form_data.username)
+        .eq("email", form_data.username)
         .execute()
-        
+
     )
     user = response.data
 
@@ -123,12 +140,14 @@ def login_admin(form_data:OAuth2PasswordRequestForm = Depends()):
 
 
 
+
 @app.get("/matches")
-async def get_matches_endpoint(current_user: dict = Depends(get_current_active_user)):
+# async def get_matches_endpoint(current_user: dict = Depends(get_current_active_user)):
+async def get_matches_endpoint():
     """
     Endpoint to get all matches with related team and badge information.
     """
-    data = fetch_matches()
+    data = await fetch_matches()
     return data
 
 @app.get("/points-table")
