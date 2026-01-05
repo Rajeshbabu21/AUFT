@@ -76,8 +76,9 @@ export default function BasicTableOne() {
                     {" "}
                     <div className='w-10 h-10 overflow-hidden rounded-full'>
                       <img
-                        width={40}
-                        height={40}
+                       className="w-full h-full object-contain"
+                        width={100}
+                        height={70}
                         src={order.teams?.images?.image_url || "/images/logo/1.jpeg"}
                         alt={order.teams?.team_code || "team"}
                       />

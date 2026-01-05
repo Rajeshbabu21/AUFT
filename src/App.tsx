@@ -46,8 +46,8 @@ export default function App() {
             <Route path='/form-elements' element={<FormElements />} />
 
             {/* Tables */}
-            <Route path='/basic-tables' element={<BasicTables />} />
-            <Route path='/point-tables' element={<PointTables />} />
+            <Route path='/points-tables' element={<BasicTables />} />
+            <Route path='/match-tables' element={<PointTables />} />
 
             {/* Ui Elements */}
             <Route path='/alerts' element={<Alerts />} />

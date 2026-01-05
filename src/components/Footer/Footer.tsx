@@ -12,7 +12,7 @@ const Footer = () => {
             <p className='sm:text-lg text-sm text-center font-medium text-blue-200'>
               Nourishing Young Football Talents
             </p>
-            <a href='/signup'>
+            <a href=''>
               <div className='btn bg-company items-center gap-2 inline-flex border-none rounded-none h-auto py-2 px-14 sm:px-20 w-auto'>
                 <p className='font-black text-xl sm:text-2xl lg:text-4xl text-white p-2'>
                   JOIN THE COMMUNITY

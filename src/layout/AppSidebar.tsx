@@ -21,11 +21,11 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  {
-    icon: <GridIcon />,
-    name: 'AUFT Dashboard',
-    path: '/dashboard',
-  },
+  // {
+  //   icon: <GridIcon />,
+  //   name: 'AUFT Dashboard',
+  //   path: '/dashboard',
+  // },
   {
     icon: <CalenderIcon />,
     name: 'Match Schedule',
@@ -45,14 +45,14 @@ const navItems: NavItem[] = [
   {
     name: 'Results',
     icon: <TableIcon />,
-    subItems: [{ name: 'Match Tables', path: '/basic-tables', pro: false }],
+    subItems: [{ name: 'Points Tables', path: '/points-tables', pro: false }],
   },
 
   {
     name: 'Fixtures',
     icon: <TableIcon />,
     subItems: [
-      { name: 'Match Tables', path: '/point-tables', pro: false },
+      { name: 'Match Tables', path: '/match-tables', pro: false },
       { name: 'Match Results', path: '/results', pro: false },
     ],
   },

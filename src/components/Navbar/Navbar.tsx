@@ -14,16 +14,22 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Check if user is logged in
-  useEffect(() => {
-    const user = localStorage.getItem('user')
-    setIsLoggedIn(!!user)
-  }, [location]) // update when route changes
+  
+  // useEffect(() => {
+  //   const user = localStorage.getItem('user')
+  //   setIsLoggedIn(!!user)
+  // }, [location]) 
+
+   useEffect(() => {
+    const token = localStorage.getItem('access_token')
+    setIsLoggedIn(!!token)
+  }, [location]) 
 
   const handleLogout = () => {
-    localStorage.removeItem('user')
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('token')
     setIsLoggedIn(false)
-    navigate('/') // redirect to home
+    navigate('/') 
   }
 
   return (
@@ -105,7 +111,7 @@ const Navbar: React.FC = () => {
                 <>
                   <li>
                     <a
-                      href='/dashboard'
+                      href='/point-tables'
                       className={`block py-2.5 px-4 rounded-lg transition-all font-semibold relative ${
                         location.pathname === '/dashboard' 
                           ? 'text-white md:text-blue-400 md:border-b-2 md:border-blue-400' 
