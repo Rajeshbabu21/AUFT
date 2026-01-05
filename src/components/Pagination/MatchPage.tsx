@@ -1,306 +1,130 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import api from '../../api/axios'
 import Pagination from './Pagination'
-
-const matchWeeks = [
-  {
-    week: 1,
-    date: 'Sat 6 Sep',
-    matches: [
-      {
-        home: 'Arsenal',
-        away: 'Manchester City',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-      },
-      {
-        home: 'Bournemouth',
-        away: 'Newcastle United',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-      },
-      {
-        home: 'Bournemouth',
-        away: 'Newcastle United',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-      },
-    ],
-  },
-  {
-    week: 2,
-    date: 'Sat 13 Sep',
-    matches: [
-      {
-        home: 'Brighton',
-        away: 'Tottenham',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-      },
-      {
-        home: 'Burnley',
-        away: 'Nottingham Forest',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-      },
-    ],
-  },
-  {
-    week: 3,
-    date: 'Sat 20 Sep',
-    matches: [
-      {
-        home: 'Fulham',
-        away: 'Brentford',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-      },
-      {
-        home: 'Chelsea',
-        away: 'Liverpool',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-      },
-    ],
-  },
-  {
-    week: 4,
-    date: 'Sat 13 Sep',
-    matches: [
-      {
-        home: 'Brighton',
-        away: 'Tottenham',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-      {
-        home: 'Burnley',
-        away: 'Nottingham Forest',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-    ],
-  },
-  {
-    week: 5,
-    date: 'Sat 13 Sep',
-    matches: [
-      {
-        home: 'Brighton',
-        away: 'Tottenham',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-      {
-        home: 'Burnley',
-        away: 'Nottingham Forest',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-    ],
-  },
-
-  {
-    week: 6,
-    date: 'Sat 13 Sep',
-    matches: [
-      {
-        home: 'Brighton',
-        away: 'Tottenham',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-      {
-        home: 'Burnley',
-        away: 'Nottingham Forest',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-    ],
-  },
-
-  {
-    week: 7,
-    date: 'Sat 13 Sep',
-    matches: [
-      {
-        home: 'Brighton',
-        away: 'Tottenham',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-      {
-        home: 'Burnley',
-        away: 'Nottingham Forest',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-    ],
-  },
-
-  {
-    week: 8,
-    date: 'Sat 13 Sep',
-    matches: [
-      {
-        home: 'Brighton',
-        away: 'Tottenham',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-      {
-        home: 'Burnley',
-        away: 'Nottingham Forest',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-    ],
-  },
-
-  {
-    week: 9,
-    date: 'Sat 13 Sep',
-    matches: [
-      {
-        home: 'Brighton',
-        away: 'Tottenham',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-      {
-        home: 'Burnley',
-        away: 'Nottingham Forest',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-    ],
-  },
-
-  {
-    week: 10,
-    date: 'Sat 13 Sep',
-    matches: [
-      {
-        home: 'Brighton',
-        away: 'Tottenham',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-      {
-        home: 'Burnley',
-        away: 'Nottingham Forest',
-        time: '19:30',
-        image1: '/images/user/user-21.jpg',
-        image2: '/images/user/user-21.jpg',
-        // image: '/images/user/user-21.jpg',
-      },
-    ],
-  },
-]
+import { Match } from '../../../@types/Matches'
 
 const MatchPage: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [matches, setMatches] = useState<Match[]>([])
+  const [currentWeek, setCurrentWeek] = useState(1)
+
+  useEffect(() => {
+    const fetchMatches = async () => {
+      try {
+        const res = await api.get('/matches') // 👈 your backend route
+        setMatches(res.data)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    fetchMatches()
+  }, [])
+
+  // filter matches by week
+  const weekMatches = matches.filter(
+    (match) => match.match_week === currentWeek
+  )
+
+  const maxWeek = Math.max(...matches.map((m) => m.match_week), 1)
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => Math.max(prev - 1, 0))
+    setCurrentWeek((prev) => Math.max(prev - 1, 1))
   }
 
   const handleNext = () => {
-    setCurrentIndex((prev) => Math.min(prev + 1, matchWeeks.length - 1))
+    setCurrentWeek((prev) => Math.min(prev + 1, maxWeek))
   }
 
-  const currentWeek = matchWeeks[currentIndex]
-
   return (
-    <div className=' w-[500px]  p-6  mx-65 '>
-      <Pagination
-        currentWeek={currentWeek.week}
-        date={currentWeek.date}
-        onPrev={handlePrev}
-        onNext={handleNext}
-      />
+    <div className="min-h-screen p-2">
+      <div className="max-w-2xl mx-auto">
+        <Pagination
+          currentWeek={currentWeek}
+          date={weekMatches[0]?.match_date || ''}
+          onPrev={handlePrev}
+          onNext={handleNext}
+        />
 
-      {/* <div className='mt-6 space-y-4'>
-        
-        {currentWeek.matches.map((match, index) => (
+        <div className="mt-8 space-y-5">
+          {weekMatches.map((match) => (
+            <div
+              key={match.id}
+              className="group rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-white/[0.03] p-6 transition-all duration-300 hover:shadow-lg dark:hover:shadow-xl hover:-translate-y-1 hover:border-blue-400 dark:hover:border-blue-500"
 
-          <div
-            key={index}
-            className='flex justify-between items-center   p-4 rounded-md'
-          >
-            <img className='w-10 h-10' src={match.image1} alt='' />
-            <span>{match.home}</span>
-            <span className='font-bold'>{match.time}</span>
-            <span>{match.away}</span>
-            <img className='w-10 h-10' src={match.image2} alt='' />
-            
-          
-          </div>
-          
-          
-        ))}
-        
-      </div> */}
+              // className="group rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-white/[0.03] p-6 transition-all duration-300 hover:shadow-lg dark:hover:shadow-xl hover:-translate-y-1 hover:border-blue-400 dark:hover:border-blue-500"
+            >
+              {/* Match Container */}
+              <div className="flex items-center justify-between gap-6 ">
+                
+                {/* Home Team */}
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 transition-transform duration-300 group-hover:translate-x-2">
+                    <div className="relative">
+                      <img
+                        className="w-14 h-14 rounded-xl object-cover shadow-md dark:shadow-lg"
+                        src={match.home_team.badge.image_url}
+                        alt={match.home_team.team_name}
+                      />
+                      <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">HOME</p>
+                      <h4 className="text-lg font-bold text-gray-900 dark:text-white/90 truncate">
+                        {match.home_team.team_name}
+                      </h4>
+                    </div>
+                  </div>
+                </div>
 
-      <div className='mt-6 space-y-4'>
-        {currentWeek.matches.map((match, index) => (
-          <div key={index}>
-            <div className='flex justify-between items-center bg-gray-100 dark:bg-gray-800 p-4 rounded-md shadow-sm'>
-              <img
-                className='w-10 h-10 rounded-full'
-                src={match.image1}
-                alt={match.home}
-              />
-              <span className='font-medium  dark:text-white/90'>
-                {match.home}
-              </span>
-              <span className='font-bold text-gray-700 dark:text-white'>
-                {match.time}
-              </span>
-              <span className='font-medium  dark:text-white/90'>
-                {match.away}
-              </span>
-              <img
-                className='w-10 h-10 rounded-full'
-                src={match.image2}
-                alt={match.away}
-              />
+                {/* Center - Time & Divider */}
+                <div className="flex flex-col items-center gap-2">
+                  <div className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-600 dark:to-blue-700 text-white font-bold text-sm shadow-md">
+                    {match.match_time.slice(0, 5)}
+                  </div>
+                  <div className="h-px w-8 bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent" />
+                  <span className="text-xs text-gray-500 dark:text-gray-400 font-semibold">WEEK {currentWeek}</span>
+                </div>
+
+                {/* Away Team */}
+                <div className="flex-1">
+                  <div className="flex items-center justify-end gap-3 transition-transform duration-300 group-hover:-translate-x-2">
+                    <div className="text-right min-w-0">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">AWAY</p>
+                      <h4 className="text-lg font-bold text-gray-900 dark:text-white/90 truncate">
+                        {match.away_team.team_name}
+                      </h4>
+                    </div>
+                    <div className="relative">
+                      <img
+                        className="w-14 h-14 rounded-xl object-cover shadow-md dark:shadow-lg"
+                        src={match.away_team.badge.image_url}
+                        alt={match.away_team.team_name}
+                      />
+                      <div className="absolute inset-0 rounded-xl bg-gradient-to-tl from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <hr />
+
+              {/* Footer - Match Date */}
+              <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium text-center">
+                  Auft
+                </p>
+              </div>
             </div>
-            <hr className='border-gray-500  dark:border-gray-600' />
-          </div>
-        ))}
+          ))}
+
+          {weekMatches.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-12">
+              <p className="text-center text-gray-600 dark:text-gray-400 font-medium">
+                No matches for this week
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
