@@ -6,7 +6,6 @@ import {
   BoxCubeIcon,
   CalenderIcon,
   ChevronDownIcon,
-  GridIcon,
   HorizontaLDots,
   TableIcon,
   PieChartIcon,

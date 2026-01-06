@@ -8,13 +8,13 @@ type FormValues = {
   team?: string
 }
 
-
 type Errors = Partial<FormValues>
 
-const useForm = () => {
+const useForm = (initialValues?: Partial<FormValues>) => {
   const [value, setValue] = useState<FormValues>({
     email: '',
     password: '',
+    ...initialValues,
   })
 
   const [errors, setErrors] = useState<Errors>({})
