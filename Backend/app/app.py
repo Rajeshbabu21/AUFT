@@ -16,19 +16,18 @@ import hashlib
 
 
 app=FastAPI()
-origins = [
-    "http://localhost:3000", # The default port for Create React App
-    "http://localhost:5173", # The default port for Vite React app
-    # Add the production URL of your React app here when deploying
-]
+# origins = [
+#     "http://localhost:5173", # The default port for Vite React app
+#     # Add the production URL of your React app here when deploying
+# ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 
 @app.get("/ping")
 

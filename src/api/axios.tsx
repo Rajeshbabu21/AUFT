@@ -1,6 +1,10 @@
 import axios from 'axios';
+import.meta.env;
+
+
 const api = axios.create({
-    baseURL: "http://127.0.0.1:8000/",
+    
+    baseURL: import.meta.env.VITE_BACKEND_URL,
 })
 
 api.interceptors.request.use(config => {
