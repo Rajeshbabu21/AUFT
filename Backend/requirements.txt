@@ -1,6 +1,7 @@
 fastapi>=0.128.0
 imagekitio>=5.0.0
 passlib[bcrypt]>=1.7.4
+bcrypt==3.2.2
 python-dotenv>=1.2.1
 python-multipart>=0.0.21
 supabase>=2.27.0
