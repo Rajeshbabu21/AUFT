@@ -33,7 +33,9 @@ __pycache__/
 venv/
 ENV/
 env/
-
+.env
+.env.*
+Backend/.env
 
 # =========================
 # Build / distribution
