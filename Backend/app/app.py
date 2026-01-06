@@ -16,10 +16,10 @@ import hashlib
 
 
 app=FastAPI()
-# origins = [
-#     "http://localhost:5173", # The default port for Vite React app
-#     # Add the production URL of your React app here when deploying
-# ]
+origins = [
+    "http://localhost:5173", # The default port for Vite React app
+    # Add the production URL of your React app here when deploying
+]
 
 # app.add_middleware(
 #     CORSMiddleware,

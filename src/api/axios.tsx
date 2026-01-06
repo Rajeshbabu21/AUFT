@@ -4,7 +4,8 @@ import.meta.env;
 
 const api = axios.create({
     
-    baseURL: import.meta.env.VITE_BACKEND_URL,
+    // baseURL: import.meta.env.VITE_BACKEND_URL,
+    baseURL: 'https://auft.onrender.com/',
 })
 
 api.interceptors.request.use(config => {
