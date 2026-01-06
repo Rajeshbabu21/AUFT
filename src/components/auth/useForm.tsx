@@ -11,7 +11,7 @@ type FormValues = {
 
 type Errors = Partial<FormValues>
 
-const useForm = (p0?: { email: string; password: string }) => {
+const useForm = () => {
   const [value, setValue] = useState<FormValues>({
     email: '',
     password: '',

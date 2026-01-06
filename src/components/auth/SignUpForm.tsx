@@ -21,7 +21,7 @@ export default function SignUpForm() {
           name: value.name, // from your first input
           email: value.email,
           password: value.password,
-          team: value.team, // from your second input
+          team: value.team ? String(value.team) : '', // from your second input
         }
 
         const res = await signupUser(payload)

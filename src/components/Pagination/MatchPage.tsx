@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import api from '../../api/axios'
 import Pagination from './Pagination'
-import { Match } from '../../../@types/Matches'
+import { Matches } from '../../@types/Matches'
 
 const MatchPage: React.FC = () => {
-  const [matches, setMatches] = useState<Match[]>([])
+  const [matches, setMatches] = useState<Matches[]>([])
   const [currentWeek, setCurrentWeek] = useState(1)
 
   useEffect(() => {
     const fetchMatches = async () => {
       try {
-        const res = await api.get('/matches') // 👈 your backend route
+        const res = await api.get('/matches') 
         setMatches(res.data)
       } catch (err) {
         console.error(err)

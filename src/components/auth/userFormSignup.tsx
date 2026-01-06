@@ -6,7 +6,7 @@ type FormValues = {
  name: string,
   email: string
   password: string
-  team: string | number | undefined;
+  team: string;
 }
 
 type Errors = Partial<FormValues>
