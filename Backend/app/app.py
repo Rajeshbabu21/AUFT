@@ -1,6 +1,6 @@
 from fastapi import FastAPI,HTTPException,Depends,status,UploadFile,File,Response
 from app.db import supabase
-from app.matches import fetch_matches
+from app.matches import delete_match, fetch_matches
 from app.points import delete_points, delete_points, points_table,update_points_table
 from app.schemas import TeamCreate, UpdatePoints, Users,UserLogin
 from app.auth import verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES,get_password_hash,get_current_active_user,current_user,current_admin,get_current_active_admin
@@ -9,6 +9,9 @@ from datetime import timedelta
 from app.images import fetch_images,insert_image,get_image,insert_team
 from uuid import UUID
 from fastapi.middleware.cors import CORSMiddleware
+from app.matches import create_match
+from app.schemas import CreateMatch
+
 import hashlib
 
 
@@ -206,4 +209,19 @@ async def delete_points_table_endpoint(id: UUID):
     data = await delete_points(id)
     return data
 
+@app.post("/create_matches")
+async def create_match_endpoint(match: CreateMatch):
+    """
+    Endpoint to create a match and return it with related team and badge info.
+    """
+    data = await create_match(match)
+    return data
+
+@app.delete("/delete_match/{id}")
+async def delete_match_endpoint(id:UUID):
+    '''
+    Endpoint to delete a match by ID.
+    '''
+    data = await delete_match(id)
+    return data
 

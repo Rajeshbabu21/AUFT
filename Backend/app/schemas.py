@@ -58,3 +58,11 @@ class UpdatePoints(BaseModel):
         position: Optional[int] = None
         qualified: Optional[bool] = None
         goal_Diif: Optional[int] = None
+
+class  CreateMatch(BaseModel):
+        match_week:int
+        match_date:date
+        match_time:time
+        home_team_name:str
+        away_team_name:str
+
