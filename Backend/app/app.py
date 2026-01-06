@@ -21,6 +21,10 @@ origins = [
     # Add the production URL of your React app here when deploying
 ]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins= ["*"],
+)
 # app.add_middleware(
 #     CORSMiddleware,
 #     allow_origins=origins,
