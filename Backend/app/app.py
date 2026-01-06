@@ -17,7 +17,6 @@ import hashlib
 
 app=FastAPI()
 origins = [
-    "http://localhost:5173",
     "https://auft.onrender.com/",
     "http://localhost:10000",
     "http://localhost:8000",
