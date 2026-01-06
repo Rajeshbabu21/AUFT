@@ -17,9 +17,7 @@ import hashlib
 
 app=FastAPI()
 origins = [
-    "https://auft.onrender.com/",
-    "http://localhost:10000",
-    "http://localhost:8000",
+    "http://localhost:5173",
       # The default port for Vite React app
     # Add the production URL of your React app here when deploying
 ]
