@@ -55,41 +55,43 @@ def create_user(users:Users):
         raise HTTPException(status_code=400, detail=str(e))
     
 @app.post("/user_login")
-def login_users(form_data:OAuth2PasswordRequestForm = Depends()):
-    response = (
-        supabase
-        .table("users")
-        .select("*")
-        .eq("email", form_data.username)
-        .execute()
-
-    )
-    user = response.data
-
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password"
+def login_users(form_data: OAuth2PasswordRequestForm = Depends()):
+    try:
+        response = (
+            supabase
+            .table("users")
+            .select("*")
+            .eq("email", form_data.username)
+            .execute()
         )
 
-    user = user[0]
-    if not verify_password(form_data.password, user["password"]):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password"
+        if not response.data:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password"
+            )
+
+        user = response.data[0]
+
+        if not verify_password(form_data.password, user["password"]):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password"
+            )
+
+        access_token = create_access_token(
+            data={"sub": user["email"]},
+            expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
         )
-    
-    access_token = create_access_token(
-        data={"sub": user["email"], "email": user["email"]},
-        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
-    )
 
-    # 5️⃣ Return token
-    return {
-        "access_token": access_token,
-        "token_type": "bearer"
-    }
+        return {
+            "access_token": access_token,
+            "token_type": "bearer"
+        }
 
+    except Exception as e:
+        print("LOGIN ERROR:", e)
+        raise HTTPException(status_code=500, detail="Login failed")
 
 
 #  admim
