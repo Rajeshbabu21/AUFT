@@ -6,7 +6,7 @@ import Input from "../form/input/InputField"
 import "./auth.css"
 import useForm from "./useForm"
 import { signinUser } from "../../api/auth"
-import type { AuthSignin } from "../../api/types"
+import type { AuthSignin } from "../../@types/Auth"
 
 export default function SignInForm() {
   const navigate = useNavigate()
@@ -14,9 +14,9 @@ export default function SignInForm() {
   const [loading, setLoading] = useState(false)
 
   const { value, handleChange, errors } = useForm({
-    email: "",
-    password: "",
-  })
+  email: "",
+  password: "",
+})
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault()

@@ -2,13 +2,16 @@ import { useState } from 'react'
 import Validate from './validate'
 
 type FormValues = {
+  name?: string
   email: string
   password: string
+  team?: string
 }
+
 
 type Errors = Partial<FormValues>
 
-const useForm = () => {
+const useForm = (p0?: { email: string; password: string }) => {
   const [value, setValue] = useState<FormValues>({
     email: '',
     password: '',

@@ -111,7 +111,7 @@ const Navbar: React.FC = () => {
                 <>
                   <li>
                     <a
-                      href='/point-tables'
+                      href='/points-tables'
                       className={`block py-2.5 px-4 rounded-lg transition-all font-semibold relative ${
                         location.pathname === '/dashboard' 
                           ? 'text-white md:text-blue-400 md:border-b-2 md:border-blue-400' 
