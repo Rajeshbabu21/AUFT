@@ -57,7 +57,7 @@ const navItems: NavItem[] = [
   },
   {
     icon: <PieChartIcon />,
-    name: 'Player Statistics',
+    name: 'A - Ligue Teams',
     path: '/stats',
   },
 ]

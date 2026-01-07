@@ -1,4 +1,5 @@
 from fastapi import FastAPI,HTTPException,Depends,status,UploadFile,File,Response
+from app.players import users_as_player
 from app.db import supabase
 from app.matches import delete_match, fetch_matches
 from app.points import delete_points, delete_points, points_table,update_points_table
@@ -20,14 +21,10 @@ origins = [
     "https://auft.vercel.app",
     "http://localhost:5173",
     
-      # The default port for Vite React app
-    # Add the production URL of your React app here when deploying
+      
 ]
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins= ["*"],
-# )
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -233,3 +230,10 @@ async def delete_match_endpoint(id:UUID):
     data = await delete_match(id)
     return data
 
+@app.get("/players/{team}")
+async def get_players_as_per_team(team:str):
+    """
+    Endpoint to get all players as per team.
+    """
+    data = await users_as_player(team)
+    return data

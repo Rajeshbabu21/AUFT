@@ -17,12 +17,14 @@ async def fetch_matches():
         match_time,
         home_team:home_team_id (
             team_name,
+            team_code,
             badge:badge_image_id (
                 image_url
             )
         ),
         away_team:away_team_id (
             team_name,
+            team_code,
             badge:badge_image_id (
                 image_url
             )
