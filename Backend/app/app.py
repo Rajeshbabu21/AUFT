@@ -12,6 +12,7 @@ from uuid import UUID
 from fastapi.middleware.cors import CORSMiddleware
 from app.matches import create_match
 from app.schemas import CreateMatch
+from app.results import get_all_match_results
 
 import hashlib
 
@@ -236,4 +237,13 @@ async def get_players_as_per_team(team:str):
     Endpoint to get all players as per team.
     """
     data = await users_as_player(team)
+    return data
+
+@app.get("/match-details")
+async def get_match_details_endpoint():
+    """
+    Endpoint to get detailed information about a specific match.
+    """
+      # Import here to avoid circular imports
+    data = await get_all_match_results()
     return data
