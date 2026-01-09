@@ -13,7 +13,7 @@ async def fetch_matches():
     response = (supabase.table("matches").select("""
         id,
         match_week,
-        match_date,
+        conduction_date,
         match_time,
         home_team:home_team_id (
             team_name,

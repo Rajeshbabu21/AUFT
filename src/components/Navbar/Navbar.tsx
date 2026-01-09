@@ -42,10 +42,10 @@ const Navbar: React.FC = () => {
         <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 md:p-6'>
           <a href='/' className='flex items-center space-x-3 rtl:space-x-reverse group'>
             <div className='relative'>
-              <div className='absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-300'></div>
+              <div className='absolute inset-0  from-blue-600 to-blue-800 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-300'></div>
               <img
-                src='https://flowbite.com/docs/images/logo.svg'
-                className='h-10 relative z-10'
+                src="/public/images/al.jpeg"
+                className='h-10 relative z-10 rounded-full object-cover border-2 border-blue-500 ' 
                 alt='AUFT Logo'
               />
             </div>

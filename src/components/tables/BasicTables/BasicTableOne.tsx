@@ -29,7 +29,14 @@ export default function BasicTableOne() {
       });
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return (
+    <div className="flex items-center justify-center p-12">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
+        <p className="text-gray-600 dark:text-gray-400">Loading points table...</p>
+      </div>
+    </div>
+  );
 
   return (
     <div className='overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]'>
@@ -74,7 +81,7 @@ export default function BasicTableOne() {
                   <div className='flex items-center gap-3'>
                     <p className='dark:text-white/90'>{order.position}</p>
                     {" "}
-                    <div className='w-10 h-10 overflow-hidden rounded-full'>
+                    <div className='w-14 h-14 overflow-hidden rounded-full'>
                       <img
                        className="w-full h-full object-contain"
                         width={100}

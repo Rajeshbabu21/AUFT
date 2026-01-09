@@ -54,57 +54,7 @@ const MatchPage: React.FC = () => {
               // className="group rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-white/[0.03] p-6 transition-all duration-300 hover:shadow-lg dark:hover:shadow-xl hover:-translate-y-1 hover:border-blue-400 dark:hover:border-blue-500"
             >
               {/* Match Container */}
-              <div className="flex items-center justify-between gap-6 ">
-                
-                {/* Home Team */}
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 transition-transform duration-300 group-hover:translate-x-2">
-                    <div className="relative">
-                      <img
-                        className="w-14 h-14 rounded-xl object-cover shadow-md dark:shadow-lg"
-                        src={match.home_team.badge.image_url}
-                        alt={match.home_team.team_name}
-                      />
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">HOME</p>
-                      <h4 className="text-lg font-bold text-gray-900 dark:text-white/90 truncate">
-                        {match.home_team.team_name}
-                      </h4>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Center - Time & Divider */}
-                <div className="flex flex-col items-center gap-2">
-                  <div className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-600 dark:to-blue-700 text-white font-bold text-sm shadow-md">
-                    {match.match_time.slice(0, 5)}
-                  </div>
-                  <div className="h-px w-8 bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent" />
-                  <span className="text-xs text-gray-500 dark:text-gray-400 font-semibold">WEEK {currentWeek}</span>
-                </div>
-
-                {/* Away Team */}
-                <div className="flex-1">
-                  <div className="flex items-center justify-end gap-3 transition-transform duration-300 group-hover:-translate-x-2">
-                    <div className="text-right min-w-0">
-                      <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">AWAY</p>
-                      <h4 className="text-lg font-bold text-gray-900 dark:text-white/90 truncate">
-                        {match.away_team.team_name}
-                      </h4>
-                    </div>
-                    <div className="relative">
-                      <img
-                        className="w-14 h-14 rounded-xl object-cover shadow-md dark:shadow-lg"
-                        src={match.away_team.badge.image_url}
-                        alt={match.away_team.team_name}
-                      />
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-tl from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+            
               <br />
               <hr />
 

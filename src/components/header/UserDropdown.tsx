@@ -15,10 +15,7 @@ export default function UserDropdown() {
   // }
   return (
     <div className="relative ">
-      {/* <button
-        onClick={toggleDropdown}
-        className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
-      > */}
+      
         
 
         <span className="block mr-1 font-medium text-theme-sm d-flex align-center justify-center">

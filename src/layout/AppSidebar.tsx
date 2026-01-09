@@ -20,40 +20,25 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  // {
-  //   icon: <GridIcon />,
-  //   name: 'AUFT Dashboard',
-  //   path: '/dashboard',
-  // },
+  
   {
     icon: <CalenderIcon />,
     name: 'Match Schedule',
     path: '/calendar',
   },
 
-  // {
-  //   icon: <UserCircleIcon />,
-  //   name: 'User Profile',
-  //   path: '/profile',
-  // },
-  // {
-  //   name: 'Forms',
-  //   icon: <ListIcon />,
-  //   subItems: [{ name: 'Form Elements', path: '/form-elements', pro: false }],
-  // },
+ 
+  
   {
-    name: 'Results',
     icon: <TableIcon />,
-    subItems: [{ name: 'Points Tables', path: '/points-tables', pro: false }],
+    name: 'Points Tables',
+    path: '/points-tables',
   },
 
   {
-    name: 'Fixtures',
     icon: <TableIcon />,
-    subItems: [
-      { name: 'Match Tables', path: '/match-tables', pro: false },
-      { name: 'Match Results', path: '/results', pro: false },
-    ],
+    name: 'Match Result',
+    path: '/results',
   },
   {
     icon: <PieChartIcon />,
@@ -299,38 +284,42 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`py-8 flex ${
-          !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
-        }`}
+        className={`py-4 flex justify-center items-center gap-4`}
       >
-        <Link to="/">
+        <Link to="/" className="p-2 rounded-lg  border-blue-600 flex justify-center items-center">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <img
-                className="dark:hidden"
-                src="/images/logo/logo.sg"
+                className="dark:hidden rounded-lg"
+                src="/public/images/al.jpeg"
                 alt="Logo"
-                width={150}
+                width={40}
                 height={40}
               />
               <img
-                className="hidden dark:block"
-                src="/images/logo/logo-dark.sg"
+                className="hidden dark:block rounded-lg"
+                src="/public/images/al.jpeg"
                 alt="Logo"
-                width={150}
+                width={40}
                 height={40}
+
               />
             </>
           ) : (
             <img
-              src="/images/logo/logo-in.svg"
+              className="rounded-lg"
+              src="/public/images/al.jpeg"
               alt="Logo"
               width={32}
               height={32}
-            />
+            />  
           )}
         </Link>
+        {(isExpanded || isHovered || isMobileOpen) && (
+          <h1 className="font-bold text-xl">A - Ligue </h1>
+        )}
       </div>
+      <hr  className="mb-5  "/>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
