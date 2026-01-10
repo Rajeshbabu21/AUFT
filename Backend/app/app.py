@@ -3,14 +3,14 @@ from app.players import users_as_player
 from app.db import supabase
 from app.matches import delete_match, fetch_matches
 from app.points import delete_points, delete_points, points_table,update_points_table
-from app.schemas import TeamCreate, UpdatePoints, Users,UserLogin
+from app.schemas import TeamCreate, UpdateMatch, UpdatePoints, Users,UserLogin
 from app.auth import verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES,get_password_hash,get_current_active_user,current_user,current_admin,get_current_active_admin
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
 from app.images import fetch_images,insert_image,get_image,insert_team
 from uuid import UUID
 from fastapi.middleware.cors import CORSMiddleware
-from app.matches import create_match
+from app.matches import create_match,update_points
 from app.schemas import CreateMatch
 from app.results import get_all_match_results
 
@@ -159,6 +159,30 @@ async def get_matches_endpoint():
     data = await fetch_matches()
     return data
 
+@app.post("/create_matches")
+async def create_match_endpoint(match: CreateMatch):
+    """
+    Endpoint to create a match and return it with related team and badge info.
+    """
+    data = await create_match(match)
+    return data
+
+@app.put("/update_points/{id}")
+async def update_match_endpoint(id:UUID,match:UpdateMatch):
+    '''
+    Endpoint to update match details by ID.
+    '''
+    data = await update_points(id,match)
+    return data
+
+@app.delete("/delete_match/{id}")
+async def delete_match_endpoint(id:UUID):
+    '''
+    Endpoint to delete a match by ID.
+    '''
+    data = await delete_match(id)
+    return data
+
 @app.get("/points-table")
 async def get_points_table_endpoint():
     """
@@ -167,6 +191,23 @@ async def get_points_table_endpoint():
     data = await points_table()
     return data
     
+@app.put("/points-table/{id}")
+async def update_points_table_endpoint(id: UUID, points_update: UpdatePoints):
+    """
+    Endpoint to update a points table entry by ID.
+    """
+    data = await update_points_table(id, points_update)
+    return data
+
+@app.delete("/points-table/{id}")
+async def delete_points_table_endpoint(id: UUID):
+    """
+    Endpoint to delete a points table entry by ID.
+    """
+    data = await delete_points(id)
+    return data
+
+
 @app.get("/images")
 async def get_images():
     """
@@ -199,37 +240,7 @@ async def create_team(team:TeamCreate):
     data = await insert_team(team)
     return data
 
-@app.put("/points-table/{id}")
-async def update_points_table_endpoint(id: UUID, points_update: UpdatePoints):
-    """
-    Endpoint to update a points table entry by ID.
-    """
-    data = await update_points_table(id, points_update)
-    return data
 
-@app.delete("/points-table/{id}")
-async def delete_points_table_endpoint(id: UUID):
-    """
-    Endpoint to delete a points table entry by ID.
-    """
-    data = await delete_points(id)
-    return data
-
-@app.post("/create_matches")
-async def create_match_endpoint(match: CreateMatch):
-    """
-    Endpoint to create a match and return it with related team and badge info.
-    """
-    data = await create_match(match)
-    return data
-
-@app.delete("/delete_match/{id}")
-async def delete_match_endpoint(id:UUID):
-    '''
-    Endpoint to delete a match by ID.
-    '''
-    data = await delete_match(id)
-    return data
 
 @app.get("/players/{team}")
 async def get_players_as_per_team(team:str):
@@ -239,6 +250,7 @@ async def get_players_as_per_team(team:str):
     data = await users_as_player(team)
     return data
 
+
 @app.get("/match-details")
 async def get_match_details_endpoint():
     """
@@ -247,3 +259,4 @@ async def get_match_details_endpoint():
       # Import here to avoid circular imports
     data = await get_all_match_results()
     return data
+

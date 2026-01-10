@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from "../../components/Navbar/Navbar"
 import './landingpage.css'
 import Footer from '../../components/Footer/Footer'
 
 
 const LandingPage: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token')
+    setIsLoggedIn(!!token)
+  }, [])
+
   return (
     <div className='landing-page'>
       <Navbar />
@@ -23,12 +30,23 @@ const LandingPage: React.FC = () => {
             Experience the future of digital innovation
           </p>
           <div className='hero-buttons animate-fadeInUp-delay-2'>
-            <a href='/signup' className='btn-primary'>
-              Get Started
-              <svg className='ml-2 w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M13 7l5 5m0 0l-5 5m5-5H6' />
-              </svg>
-            </a>
+            {!isLoggedIn ? (
+              <>
+                <a href='/signup' className='btn-primary'>
+                  Get Started
+                  <svg className='ml-2 w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M13 7l5 5m0 0l-5 5m5-5H6' />
+                  </svg>
+                </a>
+              </>
+            ) : (
+              <a href='/calendar' className='btn-primary'>
+                Go to Dashboard
+                <svg className='ml-2 w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M13 7l5 5m0 0l-5 5m5-5H6' />
+                </svg>
+              </a>
+            )}
             <a href='#features' className='btn-secondary'>
               Learn More
             </a>
@@ -123,12 +141,20 @@ const LandingPage: React.FC = () => {
             Join thousands of satisfied users and transform your experience today
           </p>
           <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-            <a href='/signup' className='btn-cta-primary'>
-              Start Free Trial
-            </a>
-            <a href='/dashboard' className='btn-cta-secondary'>
-              View Dashboard
-            </a>
+            {!isLoggedIn ? (
+              <>
+                <a href='/signup' className='btn-cta-primary'>
+                  Start Free Trial
+                </a>
+                <a href='/calendar' className='btn-cta-secondary'>
+                  View Demo
+                </a>
+              </>
+            ) : (
+              <a href='/calendar' className='btn-cta-primary'>
+                Go to Dashboard
+              </a>
+            )}
           </div>
         </div>
       </div>

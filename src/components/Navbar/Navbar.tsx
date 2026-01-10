@@ -44,7 +44,7 @@ const Navbar: React.FC = () => {
             <div className='relative'>
               <div className='absolute inset-0  from-blue-600 to-blue-800 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-300'></div>
               <img
-                src="/public/images/al.jpeg"
+                src="/images/al.jpeg"
                 className='h-10 relative z-10 rounded-full object-cover border-2 border-blue-500 ' 
                 alt='AUFT Logo'
               />

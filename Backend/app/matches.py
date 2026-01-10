@@ -3,7 +3,8 @@ import os
 from uuid import UUID
 from fastapi import FastAPI,HTTPException
 from app.db import supabase
-from app.schemas import CreateMatch
+from app.schemas import CreateMatch,UpdateMatch
+
 
 
 async def fetch_matches():
@@ -117,3 +118,47 @@ async def delete_match(id:UUID):
         return response.data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+
+async def update_points(id: UUID, team: UpdateMatch):
+    try:
+        updated = team.dict(exclude_unset=True)
+
+        allowed_fields = {"match_week", "conduction_date", "match_time"}
+
+        filtered = {
+            key: value
+            for key, value in updated.items()
+            if key in allowed_fields
+        }
+
+        if not filtered:
+            raise HTTPException(
+                status_code=400,
+                detail="Only match_week, match_date, and match_time can be updated"
+            )
+
+        # 🔄 Convert date & time to ISO string
+        for key, value in filtered.items():
+            if hasattr(value, "isoformat"):
+                filtered[key] = value.isoformat()
+
+        response = (
+            supabase
+            .table("matches")
+            .update(filtered)
+            .eq("id", str(id))
+            .execute()
+        )
+
+        return {
+            "message": "Match updated successfully",
+            "data": response.data
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+ 
+
