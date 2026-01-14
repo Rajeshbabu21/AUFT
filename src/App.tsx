@@ -21,8 +21,12 @@ import Home from "./pages/Dashboard/Home";
 import LandingPage from "./pages/LandingPage/LandingPage"
 import Stats from "./pages/Stats/Stats"
 import PointTables from "./pages/Tables/PointTables";
-
+import Login from "./admin/Auth/Login.tsx";
 import MatchResults from "./components/MatchResults/MatchResults"
+import AdminLayout from "./admin/AdminLayout.tsx";
+import Dashboard from "./admin/Dashboard.tsx";
+
+
 export default function App() {
   return (
     <>
@@ -68,6 +72,13 @@ export default function App() {
 
           {/* Fallback Route */}
           <Route path='*' element={<NotFound />} />
+
+          {/* admin routes  */}
+           <Route path="/admin/*" element={<AdminLayout />}>
+          <Route index element={<Login />} />
+          <Route path="dashboard" element={<Dashboard />} />
+        </Route>
+          
         </Routes>
       </Router>
     </>
