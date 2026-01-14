@@ -9,6 +9,7 @@ const api = axios.create({
 
 })
 console.log("AXIOS BASE URL:", import.meta.env.VITE_BACKEND_URL);
+// console.log("AXIOS BASE URL:", api.defaults.baseURL);
 
 
 api.interceptors.request.use(config => {
