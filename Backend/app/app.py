@@ -10,7 +10,7 @@ from datetime import timedelta
 from app.images import fetch_images,insert_image,get_image,insert_team
 from uuid import UUID
 from fastapi.middleware.cors import CORSMiddleware
-from app.matches import create_match,update_points
+from app.matches import create_match,update_points,get_home_away_teams
 from app.schemas import CreateMatch
 from app.results import get_all_match_results
 
@@ -149,7 +149,6 @@ def login_admin(form_data:OAuth2PasswordRequestForm = Depends()):
 
 
 
-
 @app.get("/matches")
 # async def get_matches_endpoint(current_user: dict = Depends(get_current_active_user)):
 async def get_matches_endpoint():
@@ -260,3 +259,10 @@ async def get_match_details_endpoint():
     data = await get_all_match_results()
     return data
 
+@app.get("/home-away-teams")
+async def get_home_away_teams_endpoint():
+    """
+    Endpoint to get all home and away teams.
+    """
+    data = await get_home_away_teams()
+    return data

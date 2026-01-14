@@ -59,7 +59,6 @@ const Calendar: React.FC = () => {
       const matchEvents: CalendarEvent[] = matches.map((match: any) => {
         // Try different possible date field names
         const matchDate = match.conduction_date || match.match_date || match.date;
-        console.log("Creating event for match:", match.id, "Date:", matchDate, "Has date:", !!matchDate);
         return {
           id: match.id,
           title: `${match.home_team.team_code} vs ${match.away_team.team_code}`,
@@ -102,7 +101,7 @@ const Calendar: React.FC = () => {
         .filter(e => e.start === clickedDate && e.extendedProps.match)
         .map(e => e.extendedProps.match as Match);
       
-      console.log("Matches on", clickedDate, ":", matchesOnDate.length);
+      // console.log("Matches on", clickedDate, ":", matchesOnDate.length);
       
       // If multiple matches on same date, show all
       if (matchesOnDate.length > 1) {
@@ -190,7 +189,7 @@ const Calendar: React.FC = () => {
                         Week {match.match_week}
                       </p>
                       <p className="text-lg font-bold text-gray-800 dark:text-white">
-                        {match.conduction_date || "TBD"}
+                        {match.conduction_date}
                       </p>
                     </div>
 
@@ -210,7 +209,8 @@ const Calendar: React.FC = () => {
                           </div>
                           <div className="min-w-0">
                             <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">HOME</p>
-                            <h4 className="text-sm font-bold text-gray-900 dark:text-white/90 truncate">
+                            {/* <h4 className="text-sm font-bold text-gray-900 dark:text-white/90"> */}
+                            <h4 className="text-sm font-bold text-gray-900 dark:text-white/90">
                               {match.home_team.team_code}
                             </h4>
                           </div>
@@ -229,7 +229,7 @@ const Calendar: React.FC = () => {
                         <div className="flex items-center justify-end gap-2 transition-transform duration-300 group-hover:-translate-x-1">
                           <div className="text-right min-w-0">
                             <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">AWAY</p>
-                            <h4 className="text-sm font-bold text-gray-900 dark:text-white/90 truncate">
+                            <h4 className="text-sm font-bold text-gray-900 dark:text-white/90">
                               {match.away_team.team_code}
                             </h4>
                           </div>
@@ -277,7 +277,7 @@ const Calendar: React.FC = () => {
                         </div>
                         <div className="min-w-0">
                           <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">HOME</p>
-                          <h4 className="text-lg font-bold text-gray-900 dark:text-white/90 truncate">
+                          <h4 className="text-lg font-bold text-gray-900 dark:text-white/90">
                             {selectedMatch.home_team.team_name}
                           </h4>
                           <p className="text-sm font-bold text-blue-600 dark:text-blue-400">
@@ -300,7 +300,7 @@ const Calendar: React.FC = () => {
                       <div className="flex items-center justify-end gap-3 transition-transform duration-300 group-hover:-translate-x-2">
                         <div className="text-right min-w-0">
                           <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">AWAY</p>
-                          <h4 className="text-lg font-bold text-gray-900 dark:text-white/90 truncate">
+                          <h4 className="text-lg font-bold text-gray-900 dark:text-white/90">
                             {selectedMatch.away_team.team_name}
                           </h4>
                           <p className="text-sm font-bold text-blue-600 dark:text-blue-400">

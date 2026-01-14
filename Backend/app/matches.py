@@ -14,8 +14,8 @@ async def fetch_matches():
     response = (supabase.table("matches").select("""
         id,
         match_week,
-        conduction_date,
         match_time,
+        conduction_date,                                      
         home_team:home_team_id (
             team_name,
             team_code,
@@ -63,7 +63,7 @@ async def create_match(data: CreateMatch):
         supabase.table("matches")
         .insert({
             "match_week": data.match_week,
-            "match_date": str(data.match_date),
+            "conduction_date": str(data.conduction_date),
             "match_time": str(data.match_time),
             "home_team_id": home_team.data["id"],
             "away_team_id": away_team.data["id"]
@@ -79,7 +79,7 @@ async def create_match(data: CreateMatch):
         .select("""
             id,
             match_week,
-            match_date,
+            conduction_date,
             match_time,
             home_team:home_team_id (
                 team_name,
@@ -124,7 +124,7 @@ async def update_points(id: UUID, team: UpdateMatch):
     try:
         updated = team.dict(exclude_unset=True)
 
-        allowed_fields = {"match_week", "conduction_date", "match_time"}
+        allowed_fields = {"match_week", "conduction_date", "match_time", "home_team_name", "away_team_name"}
 
         filtered = {
             key: value
@@ -135,8 +135,31 @@ async def update_points(id: UUID, team: UpdateMatch):
         if not filtered:
             raise HTTPException(
                 status_code=400,
-                detail="Only match_week, match_date, and match_time can be updated"
+                detail="Only match_week, conduction_date, match_time, home_team_name, and away_team_name can be updated"
             )
+
+        # Convert team names to team IDs if provided
+        if "home_team_name" in filtered:
+            home_team = (
+                supabase.table("teams")
+                .select("id")
+                .eq("team_name", filtered["home_team_name"])
+                .single()
+                .execute()
+            )
+            filtered["home_team_id"] = home_team.data["id"]
+            del filtered["home_team_name"]
+
+        if "away_team_name" in filtered:
+            away_team = (
+                supabase.table("teams")
+                .select("id")
+                .eq("team_name", filtered["away_team_name"])
+                .single()
+                .execute()
+            )
+            filtered["away_team_id"] = away_team.data["id"]
+            del filtered["away_team_name"]
 
         # 🔄 Convert date & time to ISO string
         for key, value in filtered.items():
@@ -160,5 +183,21 @@ async def update_points(id: UUID, team: UpdateMatch):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+
+async def get_home_away_teams():
+    """
+    Fetch all teams with their badge images.
+    """
+    response = (supabase.table("teams").select("""
+        id,
+        team_name,
+        team_code,
+        badge_image_id (
+            image_url
+        )
+    """).execute()
+    )
+    return response.data
  
 

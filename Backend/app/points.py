@@ -8,6 +8,7 @@ async def points_table():
     response = (supabase.table("points_table")
                 .select(
             """
+            id,
             position,
             points,
             matches_played,

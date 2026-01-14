@@ -3,6 +3,7 @@ export interface Matches {
   match_week: number;
   match_date: string; // ISO date string
   match_time: string; // "15:30:00"
+  conduction_date: string; // ISO date string
 
   home_team: Team;
   away_team: Team;

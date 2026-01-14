@@ -35,3 +35,6 @@ python -m uv sync
 
 python -m pip uninstall bcrypt -y
 python -m pip install bcrypt==3.2.2
+
+(.venv) PS C:\Users\Asus\Documents\GitHub\AUFT> Set-ExecutionPolicy RemoteSigned -Scope CurrentUser  
+>>

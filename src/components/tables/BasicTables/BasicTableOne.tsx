@@ -90,6 +90,7 @@ export default function BasicTableOne() {
                         alt={order.teams?.team_code || "team"}
                       />
                     </div>
+                      <h6 className="text-white">{order.teams.team_code}</h6>
 
                   </div>
                 </TableCell>
