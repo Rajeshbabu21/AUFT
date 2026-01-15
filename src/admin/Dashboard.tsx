@@ -327,24 +327,7 @@ const Dashboard: React.FC = () => {
             />
           )}
 
-          {activeMenu === '' && (
-            <MatchResults 
-              matchResults={matchResults} 
-              loading={loading}
-              onEdit={(result) => {
-                console.log('Edit result:', result)
-                // TODO: Implement edit functionality
-              }}
-              onDelete={(resultId) => {
-                console.log('Delete result:', resultId)
-                // TODO: Implement delete functionality
-              }}
-              onAdd={() => {
-                console.log('Add new result')
-                // TODO: Implement add functionality
-              }}
-            />
-          )}
+        
         </div>
       </div>
 
