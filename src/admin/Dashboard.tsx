@@ -12,7 +12,7 @@ import UpdateMatchModal from './components/UpdateMatchModal'
 import UpdateTeamModal from './components/UpdateTeamModal'
 import CreateMatchModal from './components/CreateMatchModal'
 import { getPointsTable, updatePointsTable } from '../api/points'
-import { getMatches, updateMatch, deleteMatch, createMatch,  getTeamscode, updateTeam } from '../api/matches'
+import { getMatches, updateMatch, deleteMatch, createMatch, getTeamscode, updateTeam } from '../api/matches'
 import './dashboard.css'
 
 const Dashboard: React.FC = () => {
