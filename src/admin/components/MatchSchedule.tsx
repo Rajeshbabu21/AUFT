@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React  from 'react'
 import { Matches } from '../../@types/Matches'
 
 interface MatchScheduleProps {

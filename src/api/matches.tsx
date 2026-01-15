@@ -1,5 +1,6 @@
 import api from './axios'
 import { Matches } from '../@types/Matches'
+import { Team } from '../@types/Team'
 
 interface CreateMatchData {
   match_week: number
@@ -17,10 +18,9 @@ interface UpdateMatchData {
   away_team_name?: string
 }
 
-interface Team {
-  id: string
-  team_name: string
-  team_code: string
+interface UpdateTeamData {
+  team_code?: string
+  team_name?: string
 }
 
 export const createMatch = async (data: CreateMatchData): Promise<Matches> => {
@@ -41,6 +41,17 @@ export const getMatches = async (): Promise<Matches[]> => {
   } catch (error: any) {
     throw new Error(
       error.response?.data?.detail || 'Failed to fetch matches'
+    )
+  }
+}
+
+export const getTeamscode = async (): Promise<Team[]> => {
+  try {
+    const response = await api.get('/getteams')
+    return response.data
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.detail || 'Failed to fetch teams'
     )
   }
 }
@@ -76,6 +87,20 @@ export const deleteMatch = async (id: string): Promise<void> => {
   } catch (error: any) {
     throw new Error(
       error.response?.data?.detail || 'Failed to delete match'
+    )
+  }
+}
+
+export const updateTeam = async (
+  id: string | number,
+  data: UpdateTeamData
+): Promise<any> => {
+  try {
+    const response = await api.put(`/teams/${id}`, data)
+    return response.data
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.detail || 'Failed to update team'
     )
   }
 }

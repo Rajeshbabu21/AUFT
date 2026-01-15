@@ -1,0 +1,136 @@
+.teams-container {
+  width: 100%;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.teams-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.teams-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.teams-table thead {
+  background-color: #2c3e50;
+  color: white;
+}
+
+.teams-table th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #34495e;
+}
+
+.teams-table tbody tr {
+  border-bottom: 1px solid #ecf0f1;
+  transition: background-color 0.3s ease;
+}
+
+.teams-table tbody tr:hover {
+  background-color: #f0f4f8;
+}
+
+.teams-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.teams-table td {
+  padding: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn-update,
+.btn-delete {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-update {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-update:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
+.btn-update:active {
+  transform: translateY(0);
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+}
+
+.btn-delete:active {
+  transform: translateY(0);
+}
+
+.btn-update:disabled,
+.btn-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .teams-container {
+    padding: 10px;
+  }
+
+  .teams-table th,
+  .teams-table td {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .btn-update,
+  .btn-delete {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .teams-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+}

@@ -2014,20 +2014,51 @@
   border-top: 1px solid #e8e8e8;
 }
 
+.modal-secondary,
+.modal-primary,
 .btn-cancel,
 .btn-save {
   padding: 10px 20px;
   border: none;
   border-radius: 6px;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
+.modal-secondary,
 .btn-cancel {
   background: #f0f0f0;
   color: #333;
+}
+
+.modal-secondary:hover,
+.btn-cancel:hover {
+  background: #e2e2e2;
+}
+
+.modal-primary,
+.btn-save {
+  background: #3498db;
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(52, 152, 219, 0.35);
+}
+
+.modal-primary:hover,
+.btn-save:hover {
+  background: #2d86c4;
+  transform: translateY(-1px);
+}
+
+.modal-primary:disabled,
+.modal-secondary:disabled,
+.btn-save:disabled,
+.btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .btn-cancel:hover:not(:disabled) {

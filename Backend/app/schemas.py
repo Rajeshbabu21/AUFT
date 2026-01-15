@@ -74,3 +74,9 @@ class UpdateMatch(BaseModel):
         away_team_name:Optional[str]=None
         status:Optional[str]=None
 
+class UpdateTeam(BaseModel):
+        team_code:Optional[str]=None
+        team_name: Optional[str] = None
+        logo_url: Optional[str] = None
+        badge_image_id: Optional[UUID] = None
+

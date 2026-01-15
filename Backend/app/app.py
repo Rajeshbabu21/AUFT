@@ -11,8 +11,9 @@ from app.images import fetch_images,insert_image,get_image,insert_team
 from uuid import UUID
 from fastapi.middleware.cors import CORSMiddleware
 from app.matches import create_match,update_points,get_home_away_teams
-from app.schemas import CreateMatch
+from app.schemas import CreateMatch,UpdateTeam
 from app.results import get_all_match_results
+from app.teams import update_team,get_teams
 
 import hashlib
 
@@ -265,4 +266,20 @@ async def get_home_away_teams_endpoint():
     Endpoint to get all home and away teams.
     """
     data = await get_home_away_teams()
+    return data
+
+@app.get("/getteams")
+async def get_teams_endpoint():
+    """
+    Endpoint to fetch all teams.
+    """
+    data = await get_teams()
+    return data
+
+@app.put("/teams/{team_id}")
+async def update_team_endpoint(team_id: str, team: UpdateTeam):
+    """
+    Endpoint to update a team's information.
+    """
+    data = await update_team(team_id, team)
     return data

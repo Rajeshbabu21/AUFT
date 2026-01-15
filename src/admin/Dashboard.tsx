@@ -2,21 +2,18 @@ import React, { useState, useEffect } from 'react'
 import { Matches } from '../@types/Matches'
 import { PointsTableItem } from '../@types/Points'
 import { MatchResponse } from '../@types/Results'
+import { Team } from '../@types/Team'
 import MatchSchedule from './components/MatchSchedule'
 import MatchResults from './components/MatchResults'
 import PointsTableComponent from './components/PointsTable'
+import Teams from './components/Teams'
 import UpdatePointsModal from './components/UpdatePointsModal'
 import UpdateMatchModal from './components/UpdateMatchModal'
+import UpdateTeamModal from './components/UpdateTeamModal'
 import CreateMatchModal from './components/CreateMatchModal'
 import { getPointsTable, updatePointsTable } from '../api/points'
-import { getMatches, updateMatch, deleteMatch, createMatch, getTeams } from '../api/matches'
+import { getMatches, updateMatch, deleteMatch, createMatch,  getTeamscode, updateTeam } from '../api/matches'
 import './dashboard.css'
-
-interface Team {
-  id: string
-  team_name: string
-  team_code: string
-}
 
 const Dashboard: React.FC = () => {
   const [matches, setMatches] = useState<Matches[]>([])
@@ -24,8 +21,9 @@ const Dashboard: React.FC = () => {
   const [matchResults, setMatchResults] = useState<MatchResponse[]>([])
   const [teams, setTeams] = useState<Team[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeMenu, setActiveMenu] = useState<'schedule' | 'points' | 'results'>('schedule')
+  const [activeMenu, setActiveMenu] = useState<'schedule' | 'points' | 'results' | 'teams'>('schedule')
   const [selectedTeam, setSelectedTeam] = useState<PointsTableItem | null>(null)
+  const [selectedTeamEdit, setSelectedTeamEdit] = useState<Team | null>(null)
   const [selectedMatch, setSelectedMatch] = useState<Matches | null>(null)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
 
@@ -40,7 +38,7 @@ const Dashboard: React.FC = () => {
         setMatches(matchesData)
 
         // Fetch teams from backend
-        const teamsData = await getTeams()
+        const teamsData = await getTeamscode()
         console.log('Teams data received:', teamsData)
         setTeams(teamsData)
 
@@ -48,6 +46,8 @@ const Dashboard: React.FC = () => {
         const pointsData = await getPointsTable()
         console.log('Points data received:', pointsData)
         setPointsTable(pointsData)
+
+
 
         // Mock data for match results - replace with backend API call when ready
         const mockResults: MatchResponse[] = [
@@ -206,17 +206,11 @@ const Dashboard: React.FC = () => {
           <div className='navbar-left'>
             <h1 className='navbar-title'>Admin Dashboard</h1>
           </div>
-          <div className='navbar-center'>
-            <div className='nav-search'>
-              <input type='text' placeholder='Search matches...' />
-            </div>
-          </div>
+          
           <div className='navbar-right'>
-            <button className='nav-btn'>Notifications</button>
-            <button className='nav-btn'>Settings</button>
-            <div className='user-profile'>
-              <img src='/images/user/user-default.png' alt='Admin' />
-            </div>
+            {/* <button className='nav-btn'>Notifications</button> */}
+            <button className='nav-btn'>Signed Out</button>
+            
           </div>
         </div>
       </nav>
@@ -248,6 +242,13 @@ const Dashboard: React.FC = () => {
             >
               <span className='menu-icon'>🏆</span>
               <span className='menu-label'>Points Table</span>
+            </button>
+            <button
+              className={`menu-item ${activeMenu === 'teams' ? 'active' : ''}`}
+              onClick={() => setActiveMenu('teams')}
+            >
+              <span className='menu-icon'>🏆</span>
+              <span className='menu-label'>Teams</span>
             </button>
           </nav>
         </aside>
@@ -315,6 +316,35 @@ const Dashboard: React.FC = () => {
               }}
             />
           )}
+
+          {/* Teams View */}
+          {activeMenu === 'teams' && (
+            <Teams
+              teams={teams}
+              onEdit={(team) => {
+                setSelectedTeamEdit(team)
+              }}
+            />
+          )}
+
+          {activeMenu === '' && (
+            <MatchResults 
+              matchResults={matchResults} 
+              loading={loading}
+              onEdit={(result) => {
+                console.log('Edit result:', result)
+                // TODO: Implement edit functionality
+              }}
+              onDelete={(resultId) => {
+                console.log('Delete result:', resultId)
+                // TODO: Implement delete functionality
+              }}
+              onAdd={() => {
+                console.log('Add new result')
+                // TODO: Implement add functionality
+              }}
+            />
+          )}
         </div>
       </div>
 
@@ -330,6 +360,25 @@ const Dashboard: React.FC = () => {
               const pointsData = await getPointsTable()
               setPointsTable(pointsData)
               setSelectedTeam(null)
+            } catch (error: any) {
+              console.error('Error updating team:', error)
+              throw error
+            }
+          }}
+        />
+      )}
+
+      {/* Update Team Modal */}
+      {selectedTeamEdit && (
+        <UpdateTeamModal
+          team={selectedTeamEdit}
+          onClose={() => setSelectedTeamEdit(null)}
+          onSave={async (data) => {
+            try {
+              await updateTeam(selectedTeamEdit.id, data)
+              const refreshed = await getTeamscode()
+              setTeams(refreshed)
+              setSelectedTeamEdit(null)
             } catch (error: any) {
               console.error('Error updating team:', error)
               throw error
