@@ -144,7 +144,7 @@ const LandingPage: React.FC = () => {
 
             {/* Video Card 2 */}
             <div 
-              className='flex-shrink-0 w-full sm:w-90 bg-slate-800 border  border-slate-700  rounded-xl overflow-hidden hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 snap-center'
+              className='flex-shrink-0 w-full sm:w-80 bg-slate-800 border  border-slate-700  rounded-xl overflow-hidden hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 snap-center'
               onMouseEnter={() => setHoveredVideo(0)}
               onMouseLeave={() => setHoveredVideo(null)}
             >
@@ -155,7 +155,7 @@ const LandingPage: React.FC = () => {
                   muted={mutedStates[0]}
                   loop
                   playsInline
-                  onLoadedMetadata={(e) => e.currentTarget.volume = 0.3}
+                  onLoadedMetadata={(e) => e.currentTarget.volume = 0.7}
                   ref={(el) => {
                     if (el) {
                       if (hoveredVideo === 0) {
@@ -199,7 +199,8 @@ const LandingPage: React.FC = () => {
                   muted={mutedStates[1]}
                   loop
                   playsInline
-                  onLoadedMetadata={(e) => e.currentTarget.volume = 0.3}
+                  onLoadedMetadata={(e) => e.currentTarget.volume = 0.7
+                  }
                   ref={(el) => {
                     if (el) {
                       if (hoveredVideo === 1) {
@@ -243,7 +244,7 @@ const LandingPage: React.FC = () => {
                   muted={mutedStates[2]}
                   loop
                   playsInline
-                  onLoadedMetadata={(e) => e.currentTarget.volume = 0.3}
+                  onLoadedMetadata={(e) => e.currentTarget.volume = 0.7}
                   ref={(el) => {
                     if (el) {
                       if (hoveredVideo === 2) {
@@ -288,7 +289,7 @@ const LandingPage: React.FC = () => {
                   muted={mutedStates[3]}
                   loop
                   playsInline
-                  onLoadedMetadata={(e) => e.currentTarget.volume = 0.3}
+                  onLoadedMetadata={(e) => e.currentTarget.volume = 0.7}
                   ref={(el) => {
                     if (el) {
                       if (hoveredVideo === 3) {
