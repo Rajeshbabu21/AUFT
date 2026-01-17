@@ -13,8 +13,8 @@ const Footer = () => {
               Nourishing Young Football Talents
             </p>
             <a href=''>
-              <div className='btn bg-company items-center gap-2 inline-flex border-none rounded-none h-auto py-2 px-14 sm:px-20 w-auto'>
-                <p className='font-black text-xl sm:text-2xl lg:text-4xl text-white p-2'>
+              <div className='btn bg-company items-center gap-2 inline-flex border-none rounded-none h-auto py-2 px-6 sm:px-14 lg:px-20 w-auto'>
+                <p className='font-black text-base sm:text-2xl lg:text-4xl text-white p-1 sm:p-2 whitespace-nowrap'>
                   JOIN THE COMMUNITY
                 </p>
               </div>
@@ -23,7 +23,7 @@ const Footer = () => {
           <div className='flex flex-col sm:py-16 py-8 sm:gap-10 gap-5 text-blue-200'>
             <div className='flex sm:flex-row flex-col sm:gap-0 gap-4 justify-between items-center'>
               <a href='/'>
-                <span className='flex flex-col justify-center font-black text-4xl'>
+                <span className='flex flex-col justify-center font-black text-2xl sm:text-3xl lg:text-4xl'>
                   AUFT
                 </span>
               </a>
@@ -78,14 +78,14 @@ const Footer = () => {
                 </a>
                 
               </div>
-              <div className='flex flex-col items-end sm:gap-2 gap-1'>
+              <div className='flex flex-col items-center sm:items-end sm:gap-2 gap-1'>
                 <a className=' sm:text-base text-sm' href='/terms-of-use.pdf'>
-                  <span className='flex flex-col justify-center font-black text-4xl'>
+                  <span className='flex flex-col justify-center font-black text-2xl sm:text-3xl lg:text-4xl'>
                     Football
                   </span>
                 </a>
                 <a className=' sm:text-base text-sm' href='/privacy-policy.pdf'>
-                  <span className='flex flex-col justify-center font-black text-4xl'>
+                  <span className='flex flex-col justify-center font-black text-2xl sm:text-3xl lg:text-4xl'>
                     is LIFE
                   </span>
                 </a>
