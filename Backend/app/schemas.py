@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import List, Optional
 from datetime import date, time
 import uuid
 from uuid import UUID
@@ -79,4 +79,22 @@ class UpdateTeam(BaseModel):
         team_name: Optional[str] = None
         logo_url: Optional[str] = None
         badge_image_id: Optional[UUID] = None
+
+class Event(BaseModel):
+        team_id:UUID
+        player_name:str
+        event_minute:int
+        is_yellow:int
+        is_red:int
+        
+
+
+class Update_Match_Details(BaseModel):
+        match_id:UUID
+        home_score:int
+        away_score:int
+        events:List[Event]
+
+
+
 

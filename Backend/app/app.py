@@ -11,9 +11,10 @@ from app.images import fetch_images,insert_image,get_image,insert_team
 from uuid import UUID
 from fastapi.middleware.cors import CORSMiddleware
 from app.matches import create_match,update_points,get_home_away_teams
-from app.schemas import CreateMatch,UpdateTeam
+from app.schemas import CreateMatch,UpdateTeam,Update_Match_Details
 from app.results import get_all_match_results
 from app.teams import update_team,get_teams
+from app.details import create_match_detailsep
 
 import hashlib
 
@@ -283,3 +284,9 @@ async def update_team_endpoint(team_id: str, team: UpdateTeam):
     """
     data = await update_team(team_id, team)
     return data
+
+
+
+@app.post("/update_match-details")
+async def create_match_details_endpoint(details: Update_Match_Details):
+    return await create_match_detailsep(details)
