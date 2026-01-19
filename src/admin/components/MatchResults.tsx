@@ -63,7 +63,7 @@ const MatchResults: React.FC<MatchResultsProps> = ({
 
                 return (
                   <tr key={result.match_id} className='result-row'>
-                    <td className='week-cell'>{result.match_week}</td>
+                    <td className='week-cell'>{result.matchweek}</td>
                     <td className='team-cell'>
                       <div className='team-badge-inline'>
                         <img

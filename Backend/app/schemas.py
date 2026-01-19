@@ -84,6 +84,7 @@ class Event(BaseModel):
         team_id:UUID
         player_name:str
         event_minute:int
+        event_type:str  # "goal", "yellow_card", "red_card", etc.
         is_yellow:int
         is_red:int
         

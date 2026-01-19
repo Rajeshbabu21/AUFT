@@ -6,5 +6,5 @@ python-dotenv>=1.2.1
 python-multipart>=0.0.21
 supabase>=2.27.0
 uvicorn[standard]>=0.40.0
-
+python-dotenv>=1.0.1
 

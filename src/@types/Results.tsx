@@ -1,6 +1,6 @@
 export interface MatchResponse {
   match_id: string;
-  match_week: number;
+  matchweek: number;
 
   home_team: {
     name: string;

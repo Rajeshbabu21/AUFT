@@ -149,7 +149,7 @@
 .btn-secondary {
   display: inline-flex;
   align-items: center;
-  padding: 1rem 2.5rem;
+  padding: 1rem 1.5rem;
   background: rgba(191, 219, 254, 0.1);
   color: rgb(191, 219, 254);
   font-weight: 600;

@@ -14,7 +14,7 @@ from app.matches import create_match,update_points,get_home_away_teams
 from app.schemas import CreateMatch,UpdateTeam,Update_Match_Details
 from app.results import get_all_match_results
 from app.teams import update_team,get_teams
-from app.details import create_match_detailsep
+from app.details import create_match_detailsep, get_match_details, delete_match_result
 
 import hashlib
 
@@ -289,4 +289,17 @@ async def update_team_endpoint(team_id: str, team: UpdateTeam):
 
 @app.post("/update_match-details")
 async def create_match_details_endpoint(details: Update_Match_Details):
+    """Create or update match details including scores and events"""
     return await create_match_detailsep(details)
+
+
+@app.get("/match-details/{match_id}")
+async def get_match_details_endpoint(match_id: UUID):
+    """Get match details for a specific match"""
+    return await get_match_details(match_id)
+
+
+@app.delete("/match-details/{match_id}")
+async def delete_match_result_endpoint(match_id: UUID):
+    """Delete match result and all associated events"""
+    return await delete_match_result(match_id)

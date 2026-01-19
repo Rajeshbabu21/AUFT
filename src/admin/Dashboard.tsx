@@ -4,7 +4,7 @@ import { PointsTableItem } from '../@types/Points'
 import { MatchResponse } from '../@types/Results'
 import { Team } from '../@types/Team'
 import MatchSchedule from './components/MatchSchedule'
-import MatchResults from './components/MatchResults'
+import MatchResultsContainer from './components/MatchResultsContainer'
 import PointsTableComponent from './components/PointsTable'
 import Teams from './components/Teams'
 import UpdatePointsModal from './components/UpdatePointsModal'
@@ -13,12 +13,12 @@ import UpdateTeamModal from './components/UpdateTeamModal'
 import CreateMatchModal from './components/CreateMatchModal'
 import { getPointsTable, updatePointsTable } from '../api/points'
 import { getMatches, updateMatch, deleteMatch, createMatch, getTeamscode, updateTeam } from '../api/matches'
+import { getAllMatchResults } from '../api/results'
 import './dashboard.css'
 
 const Dashboard: React.FC = () => {
   const [matches, setMatches] = useState<Matches[]>([])
   const [pointsTable, setPointsTable] = useState<PointsTableItem[]>([])
-  const [matchResults, setMatchResults] = useState<MatchResponse[]>([])
   const [teams, setTeams] = useState<Team[]>([])
   const [loading, setLoading] = useState(true)
   const [activeMenu, setActiveMenu] = useState<'schedule' | 'points' | 'results' | 'teams'>('schedule')
@@ -47,147 +47,7 @@ const Dashboard: React.FC = () => {
         console.log('Points data received:', pointsData)
         setPointsTable(pointsData)
 
-
-
-        // Mock data for match results - replace with backend API call when ready
-        const mockResults: MatchResponse[] = [
-          {
-            match_id: '1',
-            match_week: 1,
-            home_team: {
-              name: 'Team A',
-              image: '/images/country/flag-1.png'
-            },
-            away_team: {
-              name: 'Team B',
-              image: '/images/country/flag-2.png'
-            },
-            score: {
-              home: 2,
-              away: 1
-            },
-            events: [
-              {
-                minute: 15,
-                player: 'Player 1',
-                type: 'goal',
-                team: 'Team A',
-                is_yellow: 0,
-                is_red: 0
-              },
-              {
-                minute: 35,
-                player: 'Player 2',
-                type: 'goal',
-                team: 'Team B',
-                is_yellow: 0,
-                is_red: 0
-              },
-              {
-                minute: 67,
-                player: 'Player 3',
-                type: 'goal',
-                team: 'Team A',
-                is_yellow: 0,
-                is_red: 0
-              },
-              {
-                minute: 45,
-                player: 'Player 4',
-                type: 'yellow',
-                team: 'Team B',
-                is_yellow: 1,
-                is_red: 0
-              }
-            ]
-          },
-          {
-            match_id: '2',
-            match_week: 1,
-            home_team: {
-              name: 'Team C',
-              image: '/images/country/flag-3.png'
-            },
-            away_team: {
-              name: 'Team D',
-              image: '/images/country/flag-4.png'
-            },
-            score: {
-              home: 1,
-              away: 1
-            },
-            events: [
-              {
-                minute: 22,
-                player: 'Player 5',
-                type: 'goal',
-                team: 'Team C',
-                is_yellow: 0,
-                is_red: 0
-              },
-              {
-                minute: 58,
-                player: 'Player 6',
-                type: 'goal',
-                team: 'Team D',
-                is_yellow: 0,
-                is_red: 0
-              }
-            ]
-          },
-          {
-            match_id: '3',
-            match_week: 2,
-            home_team: {
-              name: 'Team E',
-              image: '/images/country/flag-5.png'
-            },
-            away_team: {
-              name: 'Team F',
-              image: '/images/country/flag-6.png'
-            },
-            score: {
-              home: 3,
-              away: 0
-            },
-            events: [
-              {
-                minute: 10,
-                player: 'Player 7',
-                type: 'goal',
-                team: 'Team E',
-                is_yellow: 0,
-                is_red: 0
-              },
-              {
-                minute: 32,
-                player: 'Player 8',
-                type: 'goal',
-                team: 'Team E',
-                is_yellow: 0,
-                is_red: 0
-              },
-              {
-                minute: 78,
-                player: 'Player 9',
-                type: 'goal',
-                team: 'Team E',
-                is_yellow: 0,
-                is_red: 0
-              },
-              {
-                minute: 55,
-                player: 'Player 10',
-                type: 'red',
-                team: 'Team F',
-                is_yellow: 0,
-                is_red: 1
-              }
-            ]
-          }
-        ]
-
-        setMatchResults(mockResults)
+        // Match results are now fetched in MatchResultsContainer
       } catch (error) {
         console.error('Error loading data:', error)
       } finally {
@@ -299,22 +159,7 @@ const Dashboard: React.FC = () => {
 
           {/* Match Results View */}
           {activeMenu === 'results' && (
-            <MatchResults 
-              matchResults={matchResults} 
-              loading={loading}
-              onEdit={(result) => {
-                console.log('Edit result:', result)
-                // TODO: Implement edit functionality
-              }}
-              onDelete={(resultId) => {
-                console.log('Delete result:', resultId)
-                // TODO: Implement delete functionality
-              }}
-              onAdd={() => {
-                console.log('Add new result')
-                // TODO: Implement add functionality
-              }}
-            />
+            <MatchResultsContainer />
           )}
 
           {/* Teams View */}

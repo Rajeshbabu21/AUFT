@@ -38,6 +38,18 @@ export default function BasicTableOne() {
     </div>
   );
 
+  if (!points || points.length === 0) return (
+    <div className="flex items-center justify-center p-12">
+      <div className="text-center">
+        <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">No Points Table Available</h3>
+        <p className="text-gray-500 dark:text-gray-400">The points table is currently empty. Check back later.</p>
+      </div>
+    </div>
+  );
+
   return (
     <div className='overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]'>
       <div className='max-w-full overflow-x-auto'>
