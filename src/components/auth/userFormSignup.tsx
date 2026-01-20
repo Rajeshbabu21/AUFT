@@ -27,7 +27,7 @@ const useFormSignup = () => {
 
   const [errors, setErrors] = useState<Errors>({})
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value: inputValue } = e.target
     setValue((prevValue) => ({
       ...prevValue,
