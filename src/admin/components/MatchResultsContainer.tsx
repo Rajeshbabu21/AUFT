@@ -9,7 +9,7 @@ const MatchResultsContainer: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   // const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  // const [selectedResult, setSelectedResult] = useState<MatchResponse | null>(null)
+  const [selectedResult, setSelectedResult] = useState<MatchResponse | null>(null)
 
   useEffect(() => {
     fetchMatchResults()
