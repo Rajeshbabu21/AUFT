@@ -8,6 +8,8 @@ const MatchResultsContainer: React.FC = () => {
   const [matchResults, setMatchResults] = useState<MatchResponse[]>([])
   const [loading, setLoading] = useState(false)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [selectedResult, setSelectedResult] = useState<MatchResponse | null>(null)
 
   useEffect(() => {
     fetchMatchResults()
@@ -31,8 +33,8 @@ const MatchResultsContainer: React.FC = () => {
   }
 
   const handleEdit = (result: MatchResponse) => {
-    // TODO: Implement edit functionality
-    console.log('Edit result:', result)
+    setSelectedResult(result)
+    setIsEditModalOpen(true)
   }
 
   const handleDelete = async (matchId: string) => {
@@ -66,7 +68,15 @@ const MatchResultsContainer: React.FC = () => {
         onSuccess={handleSuccess}
       />
 
-      {/* Edit modal would be similar - you can reuse CreateMatchResultModal with edit mode */}
+      <CreateMatchResultModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false)
+          setSelectedResult(null)
+        }}
+        onSuccess={handleSuccess}
+        editingData={selectedResult}
+      />
     </>
   )
 }

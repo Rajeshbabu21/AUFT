@@ -1,11 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import {
   createMatchResult,
-  createGoalEvent,
-  createRedCardEvent,
-  createYellowCardEvent,
   Event,
 } from '../../api/results'
+import { MatchResponse } from '../../@types/Results'
 import axios from '../../api/axios'
 import '../matchResultModal.css'
 
@@ -32,12 +30,14 @@ interface Props {
   isOpen: boolean
   onClose: () => void
   onSuccess: () => void
+  editingData?: MatchResponse | null
 }
 
 const CreateMatchResultModal: React.FC<Props> = ({
   isOpen,
   onClose,
   onSuccess,
+  editingData,
 }) => {
   const [matches, setMatches] = useState<Match[]>([])
   const [teams, setTeams] = useState<Team[]>([])
@@ -53,25 +53,49 @@ const CreateMatchResultModal: React.FC<Props> = ({
     useState<'goal' | 'yellow_card' | 'red_card'>('goal')
   const [homeEventPlayer, setHomeEventPlayer] = useState('')
   const [homeEventMinute, setHomeEventMinute] = useState(0)
+  const [homeEventIsYellow, setHomeEventIsYellow] = useState(0)
+  const [homeEventIsRed, setHomeEventIsRed] = useState(0)
 
   // Away event form
   const [awayEventType, setAwayEventType] =
     useState<'goal' | 'yellow_card' | 'red_card'>('goal')
   const [awayEventPlayer, setAwayEventPlayer] = useState('')
   const [awayEventMinute, setAwayEventMinute] = useState(0)
+  const [awayEventIsYellow, setAwayEventIsYellow] = useState(0)
+  const [awayEventIsRed, setAwayEventIsRed] = useState(0)
 
-  // Team card totals
-  const [homeYellowCount, setHomeYellowCount] = useState(0)
-  const [homeRedCount, setHomeRedCount] = useState(0)
-  const [awayYellowCount, setAwayYellowCount] = useState(0)
-  const [awayRedCount, setAwayRedCount] = useState(0)
+  // Team card totals - REMOVED as UI elements were deleted
+  // const [homeYellowCount, setHomeYellowCount] = useState(0)
+  // const [homeRedCount, setHomeRedCount] = useState(0)
+  // const [awayYellowCount, setAwayYellowCount] = useState(0)
+  // const [awayRedCount, setAwayRedCount] = useState(0)
 
   useEffect(() => {
     if (isOpen) {
       axios.get('/matches').then((res) => setMatches(res.data))
-      axios.get('/home-away-teams').then((res) => setTeams(res.data))
+      axios.get('/home-away-teams').then((res) => {
+        setTeams(res.data)
+        // Pre-populate form if editing
+        if (editingData) {
+          setSelectedMatchId(editingData.match_id)
+          setHomeScore(editingData.score.home)
+          setAwayScore(editingData.score.away)
+          const mappedEvents = editingData.events.map((e) => {
+            const team = res.data.find((t: Team) => t.team_name === e.team)
+            return {
+              team_id: team?.id || '',
+              player_name: e.player,
+              event_minute: e.minute,
+              event_type: e.type as 'goal' | 'yellow_card' | 'red_card',
+              is_yellow: e.is_yellow,
+              is_red: e.is_red,
+            }
+          })
+          setEvents(mappedEvents)
+        }
+      })
     }
-  }, [isOpen])
+  }, [isOpen, editingData])
 
   const selectedMatch = useMemo(
     () => matches.find((m) => m.id === selectedMatchId),
@@ -97,31 +121,39 @@ const CreateMatchResultModal: React.FC<Props> = ({
   const addHomeEvent = () => {
     if (!homeEventPlayer || !homeTeamId) return
 
-    const event =
-      homeEventType === 'goal'
-        ? createGoalEvent(homeTeamId, homeEventPlayer, homeEventMinute)
-        : homeEventType === 'yellow_card'
-          ? createYellowCardEvent(homeTeamId, homeEventPlayer, homeEventMinute)
-          : createRedCardEvent(homeTeamId, homeEventPlayer, homeEventMinute)
+    const event: Event = {
+      team_id: homeTeamId,
+      player_name: homeEventPlayer,
+      event_minute: homeEventMinute,
+      event_type: homeEventType,
+      is_yellow: homeEventIsYellow,
+      is_red: homeEventIsRed,
+    }
 
     setEvents((prev) => [...prev, event])
     setHomeEventPlayer('')
     setHomeEventMinute(0)
+    setHomeEventIsYellow(0)
+    setHomeEventIsRed(0)
   }
 
   const addAwayEvent = () => {
     if (!awayEventPlayer || !awayTeamId) return
 
-    const event =
-      awayEventType === 'goal'
-        ? createGoalEvent(awayTeamId, awayEventPlayer, awayEventMinute)
-        : awayEventType === 'yellow_card'
-          ? createYellowCardEvent(awayTeamId, awayEventPlayer, awayEventMinute)
-          : createRedCardEvent(awayTeamId, awayEventPlayer, awayEventMinute)
+    const event: Event = {
+      team_id: awayTeamId,
+      player_name: awayEventPlayer,
+      event_minute: awayEventMinute,
+      event_type: awayEventType,
+      is_yellow: awayEventIsYellow,
+      is_red: awayEventIsRed,
+    }
 
     setEvents((prev) => [...prev, event])
     setAwayEventPlayer('')
     setAwayEventMinute(0)
+    setAwayEventIsYellow(0)
+    setAwayEventIsRed(0)
   }
 
   const removeEvent = (index: number) => {
@@ -136,13 +168,13 @@ const CreateMatchResultModal: React.FC<Props> = ({
     setHomeEventPlayer('')
     setHomeEventMinute(0)
     setHomeEventType('goal')
+    setHomeEventIsYellow(0)
+    setHomeEventIsRed(0)
     setAwayEventPlayer('')
     setAwayEventMinute(0)
     setAwayEventType('goal')
-    setHomeYellowCount(0)
-    setHomeRedCount(0)
-    setAwayYellowCount(0)
-    setAwayRedCount(0)
+    setAwayEventIsYellow(0)
+    setAwayEventIsRed(0)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -151,16 +183,11 @@ const CreateMatchResultModal: React.FC<Props> = ({
 
     setLoading(true)
     try {
-      // Only send real player events (no empty card events)
       await createMatchResult({
         match_id: selectedMatchId,
         home_score: homeScore,
         away_score: awayScore,
-        events: events, // Only real player-based events
-        home_yellow_cards: homeYellowCount,
-        home_red_cards: homeRedCount,
-        away_yellow_cards: awayYellowCount,
-        away_red_cards: awayRedCount,
+        events: events,
       })
 
       alert('Match result created successfully!')
@@ -268,40 +295,32 @@ const CreateMatchResultModal: React.FC<Props> = ({
                           />
                         </div>
                       </div>
-                      
-                    <div className='card-counts'>
-                      <h5>Team Cards (Total)</h5>
-                      <p className='card-counts-note'>
-                        💡 Enter total card counts. These are added automatically on submit (not shown in events list below).
-                      </p>
-                      <div className='card-inputs'>
+                      <div className='form-row'>
                         <div className='form-group'>
-                          <label>🟨 Yellow Cards</label>
+                          <label>Is Yellow (0-8)</label>
                           <input
                             type='number'
                             min='0'
-                            value={homeYellowCount}
-                            onChange={(e) => setHomeYellowCount(+e.target.value)}
-                            placeholder='0'
+                            max='8'
+                            value={homeEventIsYellow}
+                            onChange={(e) => setHomeEventIsYellow(+e.target.value)}
                           />
                         </div>
                         <div className='form-group'>
-                          <label>🟥 Red Cards</label>
+                          <label>Is Red (0-8)</label>
                           <input
                             type='number'
                             min='0'
-                            value={homeRedCount}
-                            onChange={(e) => setHomeRedCount(+e.target.value)}
-                            placeholder='0'
+                            max='8'
+                            value={homeEventIsRed}
+                            onChange={(e) => setHomeEventIsRed(+e.target.value)}
                           />
                         </div>
                       </div>
-                    </div>
                       <button type='button' className='btn-secondary' onClick={addHomeEvent}>
                         + Add {selectedMatch.home_team.team_name} Event
                       </button>
                     </div>
-
                   </div>
 
                   <div className='team-events-container away-team'>
@@ -340,40 +359,32 @@ const CreateMatchResultModal: React.FC<Props> = ({
                           />
                         </div>
                       </div>
-                      <div className='card-counts'>
-                      <h5>Team Cards (Total)</h5>
-                      <p className='card-counts-note'>
-                        💡 Enter total card counts. These are added automatically on submit (not shown in events list below).
-                      </p>
-                      <div className='card-inputs'>
+                      <div className='form-row'>
                         <div className='form-group'>
-                          <label>🟨 Yellow Cards</label>
+                          <label>Is Yellow (0-8)</label>
                           <input
                             type='number'
                             min='0'
-                            value={awayYellowCount}
-                            onChange={(e) => setAwayYellowCount(+e.target.value)}
-                            placeholder='0'
+                            max='8'
+                            value={awayEventIsYellow}
+                            onChange={(e) => setAwayEventIsYellow(+e.target.value)}
                           />
                         </div>
                         <div className='form-group'>
-                          <label>🟥 Red Cards</label>
+                          <label>Is Red (0-8)</label>
                           <input
                             type='number'
                             min='0'
-                            value={awayRedCount}
-                            onChange={(e) => setAwayRedCount(+e.target.value)}
-                            placeholder='0'
+                            max='8'
+                            value={awayEventIsRed}
+                            onChange={(e) => setAwayEventIsRed(+e.target.value)}
                           />
                         </div>
                       </div>
-                    </div>
                       <button type='button' className='btn-secondary' onClick={addAwayEvent}>
                         + Add {selectedMatch.away_team.team_name} Event
                       </button>
                     </div>
-
-                    
                   </div>
 
                   {events.length > 0 && (
