@@ -7,6 +7,9 @@ type FormValues = {
   email: string
   password: string
   team: string;
+  position:string;
+  owner?: boolean;
+  icon?: boolean;
 }
 
 type Errors = Partial<FormValues>
@@ -17,6 +20,9 @@ const useFormSignup = () => {
     email: '',
     password: '',
     team: '',
+    position: '',
+    owner: false,
+    icon: false,
   })
 
   const [errors, setErrors] = useState<Errors>({})

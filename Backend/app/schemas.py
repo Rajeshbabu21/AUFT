@@ -19,6 +19,9 @@ class Users(BaseModel):
         email:str
         password:str
         team:str
+        position:str
+        owner:bool = False
+        icon:bool = False
         is_active:Optional[bool]=True
 
 class Token(BaseModel):
