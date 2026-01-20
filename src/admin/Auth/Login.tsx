@@ -34,8 +34,8 @@ export default function SignInForm() {
 
     console.log("Signin successful:", data)
 
-    localStorage.setItem("access_token", data.access_token)
-    localStorage.setItem("token_type", data.token_type)
+    localStorage.setItem("admin_access_token", data.access_token)
+    localStorage.setItem("admin_token_type", data.token_type)
 
     navigate("/admin/dashboard")
   } catch (error: any) {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Matches } from '../@types/Matches'
 import { PointsTableItem } from '../@types/Points'
 // import { MatchResponse } from '../@types/Results'
@@ -17,6 +18,7 @@ import { getMatches, updateMatch, deleteMatch, createMatch, getTeamscode, update
 import './dashboard.css'
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate()
   const [matches, setMatches] = useState<Matches[]>([])
   const [pointsTable, setPointsTable] = useState<PointsTableItem[]>([])
   const [teams, setTeams] = useState<Team[]>([])
@@ -26,6 +28,14 @@ const Dashboard: React.FC = () => {
   const [selectedTeamEdit, setSelectedTeamEdit] = useState<Team | null>(null)
   const [selectedMatch, setSelectedMatch] = useState<Matches | null>(null)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+
+  const handleLogout = () => {
+    if (window.confirm('Are you sure you want to logout?')) {
+      localStorage.removeItem('admin_access_token')
+      localStorage.removeItem('admin_token_type')
+      navigate('/admin')
+    }
+  }
 
   // Fetch data
   useEffect(() => {
@@ -69,7 +79,7 @@ const Dashboard: React.FC = () => {
           
           <div className='navbar-right'>
             {/* <button className='nav-btn'>Notifications</button> */}
-            <button className='nav-btn'>Signed Out</button>
+            <button className='nav-btn' onClick={handleLogout}>Logout</button>
             
           </div>
         </div>
