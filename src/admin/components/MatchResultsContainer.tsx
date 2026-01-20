@@ -8,8 +8,6 @@ const MatchResultsContainer: React.FC = () => {
   const [matchResults, setMatchResults] = useState<MatchResponse[]>([])
   const [loading, setLoading] = useState(false)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
-  // const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [selectedResult, setSelectedResult] = useState<MatchResponse | null>(null)
 
   useEffect(() => {
     fetchMatchResults()
@@ -33,8 +31,8 @@ const MatchResultsContainer: React.FC = () => {
   }
 
   const handleEdit = (result: MatchResponse) => {
-    setSelectedResult(result)
-    setIsEditModalOpen(true)
+    // TODO: Implement edit functionality
+    console.log('Edit result:', result)
   }
 
   const handleDelete = async (matchId: string) => {
