@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import api from '../../api/axios'
 import { MatchResponse } from '../../@types/Results'
+import PageBreadcrumb from '../common/PageBreadCrumb'
+
 
 const MatchResults: React.FC = () => {
   const [matches, setMatches] = useState<MatchResponse[]>([])
@@ -46,6 +48,7 @@ const MatchResults: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6 p-2 sm:p-4">
+      <PageBreadcrumb pageTitle="Match Results" />
       {matches.map(match => {
         const homeEvents = match.events.filter(
           e => e.team === match.home_team.name
@@ -75,6 +78,7 @@ const MatchResults: React.FC = () => {
         )
 
         return (
+          
           <div
             key={match.match_id}
             className="rounded-xl overflow-hidden border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] shadow-lg"

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import api from "../../api/axios";
 import { PlayersTableItem } from "../../@types/Players";
+import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+
 import {
   Table,
   TableBody,
@@ -99,6 +101,7 @@ const Stats: React.FC = () => {
 
   return (
     <div className="p-2 sm:p-4 lg:p-6">
+      <PageBreadcrumb pageTitle="Player Stats" />
       {/* Tabs - Responsive */}
       <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
         {teams.map((t) => (

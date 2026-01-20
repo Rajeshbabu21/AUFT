@@ -7,6 +7,7 @@ import { EventInput, EventClickArg } from "@fullcalendar/core";
 import { Modal } from "../components/ui/modal";
 import { useModal } from "../hooks/useModal";
 import PageMeta from "../components/common/PageMeta";
+import PageBreadcrumb from "../components/common/PageBreadCrumb";
 import "./calendar.css";
 import api from "../api/axios";
 
@@ -125,6 +126,7 @@ const Calendar: React.FC = () => {
         title="AUFT"
         description="A-Ligue Football Tournament Management System"
       />
+      <PageBreadcrumb pageTitle="Calendar" />
       <div className="rounded-2xl border  border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
         {loading ? (
           <div className="flex items-center justify-center p-12">
