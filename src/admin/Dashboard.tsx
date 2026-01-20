@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Matches } from '../@types/Matches'
 import { PointsTableItem } from '../@types/Points'
-import { MatchResponse } from '../@types/Results'
+// import { MatchResponse } from '../@types/Results'
 import { Team } from '../@types/Team'
 import MatchSchedule from './components/MatchSchedule'
 import MatchResultsContainer from './components/MatchResultsContainer'
@@ -13,7 +13,7 @@ import UpdateTeamModal from './components/UpdateTeamModal'
 import CreateMatchModal from './components/CreateMatchModal'
 import { getPointsTable, updatePointsTable } from '../api/points'
 import { getMatches, updateMatch, deleteMatch, createMatch, getTeamscode, updateTeam } from '../api/matches'
-import { getAllMatchResults } from '../api/results'
+// import { getAllMatchResults } from '../api/results'
 import './dashboard.css'
 
 const Dashboard: React.FC = () => {
