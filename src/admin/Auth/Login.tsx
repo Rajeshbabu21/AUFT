@@ -32,7 +32,7 @@ export default function SignInForm() {
     const res = await AdminsigninUser(payload)
     const data = res.data
 
-    console.log("Signin successful:", data)
+    // console.log("Signin successful:", data)
 
     localStorage.setItem("admin_access_token", data.access_token)
     localStorage.setItem("admin_token_type", data.token_type)

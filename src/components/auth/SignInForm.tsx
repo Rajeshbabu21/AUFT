@@ -33,7 +33,7 @@ export default function SignInForm() {
     const res = await signinUser(payload)
     const data = res.data
 
-    console.log("Signin successful:", data)
+    // console.log("Signin successful:", data)
 
     localStorage.setItem("access_token", data.access_token)
     localStorage.setItem("token_type", data.token_type)

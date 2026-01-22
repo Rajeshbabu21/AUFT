@@ -150,6 +150,9 @@
   display: inline-flex;
   align-items: center;
   padding: 1rem 1.5rem;
+  width: auto;
+  min-width: 160px;
+  max-width: 140px;
   background: rgba(191, 219, 254, 0.1);
   color: rgb(191, 219, 254);
   font-weight: 600;
@@ -407,7 +410,8 @@
 
   .btn-primary,
   .btn-secondary {
-    width: 100%;
+    width: auto;
+    min-width: 180px;
     justify-content: center;
   }
 

@@ -10,6 +10,7 @@ type FormValues = {
   position:string;
   owner?: boolean;
   icon?: boolean;
+  is_alumni?: boolean;
 }
 
 type Errors = Partial<FormValues>
@@ -23,6 +24,7 @@ const useFormSignup = () => {
     position: '',
     owner: false,
     icon: false,
+    is_alumni: false,
   })
 
   const [errors, setErrors] = useState<Errors>({})
@@ -55,6 +57,7 @@ const useFormSignup = () => {
 
   return {
     value,
+    setValue,
     handleChange,
     handleSubmit,
     errors,

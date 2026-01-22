@@ -19,12 +19,12 @@ export default function BasicTableOne() {
     api
       .get<PointsTableItem[]>("/points-table")
       .then((res) => {
-        console.log("Points table data:", res.data);
+        // console.log("Points table data:", res.data);
         setPoints(res.data);
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching points table data:", err);
+        // console.error("Error fetching points table data:", err);
         setLoading(false);
       });
   }, []);

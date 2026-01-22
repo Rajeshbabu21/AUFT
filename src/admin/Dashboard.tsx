@@ -44,22 +44,22 @@ const Dashboard: React.FC = () => {
       try {
         // Fetch matches from backend
         const matchesData = await getMatches()
-        console.log('Matches data received:', matchesData)
+        // console.log('Matches data received:', matchesData)
         setMatches(matchesData)
 
         // Fetch teams from backend
         const teamsData = await getTeamscode()
-        console.log('Teams data received:', teamsData)
+        // console.log('Teams data received:', teamsData)
         setTeams(teamsData)
 
         // Fetch points table from backend
         const pointsData = await getPointsTable()
-        console.log('Points data received:', pointsData)
+        // console.log('Points data received:', pointsData)
         setPointsTable(pointsData)
 
         // Match results are now fetched in MatchResultsContainer
       } catch (error) {
-        console.error('Error loading data:', error)
+        // console.error('Error loading data:', error)
       } finally {
         setLoading(false)
       }
@@ -142,7 +142,7 @@ const Dashboard: React.FC = () => {
                     setMatches(updatedMatches)
                   }
                 } catch (error: any) {
-                  console.error('Error deleting match:', error)
+                  // console.error('Error deleting match:', error)
                   alert(error.message || 'Failed to delete match')
                 }
               }}
@@ -161,7 +161,7 @@ const Dashboard: React.FC = () => {
                 setSelectedTeam(item)
               }}
               onAdd={() => {
-                console.log('Add new team')
+                // console.log('Add new team')
                 // TODO: Implement add functionality
               }}
             />
@@ -199,7 +199,7 @@ const Dashboard: React.FC = () => {
               setPointsTable(pointsData)
               setSelectedTeam(null)
             } catch (error: any) {
-              console.error('Error updating team:', error)
+              // console.error('Error updating team:', error)
               throw error
             }
           }}
@@ -218,7 +218,7 @@ const Dashboard: React.FC = () => {
               setTeams(refreshed)
               setSelectedTeamEdit(null)
             } catch (error: any) {
-              console.error('Error updating team:', error)
+              // console.error('Error updating team:', error)
               throw error
             }
           }}
@@ -243,7 +243,7 @@ const Dashboard: React.FC = () => {
               setMatches(updatedMatches)
               setSelectedMatch(null)
             } catch (error: any) {
-              console.error('Error updating match:', error)
+              // console.error('Error updating match:', error)
               throw error
             }
           }}
@@ -261,7 +261,9 @@ const Dashboard: React.FC = () => {
             setMatches([...matches, newMatch])
             setIsCreateModalOpen(false)
           } catch (error: any) {
-            console.error('Error creating match:', error)
+            // AXIOS BASE.error('Error creating match:', error)
+
+
             throw error
           }
         }}

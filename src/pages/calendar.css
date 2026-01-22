@@ -107,6 +107,17 @@
   font-weight: 600;
 }
 
+/* Force-remove FullCalendar default today highlight box */
+.fc-daygrid-day.fc-day-today,
+.fc-daygrid-day.fc-day-today .fc-daygrid-day-frame {
+  background-color: #0f172a !important;
+  box-shadow: none !important;
+}
+
+.fc-daygrid-day.fc-day-today {
+  --fc-today-bg-color: #0f172a;
+}
+
 /* Event Styling */
 /* Event Container within Cells */
 .fc-daygrid-day-events {

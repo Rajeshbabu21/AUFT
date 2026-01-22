@@ -15,13 +15,14 @@ const Stats: React.FC = () => {
   const [points, setPoints] = useState<PlayersTableItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  // Use team names exactly as stored in the database so /players/{team} matches
   const teams = [
-    { name: "NetBusters", slug: "netbusters" },
-    { name: "Jugling Giants", slug: "jugling-giants" },
-    { name: "Soccer Hooligans", slug: "soccer-hooligans" },
-    { name: "Mit", slug: "mit" },
-    { name: "Faking Phantoms", slug: "faking-phantoms" },
-    { name: "Drbling Demons", slug: "drbling-demons" },
+    { name: "Netbusters", slug: "Netbusters" },
+    { name: "Jugling Giants", slug: "Jugling Giants" },
+    { name: "Soccer Hooligans", slug: "Soccer Hooligans" },
+    { name: "Tackling Titans", slug: "Tackling Titans" },
+    { name: "Faking Phantoms", slug: "Faking Phantoms" },
+    { name: "Dribling Demons", slug: "Dribling Demons" },
   ];
 
   const [activeTeam, setActiveTeam] = useState<string>(teams[0].slug);

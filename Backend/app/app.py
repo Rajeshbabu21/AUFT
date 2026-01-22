@@ -11,10 +11,10 @@ from app.images import fetch_images,insert_image,get_image,insert_team
 from uuid import UUID
 from fastapi.middleware.cors import CORSMiddleware
 from app.matches import create_match,update_points,get_home_away_teams
-from app.schemas import CreateMatch,UpdateTeam,Update_Match_Details
+from app.schemas import CreateMatch,UpdateTeam,Update_Match_Details,Player,RegisterRequest
 from app.results import get_all_match_results
 from app.teams import update_team,get_teams
-from app.details import create_match_detailsep, get_match_details, delete_match_result
+from app.details import create_match_detailsep, get_match_details, delete_match_result,playersget
 
 import hashlib
 
@@ -41,21 +41,107 @@ app.add_middleware(
 async def ping():
     return {"ping": "pong!"}
 
+@app.get("/temname")
+async def get_team_name():
+    response = supabase.table("teams").select("team_name").execute()
+
+    return response.data
+
 @app.post("/register_users")
-def create_user(users:Users):
+# def create_user(users:Users):
+#     try:
+#         users.password = get_password_hash(users.password)
+#         data = users.dict()
+#         response = supabase.table("users").insert(data).execute()
+#         if not response.data:
+#             raise HTTPException(status_code=400, detail="User not created")
+#         return {
+#             "message": "User created successfully",
+#             "data": response.data
+#         }
+#     except Exception as e:
+#         raise HTTPException(status_code=400, detail=str(e))
+
+
+def create_user(payload: RegisterRequest):
     try:
-        users.password = get_password_hash(users.password)
-        data = users.dict()
-        response = supabase.table("users").insert(data).execute()
-        if not response.data:
-            raise HTTPException(status_code=400, detail="User not created")
-        return {
-            "message": "User created successfully",
-            "data": response.data
+        print(f"Received payload: {payload}")
+        print(f"User data: name={payload.user.name}, email={payload.user.email}, team={payload.user.team}")
+        print(f"Player data: player_name={payload.player.player_name}, position={payload.player.position}")
+        
+        hashed_password = get_password_hash(payload.user.password)
+        user_data = {
+            "name": payload.user.name,
+            "email": payload.user.email,
+            "password": hashed_password,
+            "team": payload.user.team,
+            "owner": payload.user.owner,
+            "position": payload.user.position,
+            "icon": payload.user.icon,
+            "is_alumni":payload.user.is_alumni,
+            "is_active": payload.user.is_active
         }
+        print(f"Inserting user: {user_data}")
+        user_response = supabase.table("users").insert(user_data).execute()
+        print(f"User response: {user_response.data}")
+
+        if not user_response.data:
+            raise HTTPException(status_code=400, detail="User not created")
+        user_id = user_response.data[0]["id"]
+
+        # Resolve team_id if not provided
+        team_id = payload.player.team_id
+        if not team_id:
+            try:
+                print(f"Looking up team with: {payload.user.team}")
+                # First, get all teams to see what we have
+                all_teams = supabase.table("teams").select("id, team_code, team_name").execute()
+                print(f"All teams in database: {all_teams.data}")
+                
+                # Find team by matching team_code (case-insensitive) or team_name (case-insensitive)
+                if all_teams.data:
+                    for team in all_teams.data:
+                        if (team.get('team_code', '').upper() == payload.user.team.upper() or 
+                            team.get('team_name', '').upper() == payload.user.team.upper()):
+                            team_id = team['id']
+                            print(f"Found team_id: {team_id} for team: {team.get('team_name')}")
+                            break
+                
+                if not team_id:
+                    print(f"No team found for: {payload.user.team}")
+            except Exception as e:
+                print(f"Error resolving team: {e}")
+                import traceback
+                traceback.print_exc()
+                team_id = None
+
+        player_data = {
+            "player_name": payload.player.player_name,
+            "position": payload.player.position,
+            "team_id": str(team_id) if team_id else None,
+        }
+
+        print(f"Inserting player: {player_data}")
+        player_response = supabase.table("players").insert(player_data).execute()
+        print(f"Player response: {player_response.data}")
+
+        if not player_response.data:
+            raise HTTPException(status_code=400, detail="Player creation failed")
+
+        return {
+            "message": "User & Player registered successfully",
+            "user": user_response.data[0],
+            "player": player_response.data[0],
+        }
+    except HTTPException:
+        raise
     except Exception as e:
+        print(f"Exception in create_user: {type(e).__name__}: {e}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=400, detail=str(e))
     
+
 @app.post("/user_login")
 def login_users(form_data: OAuth2PasswordRequestForm = Depends()):
     try:
@@ -303,3 +389,7 @@ async def get_match_details_endpoint(match_id: UUID):
 async def delete_match_result_endpoint(match_id: UUID):
     """Delete match result and all associated events"""
     return await delete_match_result(match_id)
+
+@app.get("/players/{team_name}")
+async def get_players_endpoint(team_name: str):
+    return await playersget(team_name)

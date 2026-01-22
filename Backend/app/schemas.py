@@ -22,7 +22,19 @@ class Users(BaseModel):
         position:str
         owner:bool = False
         icon:bool = False
+        is_alumni: bool = False
         is_active:Optional[bool]=True
+
+class Player(BaseModel):
+        id: Optional[UUID] = None
+        player_name:str
+        team_id: Optional[UUID] = None
+        position:str
+
+class RegisterRequest(BaseModel):
+    user: Users
+    player: Player
+
 
 class Token(BaseModel):
         access_token: str
@@ -98,6 +110,8 @@ class Update_Match_Details(BaseModel):
         home_score:int
         away_score:int
         events:List[Event]
+
+
 
 
 

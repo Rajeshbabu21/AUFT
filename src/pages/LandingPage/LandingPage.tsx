@@ -87,7 +87,11 @@ const LandingPage: React.FC = () => {
             )}
             <a href='#features' className='btn-secondary'>
               Learn More
+              <svg className='ml-2 w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M13 7l5 5m0 0l-5 5m5-5H6' />
+                </svg>
             </a>
+           
           </div>
         </div>
       </div>
@@ -139,7 +143,11 @@ const LandingPage: React.FC = () => {
               </span>
           </h2>
           
-          <div className='flex flex-col sm:flex-row gap-4 justify-center p-6 rounded-xl w-full overflow-x-auto snap-x snap-mandatory' ref={carouselRef} style={{scrollBehavior: 'smooth'}}>
+          <div
+            className='flex flex-row flex-nowrap gap-4 justify-start sm:justify-center p-6 rounded-xl w-full overflow-x-auto snap-x snap-mandatory'
+            ref={carouselRef}
+            style={{ scrollBehavior: 'smooth' }}
+          >
 
 
             {/* Video Card 2 */}

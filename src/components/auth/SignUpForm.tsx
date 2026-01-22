@@ -5,14 +5,24 @@ import Label from '../form/Label'
 import Input from '../form/input/InputField'
 import './auth.css'
 import useFormSignup from './userFormSignup'
-import { signupUser } from '../../api/auth'
+import { signupUser, signinUser } from '../../api/auth'
+import type { AuthSignin } from '../../@types/Auth'
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const { value, handleChange, handleSubmit, errors } = useFormSignup()
+  const { value, setValue, handleChange, handleSubmit, errors } = useFormSignup()
+
+  const handleRoleSelect = (role: 'owner' | 'icon' | 'is_alumni' | 'none') => {
+    setValue((prev) => ({
+      ...prev,
+      owner: role === 'owner',
+      icon: role === 'icon',
+      is_alumni: role === 'is_alumni',
+    }))
+  }
 
   // Team mapping for slug conversion
   const teamMap: Record<string, string> = {
@@ -30,22 +40,44 @@ export default function SignUpForm() {
       try {
         setLoading(true)
         const payload = {
-          name: value.name,
-          email: value.email,
-          password: value.password,
-          team: value.team ? teamMap[value.team as keyof typeof teamMap] || value.team : '',
-          position: value.position || '',
-          owner: value.owner || false,
-          icon: value.icon || false,
+          user: {
+            name: value.name,
+            email: value.email,
+            password: value.password,
+            team: value.team ? teamMap[value.team as keyof typeof teamMap] || value.team : '',
+            position: value.position || '',
+            owner: value.owner || false,
+            icon: value.icon || false,
+            is_alumni: value.is_alumni || false,
+            is_active: true,
+          },
+          player: {
+            player_name: value.name,
+            position: value.position || '',
+            team_id: null,
+          },
         }
 
+        console.log('Sending signup payload:', JSON.stringify(payload, null, 2))
         const res = await signupUser(payload)
         console.log('Signup successful:', res.data)
 
-        // Redirect to login page after signup
-        navigate('/signin')
-      } catch (error) {
+        // Auto-login after signup to update navbar/auth state
+        const loginPayload: AuthSignin = { email: value.email, password: value.password }
+        const loginRes = await signinUser(loginPayload)
+        const { access_token, token_type } = loginRes.data
+        localStorage.setItem('access_token', access_token)
+        localStorage.setItem('token_type', token_type)
+
+        // Redirect to landing page after signup
+        navigate('/')
+      } catch (error: any) {
         console.error('Signup failed:', error)
+        if (error.response?.data) {
+          console.error('Backend error detail:', JSON.stringify(error.response.data, null, 2))
+        }
+      } finally {
+        setLoading(false)
       }
     })
   }
@@ -122,53 +154,41 @@ export default function SignUpForm() {
                     </select>
                   </div>
                 </div>
-                <div className='grid grid-cols-1 gap-5 sm:grid-cols-2'>
-                  <div className='flex items-center'>
+                {/* <span className='text-red-500 mb-1 text-xs mt-0'> *please select one </span> */}
+                <div className='grid grid-cols-1 gap-3 sm:grid-cols-3'>
+                  <label className='flex items-center gap-2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-brand-500 transition'>
                     <input
-                      type='checkbox'
-                      id='owner'
-                      name='owner'
-                      checked={value.owner || false}
-                      onChange={(e) => handleChange({ target: { name: 'owner', value: e.target.checked } } as any)}
-                      className='w-4 h-4 border-2 border-gray-300 rounded cursor-pointer appearance-none bg-white dark:bg-gray-800 dark:border-gray-600 focus:ring-2 focus:ring-brand-500 checked:bg-brand-500 checked:border-brand-500'
-                      style={
-                        value.owner
-                          ? {
-                              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3E%3Cpath d='M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z'/%3E%3C/svg%3E")`,
-                              backgroundPosition: 'center',
-                              backgroundRepeat: 'no-repeat',
-                              backgroundSize: '16px',
-                            }
-                          : {}
-                      }
+                      type='radio'
+                      name='role_flag'
+                      value='owner'
+                      checked={value.owner === true}
+                      onChange={() => handleRoleSelect('owner')}
+                      className='w-4 h-4 text-brand-500 focus:ring-brand-500'
                     />
-                    <Label htmlFor='owner' className='ml-2 cursor-pointer'>
-                      Owner
-                    </Label>
-                  </div>
-                  <div className='flex items-center'>
+                    <span className='text-sm text-gray-800 dark:text-gray-200'>Owner</span>
+                  </label>
+                  <label className='flex items-center gap-2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-brand-500 transition'>
                     <input
-                      type='checkbox'
-                      id='icon'
-                      name='icon'
-                      checked={value.icon || false}
-                      onChange={(e) => handleChange({ target: { name: 'icon', value: e.target.checked } } as any)}
-                      className='w-4 h-4 border-2 border-gray-300 rounded cursor-pointer appearance-none bg-white dark:bg-gray-800 dark:border-gray-600 focus:ring-2 focus:ring-brand-500 checked:bg-brand-500 checked:border-brand-500'
-                      style={
-                        value.icon
-                          ? {
-                              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3E%3Cpath d='M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z'/%3E%3C/svg%3E")`,
-                              backgroundPosition: 'center',
-                              backgroundRepeat: 'no-repeat',
-                              backgroundSize: '16px',
-                            }
-                          : {}
-                      }
+                      type='radio'
+                      name='role_flag'
+                      value='icon'
+                      checked={value.icon === true}
+                      onChange={() => handleRoleSelect('icon')}
+                      className='w-4 h-4 text-brand-500 focus:ring-brand-500'
                     />
-                    <Label htmlFor='icon' className='ml-2 cursor-pointer'>
-                      Icon
-                    </Label>
-                  </div>
+                    <span className='text-sm text-gray-800 dark:text-gray-200'>Icon</span>
+                  </label>
+                  <label className='flex items-center gap-2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-brand-500 transition'>
+                    <input
+                      type='radio'
+                      name='role_flag'
+                      value='is_alumni'
+                      checked={value.is_alumni === true}
+                      onChange={() => handleRoleSelect('is_alumni')}
+                      className='w-4 h-4 text-brand-500 focus:ring-brand-500'
+                    />
+                    <span className='text-sm text-gray-800 dark:text-gray-200'>Alumni</span>
+                  </label>
                 </div>
                 <div>
                   <Label>

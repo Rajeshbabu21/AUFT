@@ -119,3 +119,22 @@ async def delete_match_result(match_id: UUID):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error deleting match result: {str(e)}")
     
+
+async def playersget(team_name: str):
+    try:
+        response = (
+            supabase
+            .table("players")
+            .select("player_name, teams(team_name)")
+            .eq("teams.team_name", team_name)
+            .execute()
+        )
+
+        return response.data
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error fetching players: {str(e)}"
+        )
+    
