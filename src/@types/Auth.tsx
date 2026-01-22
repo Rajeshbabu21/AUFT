@@ -5,6 +5,25 @@ export interface Auth {
     team:string;
 }
 
+export interface SignupPayload {
+    user: {
+        name: string;
+        email: string;
+        password: string;
+        team: string;
+        position: string;
+        owner: boolean;
+        icon: boolean;
+        is_alumni: boolean;
+        is_active: boolean;
+    };
+    player: {
+        player_name: string;
+        position: string;
+        team_id: null;
+    };
+}
+
 export interface AdminAuth {
     name: string;
     email: string;

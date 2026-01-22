@@ -23,8 +23,8 @@ export default function BasicTableOne() {
         setPoints(res.data);
         setLoading(false);
       })
-      .catch((err) => {
-        // console.error("Error fetching points table data:", err);
+      .catch(() => {
+        // console.error("Error fetching points table data:");
         setLoading(false);
       });
   }, []);

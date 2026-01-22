@@ -6,7 +6,7 @@ import Input from '../form/input/InputField'
 import './auth.css'
 import useFormSignup from './userFormSignup'
 import { signupUser, signinUser } from '../../api/auth'
-import type { AuthSignin } from '../../@types/Auth'
+import type { AuthSignin, SignupPayload } from '../../@types/Auth'
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false)
@@ -39,7 +39,7 @@ export default function SignUpForm() {
     handleSubmit(e, async () => {
       try {
         setLoading(true)
-        const payload = {
+        const payload: SignupPayload = {
           user: {
             name: value.name,
             email: value.email,
