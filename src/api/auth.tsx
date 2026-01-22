@@ -1,8 +1,8 @@
 import api from "./axios";
-import { Auth,AuthResponse } from "../@types/Auth";
+import { Auth, AuthResponse, SignupPayload } from "../@types/Auth";
 import { AuthSignin } from "../@types/Auth";
 
-export const signupUser = (data: Auth) => {
+export const signupUser = (data: SignupPayload) => {
   return api.post<AuthResponse>("/register_users", data);
 };
 
