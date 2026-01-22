@@ -1,5 +1,5 @@
 import api from "./axios";
-import { Auth, AuthResponse, SignupPayload } from "../@types/Auth";
+import {  AuthResponse, SignupPayload } from "../@types/Auth";
 import { AuthSignin } from "../@types/Auth";
 
 export const signupUser = (data: SignupPayload) => {
