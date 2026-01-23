@@ -48,6 +48,12 @@ const CreateMatchResultModal: React.FC<Props> = ({
   const [events, setEvents] = useState<Event[]>([])
   const [loading, setLoading] = useState(false)
 
+  // Players state
+  const [homePlayers, setHomePlayers] = useState<Array<{ player_name: string }>>([])
+  const [awayPlayers, setAwayPlayers] = useState<Array<{ player_name: string }>>([])
+  const [loadingHomePlayers, setLoadingHomePlayers] = useState(false)
+  const [loadingAwayPlayers, setLoadingAwayPlayers] = useState(false)
+
   // Home event form
   const [homeEventType, setHomeEventType] =
     useState<'goal' | 'yellow_card' | 'red_card'>('goal')
@@ -117,6 +123,57 @@ const CreateMatchResultModal: React.FC<Props> = ({
       )?.id || '',
     [teams, selectedMatch]
   )
+
+  // Fetch players when teams are selected
+  useEffect(() => {
+    const fetchHomePlayers = async () => {
+      if (!selectedMatch?.home_team.team_name) {
+        setHomePlayers([])
+        return
+      }
+      
+      console.log('[DEBUG] Fetching home team players for:', selectedMatch.home_team.team_name)
+      setLoadingHomePlayers(true)
+      try {
+        const response = await axios.get(`/players/${selectedMatch.home_team.team_name}`)
+        console.log('[DEBUG] Home players response:', response.data)
+        setHomePlayers(response.data || [])
+      } catch (error: any) {
+        console.error('[ERROR] Error fetching home team players:', error)
+        console.error('[ERROR] Error response:', error.response?.data)
+        setHomePlayers([])
+      } finally {
+        setLoadingHomePlayers(false)
+      }
+    }
+
+    fetchHomePlayers()
+  }, [selectedMatch?.home_team.team_name])
+
+  useEffect(() => {
+    const fetchAwayPlayers = async () => {
+      if (!selectedMatch?.away_team.team_name) {
+        setAwayPlayers([])
+        return
+      }
+      
+      console.log('[DEBUG] Fetching away team players for:', selectedMatch.away_team.team_name)
+      setLoadingAwayPlayers(true)
+      try {
+        const response = await axios.get(`/players/${selectedMatch.away_team.team_name}`)
+        console.log('[DEBUG] Away players response:', response.data)
+        setAwayPlayers(response.data || [])
+      } catch (error: any) {
+        console.error('[ERROR] Error fetching away team players:', error)
+        console.error('[ERROR] Error response:', error.response?.data)
+        setAwayPlayers([])
+      } finally {
+        setLoadingAwayPlayers(false)
+      }
+    }
+
+    fetchAwayPlayers()
+  }, [selectedMatch?.away_team.team_name])
 
   const addHomeEvent = () => {
     if (!homeEventPlayer || !homeTeamId) return
@@ -277,12 +334,30 @@ const CreateMatchResultModal: React.FC<Props> = ({
                         </div>
                         <div className='form-group'>
                           <label>Player Name</label>
-                          <input
-                            type='text'
-                            value={homeEventPlayer}
-                            onChange={(e) => setHomeEventPlayer(e.target.value)}
-                            placeholder='Player name'
-                          />
+                          {loadingHomePlayers ? (
+                            <select disabled>
+                              <option>Loading players...</option>
+                            </select>
+                          ) : homePlayers.length > 0 ? (
+                            <select
+                              value={homeEventPlayer}
+                              onChange={(e) => setHomeEventPlayer(e.target.value)}
+                            >
+                              <option value=''>-- Select Player --</option>
+                              {homePlayers.map((player, idx) => (
+                                <option key={idx} value={player.player_name}>
+                                  {player.player_name}
+                                </option>
+                              ))}
+                            </select>
+                          ) : (
+                            <input
+                              type='text'
+                              value={homeEventPlayer}
+                              onChange={(e) => setHomeEventPlayer(e.target.value)}
+                              placeholder='No players found - type manually'
+                            />
+                          )}
                         </div>
                         <div className='form-group'>
                           <label>Minute</label>
@@ -341,12 +416,30 @@ const CreateMatchResultModal: React.FC<Props> = ({
                         </div>
                         <div className='form-group'>
                           <label>Player Name</label>
-                          <input
-                            type='text'
-                            value={awayEventPlayer}
-                            onChange={(e) => setAwayEventPlayer(e.target.value)}
-                            placeholder='Player name'
-                          />
+                          {loadingAwayPlayers ? (
+                            <select disabled>
+                              <option>Loading players...</option>
+                            </select>
+                          ) : awayPlayers.length > 0 ? (
+                            <select
+                              value={awayEventPlayer}
+                              onChange={(e) => setAwayEventPlayer(e.target.value)}
+                            >
+                              <option value=''>-- Select Player --</option>
+                              {awayPlayers.map((player, idx) => (
+                                <option key={idx} value={player.player_name}>
+                                  {player.player_name}
+                                </option>
+                              ))}
+                            </select>
+                          ) : (
+                            <input
+                              type='text'
+                              value={awayEventPlayer}
+                              onChange={(e) => setAwayEventPlayer(e.target.value)}
+                              placeholder='No players found - type manually'
+                            />
+                          )}
                         </div>
                         <div className='form-group'>
                           <label>Minute</label>

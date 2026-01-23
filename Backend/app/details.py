@@ -121,18 +121,49 @@ async def delete_match_result(match_id: UUID):
     
 
 async def playersget(team_name: str):
+    """
+    Get all players for a specific team by team name.
+    Returns a list of players with their details.
+    """
     try:
+        print(f"[DEBUG] Fetching players for team: {team_name}")
+        
+        # First, get the team_id for the given team_name
+        team_response = (
+            supabase
+            .table("teams")
+            .select("id, team_name")
+            .eq("team_name", team_name)
+            .execute()
+        )
+        
+        print(f"[DEBUG] Team response: {team_response.data}")
+        
+        if not team_response.data or len(team_response.data) == 0:
+            print(f"[ERROR] Team '{team_name}' not found in database")
+            raise HTTPException(status_code=404, detail=f"Team '{team_name}' not found")
+        
+        team_id = team_response.data[0]["id"]
+        print(f"[DEBUG] Found team_id: {team_id}")
+        
+        # Now get players for that team_id
         response = (
             supabase
             .table("players")
-            .select("player_name, teams(team_name)")
-            .eq("teams.team_name", team_name)
+            .select("id, player_name, position, team_id")
+            .eq("team_id", team_id)
             .execute()
         )
+        
+        print(f"[DEBUG] Players response: {response.data}")
+        print(f"[DEBUG] Found {len(response.data)} players")
 
         return response.data
 
+    except HTTPException:
+        raise
     except Exception as e:
+        print(f"[ERROR] Exception in playersget: {str(e)}")
         raise HTTPException(
             status_code=500,
             detail=f"Error fetching players: {str(e)}"

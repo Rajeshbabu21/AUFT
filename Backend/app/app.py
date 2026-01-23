@@ -329,13 +329,21 @@ async def create_team(team:TeamCreate):
 
 
 
-@app.get("/players/{team}")
-async def get_players_as_per_team(team:str):
+@app.get("/users-as-players/{team}")
+async def get_users_as_players_by_team(team:str):
     """
-    Endpoint to get all players as per team.
+    Endpoint to get all users who are players for a specific team.
     """
     data = await users_as_player(team)
     return data
+
+
+@app.get("/players/{team_name}")
+async def get_players_endpoint(team_name: str):
+    """
+    Endpoint to get all players from the players table for a specific team.
+    """
+    return await playersget(team_name)
 
 
 @app.get("/match-details")
@@ -389,7 +397,3 @@ async def get_match_details_endpoint(match_id: UUID):
 async def delete_match_result_endpoint(match_id: UUID):
     """Delete match result and all associated events"""
     return await delete_match_result(match_id)
-
-@app.get("/players/{team_name}")
-async def get_players_endpoint(team_name: str):
-    return await playersget(team_name)
