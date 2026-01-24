@@ -15,7 +15,8 @@ const Stats: React.FC = () => {
   const [points, setPoints] = useState<PlayersTableItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Use team names exactly as stored in the database so /players/{team} matches
+  // Use team names exactly as stored in the databas
+  // ers/{team} matches
   const teams = [
     { name: "Netbusters", slug: "Netbusters" },
     { name: "Jugling Giants", slug: "Jugling Giants" },
@@ -28,13 +29,13 @@ const Stats: React.FC = () => {
   const [activeTeam, setActiveTeam] = useState<string>(teams[0].slug);
 
   // Convert slug -> Title Case (fallback)
-  const formatLabel = (s: string) =>
+  const formatLabel = (s: string | undefined) =>
     s
-      .replace(/[-_]+/g, " ")
+      ?.replace(/[-_]+/g, " ")
       .split(" ")
       .filter(Boolean)
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-      .join(" ");
+      .join(" ") || "";
 
   // slug -> display name map
   const teamMap = teams.reduce<Record<string, string>>((acc, t) => {
@@ -48,6 +49,7 @@ const Stats: React.FC = () => {
     api
       .get<PlayersTableItem[]>(`/players/${activeTeam}`)
       .then((res) => {
+        // console.log('Players API response:', res.data);
         setPoints(res.data || []);
         setLoading(false);
       })
@@ -157,23 +159,23 @@ const Stats: React.FC = () => {
                         {(p as any).avatar ? (
                           <img
                             src={(p as any).avatar}
-                            alt={p.name}
+                            alt={p.player_name || ''}
                             className="w-full h-full object-cover"
                           />
                         ) : (
                           <span className="font-bold text-xs sm:text-sm text-gray-700">
-                            {p.name
-                              .split(" ")
+                            {p.player_name
+                              ?.split(" ")
                               .map((n) => n[0])
                               .slice(0, 2)
-                              .join("")}
+                              .join("") || "?"}
                           </span>
                         )}
                       </div>
 
                       <div className="min-w-0">
                         <div className="font-medium dark:text-white/90 text-sm sm:text-base truncate">
-                          {p.name}
+                          {p.player_name || 'Unknown Player'}
                         </div>
 
                         {(p as any).owner && (
@@ -189,7 +191,7 @@ const Stats: React.FC = () => {
                   {/* Team Name */}
                   <TableCell className="px-3 py-3 sm:px-4 sm:py-3 text-gray-500 text-start text-xs sm:text-sm dark:text-gray-400">
                     <span className="block sm:inline">
-                      {teamMap[p.team] ?? formatLabel(p.team)}
+                      {teamMap[activeTeam] ?? formatLabel(activeTeam)}
                     </span>
                   </TableCell>
 

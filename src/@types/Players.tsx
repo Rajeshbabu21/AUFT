@@ -1,8 +1,6 @@
 export interface PlayersTableItem {
-  id: number;
-  name: string;
-  team: string;
+  id: string;
+  player_name: string;
+  team_id: string;
   position: string;
-  
-
 }

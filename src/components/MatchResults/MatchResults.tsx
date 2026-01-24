@@ -7,6 +7,7 @@ import PageBreadcrumb from '../common/PageBreadCrumb'
 const MatchResults: React.FC = () => {
   const [matches, setMatches] = useState<MatchResponse[]>([])
   const [loading, setLoading] = useState(true)
+  const [activeWeek, setActiveWeek] = useState(1)
 
   useEffect(() => {
     api
@@ -20,6 +21,9 @@ const MatchResults: React.FC = () => {
         setLoading(false)
       })
   }, [])
+
+  // Filter matches by active week
+  const filteredMatches = matches.filter(match => match.matchweek === activeWeek)
 
   if (loading)
     return (
@@ -49,7 +53,25 @@ const MatchResults: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6 p-2 sm:p-4">
       <PageBreadcrumb pageTitle="Match Results" />
-      {matches.map(match => {
+      
+      {/* Week Tabs */}
+      <div className="flex overflow-x-auto scrollbar-hide gap-2 mb-4 sm:mb-6 pb-2">
+        {Array.from({ length: 10 }, (_, i) => i + 1).map((week) => (
+          <button
+            key={week}
+            onClick={() => setActiveWeek(week)}
+            className={`flex-shrink-0 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full font-semibold transition-colors text-xs sm:text-sm ${
+              activeWeek === week
+                ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg"
+                : "bg-transparent border border-gray-600 text-gray-200 hover:bg-gray-800"
+            }`}
+          >
+            Week {week}
+          </button>
+        ))}
+      </div>
+
+      {filteredMatches.map(match => {
         const homeEvents = match.events.filter(
           e => e.team === match.home_team.name
         )
