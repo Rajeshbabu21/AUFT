@@ -108,6 +108,36 @@ const Footer = () => {
                 </a>
               </div>
             </div>
+            {/* Sponsors Section */}
+            <div className='border-t border-slate-700 pt-8 mt-8'>
+              <h3 className='text-center  text-lg sm:text-xl font-semibold mb-6 text-white'>
+                Our Partners
+              </h3>
+              <div className='flex flex-wrap justify-center items-center gap-8 sm:gap-12'>
+                {/* OZ Design Partner */}
+                <a href='https://www.behance.net/syedshafiq' target='_blank' rel='noopener noreferrer' className='flex flex-col items-center gap-2 group cursor-pointer'>
+                  <img src='/images/oz.png' alt='OZ Design' className='w-16 h-16 sm:w-24 sm:h-24 object-contain hover:scale-110 transition-transform duration-300' />
+                  <p className='text-sm sm:text-base font-medium'>Design & Pixels</p>
+                </a>
+
+                {/* Additional Partner Slot 1 */}
+                <a href='https://www.instagram.com/pixelsceg?igsh=amczbW15N3ZjZjB0' target='_blank' rel='noopener noreferrer' className='flex flex-col items-center gap-2 group cursor-pointer'>
+                  <img src='/images/pixel.png' alt='Partner 1' className='w-16 h-16 sm:w-24 sm:h-24 object-contain hover:scale-110 transition-transform duration-300' />
+                  <p className='text-sm sm:text-base font-medium'>Media</p>
+                </a>
+
+                {/* Additional Partner Slot 2 */}
+                
+
+                {/* Additional Partner Slot 3 */}
+                <a href='https://provet.in/' target='_blank' rel='noopener noreferrer' className='flex flex-col items-center gap-2 group cursor-pointer'>
+                  <img src='/images/povet.png' alt='Partner 3' className='w-16 h-16 sm:w-24 sm:h-24 object-contain hover:scale-110 transition-transform duration-300' />
+                  <p className='text-sm sm:text-base font-medium'>Medical</p>
+                </a>
+              </div>
+            </div>
+            <h1 className='text-center text-lg sm:text-xl font-semibold text-blue-200 mt-3'>Thanks to our alumni for supporting</h1>
+
             <div className='flex justify-center text-center sm:text-base text-xs'>
               © 2025 Anna University Football Team . All rights reserved.
             </div>

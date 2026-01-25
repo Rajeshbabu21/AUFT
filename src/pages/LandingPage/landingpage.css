@@ -163,6 +163,14 @@
   backdrop-filter: blur(10px);
 }
 
+@media (max-width: 640px) {
+  .btn-secondary {
+    padding: 1rem 2.5rem;
+    font-weight: 700;
+    max-width: none;
+  }
+}
+
 .btn-secondary:hover {
   background: rgb(191, 219, 254);
   color: #0f172a;
