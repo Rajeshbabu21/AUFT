@@ -133,7 +133,7 @@ export default function BasicTableOne() {
 
                 <TableCell className='px-4 py-3 text-start'>
                   <Badge size='sm'>
-                    {order.qualified ? "Qualified" : "Not Qualified"}
+                    {order.qualified ? "Q" : "NQ"}
                   </Badge>
                 </TableCell>
               </TableRow>
