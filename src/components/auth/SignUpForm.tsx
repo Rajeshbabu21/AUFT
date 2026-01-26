@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {  EyeCloseIcon, EyeIcon } from '../../icons'
 import Label from '../form/Label'
@@ -7,13 +7,29 @@ import './auth.css'
 import useFormSignup from './userFormSignup'
 import { signupUser, signinUser } from '../../api/auth'
 import type { AuthSignin, SignupPayload } from '../../@types/Auth'
+import { getTeamscode } from '../../api/matches'
+import type { Team } from '../../@types/Team'
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [teams, setTeams] = useState<Team[]>([])
   const navigate = useNavigate()
 
   const { value, setValue, handleChange, handleSubmit, errors } = useFormSignup()
+
+  // Fetch teams on component mount
+  useEffect(() => {
+    const fetchTeams = async () => {
+      try {
+        const teamsData = await getTeamscode()
+        setTeams(teamsData)
+      } catch (error) {
+        console.error('Failed to fetch teams:', error)
+      }
+    }
+    fetchTeams()
+  }, [])
 
   const handleRoleSelect = (role: 'owner' | 'icon' | 'is_alumni' | 'none') => {
     setValue((prev) => ({
@@ -26,19 +42,33 @@ export default function SignUpForm() {
 
   // Team mapping for slug conversion
   const teamMap: Record<string, string> = {
-    'NetBusters': 'netbusters',
-    'Jugling Giants': 'jugling-giants',
+    'Netbusters': 'netbusters',
+    'Juggling Giants': 'juggling-giants',
     'Soccer Hooligans': 'soccer-hooligans',
-    'Mit': 'mit',
+    'Tackling Titans': 'tackling-titans',
     'Faking Phantoms': 'faking-phantoms',
-    'Drbling Demons': 'drbling-demons',
+    'Dribbling Demons': 'dribbling-demons',
   }
 
   // Handle form submission
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     handleSubmit(e, async () => {
+      // Validate password length before submission
+      if (value.password.length < 6) {
+        alert('Password must be at least 6 characters long!')
+        return
+      }
+
       try {
         setLoading(true)
+        
+        // Find the selected team's ID
+        const selectedTeam = teams.find(
+          (team) => team.team_name === value.team || 
+                    teamMap[value.team as keyof typeof teamMap] === team.team_code
+        )
+        const teamId = selectedTeam ? selectedTeam.id : null
+
         const payload: SignupPayload = {
           user: {
             name: value.name,
@@ -54,13 +84,16 @@ export default function SignUpForm() {
           player: {
             player_name: value.name,
             position: value.position || '',
-            team_id: null,
+            team_id: teamId,
           },
         }
 
         console.log('Sending signup payload:', JSON.stringify(payload, null, 2))
         const res = await signupUser(payload)
         console.log('Signup successful:', res.data)
+
+        // Show success message
+        alert('Signup successful! Logging you in...')
 
         // Auto-login after signup to update navbar/auth state
         const loginPayload: AuthSignin = { email: value.email, password: value.password }
@@ -73,8 +106,21 @@ export default function SignUpForm() {
         navigate('/')
       } catch (error: any) {
         console.error('Signup failed:', error)
-        if (error.response?.data) {
+        
+        // Check if user already exists
+        if (error.response?.status === 400 || error.response?.status === 409) {
+          const errorMessage = error.response?.data?.detail || error.response?.data?.message
+          if (errorMessage && (errorMessage.includes('already') || errorMessage.includes('exists'))) {
+            alert('This email is already registered! Please sign in instead.')
+          } else {
+            alert(errorMessage || 'Signup failed. Please check your information.')
+          }
+        } else if (error.response?.data) {
+          const errorDetail = error.response.data.detail || error.response.data.message || 'Signup failed'
+          alert(errorDetail)
           console.error('Backend error detail:', JSON.stringify(error.response.data, null, 2))
+        } else {
+          alert('Signup failed. Please try again.')
         }
       } finally {
         setLoading(false)
@@ -125,12 +171,12 @@ export default function SignUpForm() {
                       className='w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400'
                     >
                       <option value=''>Select your team</option>
-                      <option value='NetBusters'>NetBusters</option>
-                      <option value='Jugling Giants'>Jugling Giants</option>
+                      <option value='Netbusters'>Netbusters</option>
+                      <option value='Juggling Giants'>Juggling Giants</option>
                       <option value='Soccer Hooligans'>Soccer Hooligans</option>
-                      <option value='Mit'>Mit</option>
+                      <option value='Tackling Titans'>Tackling Titans</option>
                       <option value='Faking Phantoms'>Faking Phantoms</option>
-                      <option value='Drbling Demons'>Drbling Demons</option>
+                      <option value='Dribbling Demons'>Dribbling Demons</option>
                     </select>
                   </div>
                   <div className='sm:col-span-1'>

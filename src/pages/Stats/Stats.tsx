@@ -19,11 +19,11 @@ const Stats: React.FC = () => {
   // ers/{team} matches
   const teams = [
     { name: "Netbusters", slug: "Netbusters" },
-    { name: "Jugling Giants", slug: "Jugling Giants" },
+    { name: "Jugling Giants", slug: "Juggling Giants" },
     { name: "Soccer Hooligans", slug: "Soccer Hooligans" },
     { name: "Tackling Titans", slug: "Tackling Titans" },
     { name: "Faking Phantoms", slug: "Faking Phantoms" },
-    { name: "Dribling Demons", slug: "Dribling Demons" },
+    { name: "Dribling Demons", slug: "Dribbling Demons" },
   ];
 
   const [activeTeam, setActiveTeam] = useState<string>(teams[0].slug);
