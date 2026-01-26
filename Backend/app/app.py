@@ -397,3 +397,13 @@ async def get_match_details_endpoint(match_id: UUID):
 async def delete_match_result_endpoint(match_id: UUID):
     """Delete match result and all associated events"""
     return await delete_match_result(match_id)
+
+
+@app.get("/debug/users")
+async def debug_users():
+    """Debug endpoint to see all users with their team and flags"""
+    try:
+        response = supabase.table("users").select("name, email, team, owner, icon, is_alumni, position").execute()
+        return {"users": response.data, "count": len(response.data)}
+    except Exception as e:
+        return {"error": str(e)}

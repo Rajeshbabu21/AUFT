@@ -49,7 +49,19 @@ const Stats: React.FC = () => {
     api
       .get<PlayersTableItem[]>(`/players/${activeTeam}`)
       .then((res) => {
-        // console.log('Players API response:', res.data);
+        console.log('Players API response for team:', activeTeam);
+        console.log('Full response:', JSON.stringify(res.data, null, 2));
+        
+        // Log each player's flags
+        res.data?.forEach((player, index) => {
+          console.log(`Player ${index + 1}:`, {
+            name: player.player_name,
+            owner: (player as any).owner,
+            icon: (player as any).icon,
+            is_alumni: (player as any).is_alumni
+          });
+        });
+        
         setPoints(res.data || []);
         setLoading(false);
       })
@@ -178,11 +190,14 @@ const Stats: React.FC = () => {
                           {p.player_name || 'Unknown Player'}
                         </div>
 
-                        {(p as any).owner && (
-                          <div className="text-xs text-red-500">Owner</div>
+                        {p.owner && (
+                          <div className="text-xs text-red-500 font-semibold">Owner</div>
                         )}
-                        {(p as any).icon && (
-                          <div className="text-xs text-indigo-400">Icon</div>
+                        {p.icon && (
+                          <div className="text-xs text-indigo-400 font-semibold">Icon</div>
+                        )}
+                        {p.is_alumni && (
+                          <div className="text-xs text-green-500 font-semibold">Alumni</div>
                         )}
                       </div>
                     </div>

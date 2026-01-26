@@ -123,16 +123,16 @@ async def delete_match_result(match_id: UUID):
 async def playersget(team_name: str):
     """
     Get all players for a specific team by team name.
-    Returns a list of players with their details.
+    Returns a list of players with their details including owner, icon, and is_alumni flags.
     """
     try:
         print(f"[DEBUG] Fetching players for team: {team_name}")
         
-        # First, get the team_id for the given team_name
+        # First, get the team_id and team_code for the given team_name
         team_response = (
             supabase
             .table("teams")
-            .select("id, team_name")
+            .select("id, team_name, team_code")
             .eq("team_name", team_name)
             .execute()
         )
@@ -144,10 +144,11 @@ async def playersget(team_name: str):
             raise HTTPException(status_code=404, detail=f"Team '{team_name}' not found")
         
         team_id = team_response.data[0]["id"]
-        print(f"[DEBUG] Found team_id: {team_id}")
+        team_code = team_response.data[0]["team_code"]
+        print(f"[DEBUG] Found team_id: {team_id}, team_code: {team_code}")
         
-        # Now get players for that team_id
-        response = (
+        # Get players from players table
+        players_response = (
             supabase
             .table("players")
             .select("id, player_name, position, team_id")
@@ -155,10 +156,81 @@ async def playersget(team_name: str):
             .execute()
         )
         
-        print(f"[DEBUG] Players response: {response.data}")
-        print(f"[DEBUG] Found {len(response.data)} players")
-
-        return response.data
+        print(f"[DEBUG] Players response: {players_response.data}")
+        
+        # Get users data with owner, icon, is_alumni flags
+        # Try to match by team slug variations (including old typos for backward compatibility)
+        team_slugs = [
+            team_name.lower().replace(' ', '-'),  # "dribbling demons" -> "dribbling-demons"
+            team_code.lower(),                     # "DD"
+            team_name,                             # "Dribbling Demons"
+            # Add old typo slugs for backward compatibility
+            "drbling-demons" if "dribbling" in team_name.lower() else None,
+            "jugling-giants" if "juggling" in team_name.lower() else None,
+        ]
+        # Remove None values
+        team_slugs = [slug for slug in team_slugs if slug]
+        
+        users_response = None
+        
+        print(f"[DEBUG] Trying team slugs: {team_slugs}")
+        
+        for slug in team_slugs:
+            users_response = (
+                supabase
+                .table("users")
+                .select("name, email, owner, icon, is_alumni, position, team")
+                .eq("team", slug)
+                .execute()
+            )
+            print(f"[DEBUG] Checking slug '{slug}': found {len(users_response.data) if users_response.data else 0} users")
+            if users_response.data and len(users_response.data) > 0:
+                print(f"[DEBUG] Found users with team slug: {slug}")
+                print(f"[DEBUG] Users data: {users_response.data}")
+                break
+        
+        # If no users found with slug matching, try to get all users and log them
+        if not users_response or not users_response.data:
+            print(f"[DEBUG] No users found with slugs. Fetching all users to debug...")
+            all_users = supabase.table("users").select("name, team, owner, icon, is_alumni").execute()
+            print(f"[DEBUG] All users in database: {all_users.data}")
+        
+        print(f"[DEBUG] Final users response: {users_response.data if users_response else 'None'}")
+        
+        # Merge player and user data
+        merged_data = []
+        for player in players_response.data:
+            # Get player name and clean it (trim whitespace, lowercase for matching)
+            player_name = player.get("player_name", "").strip()
+            player_name_lower = player_name.lower()
+            
+            # Find matching user by name (case-insensitive and trimmed)
+            matching_user = None
+            if users_response and users_response.data:
+                matching_user = next(
+                    (u for u in users_response.data 
+                     if u.get("name", "").strip().lower() == player_name_lower),
+                    None
+                )
+            
+            print(f"[DEBUG] Player: '{player_name}' (original: '{player.get('player_name')}') - Matched user: {matching_user.get('name') if matching_user else 'None'}")
+            if matching_user:
+                print(f"[DEBUG]   Flags: owner={matching_user.get('owner')}, icon={matching_user.get('icon')}, is_alumni={matching_user.get('is_alumni')}")
+            
+            # Create merged record
+            merged_player = {
+                "id": player.get("id"),
+                "player_name": player.get("player_name"),
+                "position": player.get("position"),
+                "team_id": player.get("team_id"),
+                "owner": matching_user.get("owner", False) if matching_user else False,
+                "icon": matching_user.get("icon", False) if matching_user else False,
+                "is_alumni": matching_user.get("is_alumni", False) if matching_user else False,
+            }
+            merged_data.append(merged_player)
+        
+        print(f"[DEBUG] Merged data being returned: {merged_data}")
+        return merged_data
 
     except HTTPException:
         raise
