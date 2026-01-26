@@ -93,7 +93,7 @@ export default function SignUpForm() {
         console.log('Signup successful:', res.data)
 
         // Show success message
-        alert('Signup successful! Logging you in...')
+        
 
         // Auto-login after signup to update navbar/auth state
         const loginPayload: AuthSignin = { email: value.email, password: value.password }

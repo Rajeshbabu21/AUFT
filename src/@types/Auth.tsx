@@ -20,7 +20,7 @@ export interface SignupPayload {
     player: {
         player_name: string;
         position: string;
-        team_id: null;
+        team_id: string | null;
     };
 }
 
