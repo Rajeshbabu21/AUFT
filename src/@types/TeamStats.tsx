@@ -5,4 +5,5 @@ export interface TeamStat {
   goals_scored: number;
   goals_conceded: number;
   goal_difference: number;
+  clean_sheets: number;
 }

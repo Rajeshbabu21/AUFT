@@ -139,13 +139,23 @@ export default function Alerts() {
                                     {team.goals_scored}
                                   </span>
                                 </div>
-                                <div className="flex items-center justify-between rounded-lg border border-red-500/60 bg-slate-800/60 px-3 py-2">
+                                {/* <div className="flex items-center justify-between rounded-lg border border-red-500/60 bg-slate-800/60 px-3 py-2">
                                   <span className="text-sm text-slate-300">
                                     Goals Conceded
                                   </span>
                                   <span className="text-base font-bold text-white">
                                     {team.goals_conceded}
                                   </span>
+                                  
+                                </div> */}
+                                <div className="flex items-center justify-between rounded-lg  bg-slate-800/60 px-3 py-2">
+                                  <span className="text-sm text-slate-300">
+                                    Clean Sheets
+                                  </span>
+                                  <span className="text-base font-bold text-white">
+                                    {team.clean_sheets}
+                                  </span>
+                                  
                                 </div>
                                 <div className="flex items-center justify-between rounded-lg bg-slate-700/40 px-3 py-2">
                                   <span className="text-sm font-medium text-slate-300">
@@ -159,23 +169,28 @@ export default function Alerts() {
                                 </div>
                               </div>
 
-                              <p className="text-xs text-slate-400">
-                                {tone.caption}
-                              </p>
+                              
                             </div>
                           </div>
                         </div>
                       );
                     })
               ) : (
-                  <div className="col-span-full">
-                    <Alert
-                      variant="info"
-                      title="No team stats available"
-                      message="The backend returned an empty list. Add team stats to see them here."
-                    />
+                <div className="col-span-full">
+                  <div className="relative overflow-hidden rounded-xl border border-slate-600/40 bg-gradient-to-br from-slate-800/40 to-slate-900/40 p-8 shadow-lg flex flex-col items-center justify-center text-center">
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-500/5 via-transparent to-transparent" aria-hidden />
+                    <div className="relative">
+                      <svg className="w-16 h-16 mx-auto mb-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      <h3 className="text-lg font-semibold text-white mb-2">No Team Stats Available</h3>
+                      <p className="text-sm text-slate-400">
+                        The backend returned an empty list. Add team stats to see them here.
+                      </p>
+                    </div>
                   </div>
-                )}
+                </div>
+              )}
             </div>
           )}
         </div>
