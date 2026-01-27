@@ -15,7 +15,7 @@ from app.schemas import CreateMatch,UpdateTeam,Update_Match_Details,Player,Regis
 from app.results import get_all_match_results
 from app.teams import update_team,get_teams,team_stats
 from app.details import create_match_detailsep, get_match_details, delete_match_result,playersget
-
+from app.players import player_stats
 import hashlib
 
 
@@ -414,4 +414,12 @@ async def get_team_stats_endpoint():
     Endpoint to fetch goals scored, conceded, and goal difference for all teams.
     """
     data = await team_stats()
+    return data
+
+@app.get("/player-stats")
+async def get_player_stats_endpoint():
+    """
+    Endpoint to fetch player goal statistics including team name and team image.
+    """
+    data = await player_stats()
     return data
