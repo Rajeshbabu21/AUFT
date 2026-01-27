@@ -54,8 +54,8 @@ export default function App() {
             <Route path='/match-tables' element={<PointTables />} />
 
             {/* Ui Elements */}
-            <Route path='/alerts' element={<Alerts />} />
-            <Route path='/avatars' element={<Avatars />} />
+            <Route path='/teams' element={<Alerts />} />
+            <Route path='/players' element={<Avatars />} />
             <Route path='/badge' element={<Badges />} />
             <Route path='/buttons' element={<Buttons />} />
             <Route path='/images' element={<Images />} />

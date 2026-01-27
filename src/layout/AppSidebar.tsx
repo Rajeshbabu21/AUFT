@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 
+
 // Assume these icons are imported from an icon library
 import {
   BoxCubeIcon,
@@ -20,6 +21,16 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
+   {
+    icon: <BoxCubeIcon />,
+    name: "Dashboard",
+    subItems: [
+      // { name: "Overall", path: "/dashboard", pro: false },
+      // { name: "Players", path: "/players", pro: false },
+      { name: "Teams", path: "/teams", pro: false }
+      
+    ],
+  },
   
   {
     icon: <CalenderIcon />,

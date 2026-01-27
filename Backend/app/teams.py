@@ -35,3 +35,14 @@ async def update_team(team_id: str, data: UpdateTeam):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+async def team_stats():
+    response = (
+        supabase
+        .from_("team_goal_stats")
+        .select("*")
+        .order("goals_scored", desc=True)
+        .execute()
+    )
+    return response.data
+

@@ -13,7 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.matches import create_match,update_points,get_home_away_teams
 from app.schemas import CreateMatch,UpdateTeam,Update_Match_Details,Player,RegisterRequest
 from app.results import get_all_match_results
-from app.teams import update_team,get_teams
+from app.teams import update_team,get_teams,team_stats
 from app.details import create_match_detailsep, get_match_details, delete_match_result,playersget
 
 import hashlib
@@ -407,3 +407,11 @@ async def debug_users():
         return {"users": response.data, "count": len(response.data)}
     except Exception as e:
         return {"error": str(e)}
+    
+@app.get("/teamstats")
+async def get_team_stats_endpoint():
+    """
+    Endpoint to fetch goals scored, conceded, and goal difference for all teams.
+    """
+    data = await team_stats()
+    return data
