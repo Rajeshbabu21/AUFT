@@ -90,7 +90,7 @@ export default function Avatars() {
                   >
                     {/* Rank */}
                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-500/20 font-bold text-blue-300">
-                      {player.position ?? (index + 1)}
+                      {index + 1}
                     </div>
 
                     {/* Player Info */}
