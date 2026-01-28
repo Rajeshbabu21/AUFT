@@ -89,16 +89,6 @@ const Calendar: React.FC = () => {
     return `${hours12}:${minutes.toString().padStart(2, '0')} ${period}`;
   };
 
-  // Check if match date has passed
-  const isMatchEnded = (matchDate: string | null): boolean => {
-    if (!matchDate) return false;
-    const matchDateObj = new Date(matchDate);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    matchDateObj.setHours(0, 0, 0, 0);
-    return matchDateObj < today;
-  };
-
   const handleEventClick = (clickInfo: EventClickArg) => {
     const event = clickInfo.event;
     const match = event.extendedProps.match as Match | undefined;
