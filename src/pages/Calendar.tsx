@@ -89,6 +89,16 @@ const Calendar: React.FC = () => {
     return `${hours12}:${minutes.toString().padStart(2, '0')} ${period}`;
   };
 
+  // Check if match date has passed
+  const isMatchEnded = (matchDate: string | null): boolean => {
+    if (!matchDate) return false;
+    const matchDateObj = new Date(matchDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    matchDateObj.setHours(0, 0, 0, 0);
+    return matchDateObj < today;
+  };
+
   const handleEventClick = (clickInfo: EventClickArg) => {
     const event = clickInfo.event;
     const match = event.extendedProps.match as Match | undefined;
@@ -340,6 +350,10 @@ const renderEventContent = (eventInfo: any) => {
   const match = eventInfo.event.extendedProps.match as Match | undefined;
   
   if (match) {
+    // Check if match has ended
+    const matchDate = match.conduction_date;
+    const ended = matchDate ? new Date(matchDate) < new Date() : false;
+    
     // Render match event with team codes and match week
     return (
       <div className="event-fc-color flex flex-col gap-1 p-1 rounded-sm">
@@ -349,6 +363,9 @@ const renderEventContent = (eventInfo: any) => {
         <div className="text-xs text-gray-600 dark:text-gray-300">
           Week {match.match_week}
         </div>
+        {ended && (
+          <div className="text-xs font-bold text-red-500">Ended</div>
+        )}
       </div>
     );
   }

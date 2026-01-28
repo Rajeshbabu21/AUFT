@@ -26,8 +26,8 @@ const navItems: NavItem[] = [
     name: "Dashboard",
     subItems: [
       // { name: "Overall", path: "/dashboard", pro: false },
-      { name: "Players", path: "/players", pro: false },
-      { name: "Teams", path: "/teams", pro: false }
+      { name: "Players Stats", path: "/players", pro: false },
+      { name: "Teams Stats", path: "/teams", pro: false }
       
     ],
   },

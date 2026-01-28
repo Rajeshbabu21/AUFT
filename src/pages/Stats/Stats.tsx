@@ -49,19 +49,6 @@ const Stats: React.FC = () => {
     api
       .get<PlayersTableItem[]>(`/players/${activeTeam}`)
       .then((res) => {
-        console.log('Players API response for team:', activeTeam);
-        console.log('Full response:', JSON.stringify(res.data, null, 2));
-        
-        // Log each player's flags
-        res.data?.forEach((player, index) => {
-          console.log(`Player ${index + 1}:`, {
-            name: player.player_name,
-            owner: (player as any).owner,
-            icon: (player as any).icon,
-            is_alumni: (player as any).is_alumni
-          });
-        });
-        
         setPoints(res.data || []);
         setLoading(false);
       })
