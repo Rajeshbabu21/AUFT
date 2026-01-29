@@ -3,9 +3,9 @@ import axios from 'axios';
 
 const api = axios.create({
     
-    //  baseURL: import.meta.env.VITE_BACKEND_URL,
+     baseURL: import.meta.env.VITE_BACKEND_URL,
     // baseURL: 'https://auft.onrender.com/',
-    baseURL: 'http://127.0.0.1:8000',   
+    // baseURL: 'http://127.0.0.1:8000',   
 
 })
 // console.log("AXIOS BASE URL:", import.meta.env.VITE_BACKEND_URL);
