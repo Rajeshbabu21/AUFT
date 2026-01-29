@@ -8,8 +8,8 @@ interface Team {
 
 interface CreateMatchFormData {
   match_week: number
-  conduction_date: string | null
-  match_time: string | null
+  conduction_date: string
+  match_time: string
   home_team_name: string
   away_team_name: string
 }
