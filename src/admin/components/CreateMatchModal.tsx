@@ -14,11 +14,19 @@ interface CreateMatchFormData {
   away_team_name: string
 }
 
+interface CreateMatchSubmitData {
+  match_week: number
+  conduction_date: string | null
+  match_time: string | null
+  home_team_name: string
+  away_team_name: string
+}
+
 interface CreateMatchModalProps {
   isOpen: boolean
   teams: Team[]
   onClose: () => void
-  onSave: (data: CreateMatchFormData) => Promise<void>
+  onSave: (data: CreateMatchSubmitData) => Promise<void>
 }
 
 const CreateMatchModal: React.FC<CreateMatchModalProps> = ({
