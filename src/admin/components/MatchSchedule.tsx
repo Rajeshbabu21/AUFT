@@ -59,21 +59,24 @@ const MatchSchedule: React.FC<MatchScheduleProps> = ({
                 <tr key={match.id} className='schedule-row'>
                   <td className='week-cell'>{match.match_week}</td>
                   <td className='date-cell'>
-                    {new Date(match.conduction_date).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: '2-digit'
-                    })}
+                    {match.conduction_date
+                      ? new Date(match.conduction_date).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: '2-digit'
+                        })
+                      : 'TBD'}
                   </td>
                   <td className='time-cell'>
-                    {new Date(`2000-01-01T${match.match_time}`).toLocaleTimeString(
-                      'en-US',
-                      {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      }
-                    )}
-                    {/* {match.match_time} */}
+                    {match.match_time
+                      ? new Date(`2000-01-01T${match.match_time}`).toLocaleTimeString(
+                          'en-US',
+                          {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          }
+                        )
+                      : 'TBD'}
                   </td>
                   <td className='team-cell'>
                     <div className='team-badge-inline'>
@@ -100,7 +103,11 @@ const MatchSchedule: React.FC<MatchScheduleProps> = ({
                     </div>
                   </td>
                   <td className='status-cell'>
-                    <span className='status-badge scheduled'>Scheduled</span>
+                    {match.conduction_date ? (
+                      <span className='status-badge scheduled'>Scheduled</span>
+                    ) : (
+                      <span className='status-badge upcoming'>Upcoming</span>
+                    )}
                   </td>
                   <td className='actions-cell'>
                     <button

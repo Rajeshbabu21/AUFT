@@ -76,8 +76,8 @@ class UpdatePoints(BaseModel):
 
 class  CreateMatch(BaseModel):
         match_week:int
-        match_time:time
-        conduction_date:date
+        match_time:Optional[time]=None
+        conduction_date:Optional[date]=None
         home_team_name:str
         away_team_name:str
 

@@ -134,28 +134,28 @@ const UpdateMatchModal: React.FC<UpdateMatchModalProps> = ({
             </div>
 
             <div className='form-group'>
-              <label htmlFor='conduction_date'>Match Date</label>
+              <label htmlFor='conduction_date'>Match Date (Optional)</label>
               <input
                 type='date'
                 id='conduction_date'
                 name='conduction_date'
                 value={formData.conduction_date}
                 onChange={handleChange}
-                required
               />
+              <small style={{ color: '#888', fontSize: '0.85em' }}>Leave empty if TBD</small>
             </div>
           </div>
 
           <div className='form-group'>
-            <label htmlFor='match_time'>Match Time</label>
+            <label htmlFor='match_time'>Match Time (Optional)</label>
             <input
               type='time'
               id='match_time'
               name='match_time'
               value={formData.match_time}
               onChange={handleChange}
-              required
             />
+            <small style={{ color: '#888', fontSize: '0.85em' }}>Leave empty if TBD</small>
           </div>
 
           <div className='form-row'>

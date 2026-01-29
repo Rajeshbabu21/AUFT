@@ -4,8 +4,8 @@ import { Team } from '../@types/Team'
 
 interface CreateMatchData {
   match_week: number
-  conduction_date: string
-  match_time: string
+  conduction_date: string | null
+  match_time: string | null
   home_team_name: string
   away_team_name: string
 }

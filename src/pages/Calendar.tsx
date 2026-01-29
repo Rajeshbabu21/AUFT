@@ -10,6 +10,7 @@ import PageMeta from "../components/common/PageMeta";
 import PageBreadcrumb from "../components/common/PageBreadCrumb";
 import "./calendar.css";
 import api from "../api/axios";
+import { TimeIcon } from "../icons";
 
 interface Team {
   badge: {
@@ -40,6 +41,7 @@ const Calendar: React.FC = () => {
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
   const [selectedMatches, setSelectedMatches] = useState<Match[]>([]);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [allMatches, setAllMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
   const calendarRef = useRef<FullCalendar>(null);
   const { isOpen, openModal, closeModal } = useModal();
@@ -55,21 +57,25 @@ const Calendar: React.FC = () => {
       // Handle both response.data and response.data.data structures
       const matchesData = Array.isArray(response.data) ? response.data : response.data.data;
       const matches: Match[] = matchesData || [];
+      setAllMatches(matches);
       
-      // Transform matches to calendar events - don't filter, show all
-      const matchEvents: CalendarEvent[] = matches.map((match: any) => {
+      // Transform matches to calendar events - only include matches with a date
+      const matchEvents: CalendarEvent[] = matches.flatMap((match: any) => {
         // Try different possible date field names
         const matchDate = match.conduction_date || match.match_date || match.date;
-        return {
-          id: match.id,
-          title: `${match.home_team.team_code} vs ${match.away_team.team_code}`,
-          start: matchDate || new Date().toISOString().split("T")[0],
-          allDay: true,
-          extendedProps: {
-            match: match,
-            isMatch: true,
-          },
-        };
+        if (!matchDate) return [];
+        return [
+          {
+            id: match.id,
+            title: `${match.home_team.team_code} vs ${match.away_team.team_code}`,
+            start: matchDate,
+            allDay: true,
+            extendedProps: {
+              match: match,
+              isMatch: true,
+            },
+          }
+        ];
       });
       
     
@@ -137,6 +143,53 @@ const Calendar: React.FC = () => {
           </div>
         ) : (
           <div className="custom-calendar">
+            {allMatches.filter((match) => !match.conduction_date).length > 0 && (
+              <div className="border-b border-gray-200 dark:border-gray-800 p-4 sm:p-6">
+                <div className="rounded-xl border border-brand-500/20 bg-gradient-to-r from-[#1a2336] via-[#111827] to-[#0f172a] p-4 sm:p-5">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="h-9 w-9 rounded-full bg-brand-500/15 text-brand-200 flex items-center justify-center">
+                        <TimeIcon className="size-4" />
+                      </div>
+                      <div>
+                        <h3 className="text-sm sm:text-base font-semibold text-gray-800 dark:text-white/90">
+                          Upcoming / TBD
+                        </h3>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          Matches without confirmed dates
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-bold uppercase tracking-wide text-brand-200 bg-brand-500/15 px-2.5 py-1 rounded-full">
+                      Upcoming
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {allMatches
+                      .filter((match) => !match.conduction_date)
+                      .map((match) => (
+                        <div
+                          key={match.id}
+                          className="rounded-lg border border-brand-500/15 bg-[#0b1220] p-3 shadow-sm hover:shadow-md transition-shadow"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="text-[11px] font-semibold text-brand-200">
+                              Week {match.match_week}
+                            </div>
+                            <span className="text-[10px] font-semibold text-amber-400">TBD</span>
+                          </div>
+                          <div className="mt-1 text-sm font-semibold text-white">
+                            {match.home_team.team_code} vs {match.away_team.team_code}
+                          </div>
+                          <div className="mt-1 text-[11px] text-gray-300">
+                            Time: {match.match_time ? formatTime(match.match_time) : "TBD"}
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              </div>
+            )}
             <FullCalendar
               ref={calendarRef}
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -340,9 +393,10 @@ const renderEventContent = (eventInfo: any) => {
   const match = eventInfo.event.extendedProps.match as Match | undefined;
   
   if (match) {
-    // Check if match has ended
+    // Check if match has ended or is upcoming
     const matchDate = match.conduction_date;
     const ended = matchDate ? new Date(matchDate) < new Date() : false;
+    const upcoming = !matchDate; // null date means upcoming/TBD
     
     // Render match event with team codes and match week
     return (
@@ -355,6 +409,9 @@ const renderEventContent = (eventInfo: any) => {
         </div>
         {ended && (
           <div className="text-xs font-bold text-red-500">Ended</div>
+        )}
+        {upcoming && (
+          <div className="text-xs font-bold text-yellow-500">Upcoming</div>
         )}
       </div>
     );

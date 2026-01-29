@@ -8,8 +8,8 @@ interface Team {
 
 interface CreateMatchFormData {
   match_week: number
-  conduction_date: string
-  match_time: string
+  conduction_date: string | null
+  match_time: string | null
   home_team_name: string
   away_team_name: string
 }
@@ -78,14 +78,16 @@ const CreateMatchModal: React.FC<CreateMatchModalProps> = ({
       return
     }
 
-    if (!formData.conduction_date || !formData.match_time) {
-      setError('Please enter match date and time')
-      setLoading(false)
-      return
+    // Date and time are now optional - can be updated later
+    // Send null instead of empty string for optional fields
+    const submitData = {
+      ...formData,
+      conduction_date: formData.conduction_date || null,
+      match_time: formData.match_time || null
     }
 
     try {
-      await onSave(formData)
+      await onSave(submitData)
       onClose()
     } catch (err: any) {
       setError(err.message || 'Failed to create match')
@@ -122,28 +124,28 @@ const CreateMatchModal: React.FC<CreateMatchModalProps> = ({
             </div>
 
             <div className='form-group'>
-              <label htmlFor='conduction_date'>Match Date</label>
+              <label htmlFor='conduction_date'>Match Date (Optional)</label>
               <input
                 type='date'
                 id='conduction_date'
                 name='conduction_date'
                 value={formData.conduction_date}
                 onChange={handleChange}
-                required
               />
+              <small style={{ color: '#888', fontSize: '0.85em' }}>Leave empty if TBD</small>
             </div>
           </div>
 
           <div className='form-group'>
-            <label htmlFor='match_time'>Match Time</label>
+            <label htmlFor='match_time'>Match Time (Optional)</label>
             <input
               type='time'
               id='match_time'
               name='match_time'
               value={formData.match_time}
               onChange={handleChange}
-              required
             />
+            <small style={{ color: '#888', fontSize: '0.85em' }}>Leave empty if TBD</small>
           </div>
 
           <div className='form-row'>

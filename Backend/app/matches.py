@@ -59,15 +59,22 @@ async def create_match(data: CreateMatch):
     )
 
     # 3️⃣ Insert match using IDs
+    match_data = {
+        "match_week": data.match_week,
+        "home_team_id": home_team.data["id"],
+        "away_team_id": away_team.data["id"]
+    }
+    
+    # Only add date and time if they are provided
+    if data.conduction_date is not None:
+        match_data["conduction_date"] = str(data.conduction_date)
+    
+    if data.match_time is not None:
+        match_data["match_time"] = str(data.match_time)
+    
     insert_response = (
         supabase.table("matches")
-        .insert({
-            "match_week": data.match_week,
-            "conduction_date": str(data.conduction_date),
-            "match_time": str(data.match_time),
-            "home_team_id": home_team.data["id"],
-            "away_team_id": away_team.data["id"]
-        })
+        .insert(match_data)
         .execute()
     )
 
