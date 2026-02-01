@@ -1,5 +1,5 @@
 import api from "./axios";
-import {  AuthResponse, SignupPayload } from "../@types/Auth";
+import { AuthResponse, SignupPayload } from "../@types/Auth";
 import { AuthSignin } from "../@types/Auth";
 
 export const signupUser = (data: SignupPayload) => {
@@ -18,3 +18,9 @@ export const signinUser = (data: AuthSignin) => {
     },
   })
 }
+
+import type { GoogleSignupData } from "../@types/Auth";
+
+export const googleLogin = (token: string, signup_data?: GoogleSignupData) => {
+  return api.post<AuthResponse>("/google_login", { token, signup_data });
+};

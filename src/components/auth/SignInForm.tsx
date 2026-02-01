@@ -5,52 +5,53 @@ import Label from "../form/Label"
 import Input from "../form/input/InputField"
 import "./auth.css"
 import useForm from "./useForm"
-import { signinUser } from "../../api/auth"
+import { signinUser, googleLogin } from "../../api/auth"
+import { GoogleLogin } from '@react-oauth/google';
 import type { AuthSignin } from "../../@types/Auth"
 
 export default function SignInForm() {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  
+
 
   const { value, handleChange, errors } = useForm({
-  email: "",
-  password: "",
-})
+    email: "",
+    password: "",
+  })
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault()
+    e.preventDefault()
 
-  const payload: AuthSignin = {
-    email: value.email,
-    password: value.password,
-  }
-
-  try {
-    setLoading(true)
-
-    const res = await signinUser(payload)
-    const data = res.data
-
-    // console.log("Signin successful:", data)
-
-    localStorage.setItem("access_token", data.access_token)
-    localStorage.setItem("token_type", data.token_type)
-
-    navigate("/")
-  } catch (error: any) {
-    console.error("Signin failed:", error)
-
-    if (error.response) {
-      alert(error.response.data?.detail || "Login failed")
-    } else {
-      alert("Server not reachable")
+    const payload: AuthSignin = {
+      email: value.email,
+      password: value.password,
     }
-  } finally {
-    setLoading(false)
+
+    try {
+      setLoading(true)
+
+      const res = await signinUser(payload)
+      const data = res.data
+
+      // console.log("Signin successful:", data)
+
+      localStorage.setItem("access_token", data.access_token)
+      localStorage.setItem("token_type", data.token_type)
+
+      navigate("/")
+    } catch (error: any) {
+      console.error("Signin failed:", error)
+
+      if (error.response) {
+        alert(error.response.data?.detail || "Login failed")
+      } else {
+        alert("Server not reachable")
+      }
+    } finally {
+      setLoading(false)
+    }
   }
-}
 
 
   return (
@@ -113,7 +114,7 @@ export default function SignInForm() {
               </div>
 
               {/* Forgot password */}
-              
+
 
               {/* Submit */}
               <button
@@ -127,6 +128,34 @@ export default function SignInForm() {
           </form>
 
           {/* Signup */}
+          <div className="mt-5">
+            <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start mb-4">Or sign in with</p>
+            <div className="flex justify-center">
+              <GoogleLogin
+                onSuccess={async (credentialResponse) => {
+                  try {
+                    if (credentialResponse.credential) {
+                      const res = await googleLogin(credentialResponse.credential!)
+                      const data = res.data
+                      localStorage.setItem("access_token", data.access_token)
+                      if (data.token_type) {
+                        localStorage.setItem("token_type", data.token_type)
+                      }
+                      navigate("/")
+                    }
+                  } catch (error: any) {
+                    console.error("Google Login failed", error);
+                    alert(error.response?.data?.detail || "Google Login failed");
+                  }
+                }}
+                onError={() => {
+                  console.log('Login Failed');
+                  alert('Google Login Failed');
+                }}
+              />
+            </div>
+          </div>
+
           <div className="mt-5">
             <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
               Don&apos;t have an account?{" "}
