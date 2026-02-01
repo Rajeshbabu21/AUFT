@@ -17,14 +17,30 @@ from app.teams import update_team,get_teams,team_stats
 from app.details import create_match_detailsep, get_match_details, delete_match_result,playersget
 from app.players import player_stats
 import hashlib
+from google.oauth2 import id_token
+from google.auth.transport import requests
+from pydantic import BaseModel
+import os
+from typing import Optional
 
+class GoogleSignupData(BaseModel):
+    team: str
+    position: str
+    name: Optional[str] = None
+    email: Optional[str] = None # User entered email
+    password: Optional[str] = None # User entered password
+    owner: bool = False
+    icon: bool = False
+    is_alumni: bool = False
+
+class GoogleLoginRequest(BaseModel):
+    token: str
+    signup_data: Optional[GoogleSignupData] = None
 
 app=FastAPI()
 origins = [
     "https://auft.vercel.app",
     "http://localhost:5173",
-    
-      
 ]
 
 
@@ -35,6 +51,139 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.post("/google_login")
+async def google_login(request: GoogleLoginRequest):
+    try:
+        user_info = None
+        email = None
+        name = None
+
+        # 1. Try verifying as ID Token
+        try:
+             idinfo = id_token.verify_oauth2_token(request.token, requests.Request(), GOOGLE_CLIENT_ID)
+             # Check for Google issuer
+             if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+                raise ValueError('Wrong issuer.')
+             email = idinfo['email']
+             name = idinfo.get('name', '')
+        except Exception:
+            # 2. If ID Token fails, try as Access Token (UserInfo endpoint)
+            try:
+                resp = http_requests.get(
+                    f"https://www.googleapis.com/oauth2/v3/userinfo",
+                    headers={"Authorization": f"Bearer {request.token}"}
+                )
+                if resp.status_code != 200:
+                    raise ValueError(f"Invalid Access Token: {resp.text}")
+                
+                user_info = resp.json()
+                email = user_info.get('email')
+                name = user_info.get('name', '')
+                
+                if not email:
+                     raise ValueError("Email not found in Google response")
+
+            except Exception as e:
+                raise HTTPException(status_code=401, detail=f"Invalid Google Token: {str(e)}")
+
+        
+        # Check if user exists in Supabase
+        response = supabase.table("users").select("*").eq("email", email).execute()
+        
+        user_id = None
+        user_data = None
+
+        if response.data:
+            # User exists
+            if request.signup_data:
+                 # If user tries to sign up but account exists
+                 raise HTTPException(status_code=400, detail="User already exists with this email. Please Login.")
+            
+            user_data = response.data[0]
+            user_id = user_data['id']
+        else:
+            # User does NOT exist
+            if not request.signup_data:
+                # Login attempt but no account
+                 raise HTTPException(status_code=404, detail="Account not found. Please Sign Up first.")
+            
+            # Create new user with supplied Details
+            signup_details = request.signup_data
+            
+            # 1. Verify Email Match
+            if signup_details.email and signup_details.email.lower() != email.lower():
+                 raise HTTPException(status_code=400, detail=f"Google Email ({email}) does not match entered Email ({signup_details.email})")
+
+            # 2. Determine Password (User provided or validation)
+            final_password = "google_auth_placeholder"
+            if signup_details.password:
+                final_password = signup_details.password
+            
+            # Use name from form if provided, else Google name
+            final_name = signup_details.name if signup_details.name else name
+            
+            new_user = {
+                "name": final_name,
+                "email": email,
+                "password": get_password_hash(final_password), 
+                "team": signup_details.team,
+                "owner": signup_details.owner,
+                "icon": signup_details.icon,
+                "is_alumni": signup_details.is_alumni,
+                "is_active": True,
+                "position": signup_details.position
+            }
+            user_res = supabase.table("users").insert(new_user).execute()
+            if not user_res.data:
+                 raise HTTPException(status_code=500, detail="Failed to create user")
+            user_data = user_res.data[0]
+            user_id = user_data['id']
+            
+            # Create player entry
+            team_id = None
+            try:
+                # Resolve team ID
+                all_teams = supabase.table("teams").select("id, team_code, team_name").execute()
+                if all_teams.data:
+                     for team in all_teams.data:
+                        if (team.get('team_code', '').upper() == signup_details.team.upper() or 
+                            team.get('team_name', '').upper() == signup_details.team.upper()):
+                            team_id = team['id']
+                            break
+            except Exception as e:
+                print(f"Error resolving team: {e}")
+
+            player_data = {
+                "player_name": final_name,
+                "position": signup_details.position,
+                "team_id": team_id 
+            }
+            
+            try:
+                  supabase.table("players").insert(player_data).execute()
+            except Exception as e:
+                print(f"Error creating player for google user: {e}")
+
+
+        # Generate JWT
+        access_token = create_access_token(
+            data={"sub": email},
+            expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+        )
+
+        return {
+            "access_token": access_token,
+            "token_type": "bearer",
+            "user": user_data
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Google login error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/ping")
 
@@ -128,10 +277,17 @@ def create_user(payload: RegisterRequest):
         if not player_response.data:
             raise HTTPException(status_code=400, detail="Player creation failed")
 
+        access_token = create_access_token(
+            data={"sub": user_response.data[0]["email"]},
+            expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+        )
+
         return {
             "message": "User & Player registered successfully",
             "user": user_response.data[0],
             "player": player_response.data[0],
+            "access_token": access_token,
+            "token_type": "bearer"
         }
     except HTTPException:
         raise
@@ -235,6 +391,136 @@ def login_admin(form_data:OAuth2PasswordRequestForm = Depends()):
         "token_type": "bearer"
     }
 
+
+
+import requests as http_requests
+
+@app.post("/google_login")
+async def google_login(request: GoogleLoginRequest):
+    try:
+        user_info = None
+        email = None
+        name = None
+
+        # 1. Try verifying as ID Token
+        try:
+             idinfo = id_token.verify_oauth2_token(request.token, requests.Request(), GOOGLE_CLIENT_ID)
+             # Check for Google issuer
+             if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+                raise ValueError('Wrong issuer.')
+             email = idinfo['email']
+             name = idinfo.get('name', '')
+        except Exception:
+            # 2. If ID Token fails, try as Access Token (UserInfo endpoint)
+            try:
+                resp = http_requests.get(
+                    f"https://www.googleapis.com/oauth2/v3/userinfo",
+                    headers={"Authorization": f"Bearer {request.token}"}
+                )
+                if resp.status_code != 200:
+                    raise ValueError(f"Invalid Access Token: {resp.text}")
+                
+                user_info = resp.json()
+                email = user_info.get('email')
+                name = user_info.get('name', '')
+                
+                if not email:
+                     raise ValueError("Email not found in Google response")
+
+            except Exception as e:
+                raise HTTPException(status_code=401, detail=f"Invalid Google Token: {str(e)}")
+
+        
+        # Check if user exists in Supabase
+        
+        # Check if user exists in Supabase
+        response = supabase.table("users").select("*").eq("email", email).execute()
+        
+        user_id = None
+        user_data = None
+
+        if response.data:
+            # User exists
+            if request.signup_data:
+                 # If user tries to sign up but account exists
+                 raise HTTPException(status_code=400, detail="User already exists with this email. Please Login.")
+            
+            user_data = response.data[0]
+            user_id = user_data['id']
+        else:
+            # User does NOT exist
+            if not request.signup_data:
+                # Login attempt but no account
+                 raise HTTPException(status_code=404, detail="Account not found. Please Sign Up first.")
+            
+            # Create new user with supplied Details
+            signup_details = request.signup_data
+            
+            # Use name from form if provided, else Google name
+            final_name = signup_details.name if signup_details.name else name
+            
+            new_user = {
+                "name": final_name,
+                "email": email,
+                "password": get_password_hash("google_auth_placeholder"), # Placeholder password
+                "team": signup_details.team,
+                "owner": signup_details.owner,
+                "icon": signup_details.icon,
+                "is_alumni": signup_details.is_alumni,
+                "is_active": True,
+                "position": signup_details.position
+            }
+            user_res = supabase.table("users").insert(new_user).execute()
+            if not user_res.data:
+                 raise HTTPException(status_code=500, detail="Failed to create user")
+            user_data = user_res.data[0]
+            user_id = user_data['id']
+            
+            # Create player entry
+            team_id = None
+            try:
+                # Resolve team ID
+                all_teams = supabase.table("teams").select("id, team_code, team_name").execute()
+                if all_teams.data:
+                     for team in all_teams.data:
+                        if (team.get('team_code', '').upper() == signup_details.team.upper() or 
+                            team.get('team_name', '').upper() == signup_details.team.upper()):
+                            team_id = team['id']
+                            break
+                
+                # If team not found by name, stick with None or handle error
+            except Exception as e:
+                print(f"Error resolving team: {e}")
+
+            player_data = {
+                "player_name": final_name,
+                "position": signup_details.position,
+                "team_id": team_id 
+            }
+            
+            try:
+                 supabase.table("players").insert(player_data).execute()
+            except Exception as e:
+                print(f"Error creating player for google user: {e}")
+
+
+        # Generate JWT
+        access_token = create_access_token(
+            data={"sub": email},
+            expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+        )
+
+        return {
+            "access_token": access_token,
+            "token_type": "bearer",
+            "user": user_data
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Google login error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/matches")

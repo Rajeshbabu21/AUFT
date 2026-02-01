@@ -1,35 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import {  EyeCloseIcon, EyeIcon } from '../../icons'
+import { EyeCloseIcon, EyeIcon } from '../../icons'
 import Label from '../form/Label'
 import Input from '../form/input/InputField'
 import './auth.css'
 import useFormSignup from './userFormSignup'
-import { signupUser, signinUser } from '../../api/auth'
-import type { AuthSignin, SignupPayload } from '../../@types/Auth'
-import { getTeamscode } from '../../api/matches'
-import type { Team } from '../../@types/Team'
+import { googleLogin } from '../../api/auth'
+import { useGoogleLogin } from '@react-oauth/google';
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [teams, setTeams] = useState<Team[]>([])
   const navigate = useNavigate()
 
   const { value, setValue, handleChange, handleSubmit, errors } = useFormSignup()
-
-  // Fetch teams on component mount
-  useEffect(() => {
-    const fetchTeams = async () => {
-      try {
-        const teamsData = await getTeamscode()
-        setTeams(teamsData)
-      } catch (error) {
-        console.error('Failed to fetch teams:', error)
-      }
-    }
-    fetchTeams()
-  }, [])
 
   const handleRoleSelect = (role: 'owner' | 'icon' | 'is_alumni' | 'none') => {
     setValue((prev) => ({
@@ -40,91 +24,69 @@ export default function SignUpForm() {
     }))
   }
 
-  // Team mapping for slug conversion
-  const teamMap: Record<string, string> = {
-    'Netbusters': 'netbusters',
-    'Juggling Giants': 'juggling-giants',
-    'Soccer Hooligans': 'soccer-hooligans',
-    'Tackling Titans': 'tackling-titans',
-    'Faking Phantoms': 'faking-phantoms',
-    'Dribbling Demons': 'dribbling-demons',
-  }
+  /* 
+     We are now using Google Login flow initiated by the "Sign Up" button.
+     The button triggers googleLogin() which gets an Access Token.
+     We then send this token + form data to the backend.
+  */
+
+  const login = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        setLoading(true);
+        const signupData = {
+          team: value.team, // We use the raw team name, backend resolves it
+          position: value.position,
+          name: value.name,
+          email: value.email,
+          password: value.password,
+          owner: value.owner,
+          icon: value.icon,
+          is_alumni: value.is_alumni
+        }
+
+        // Call backend with Access Token
+        const res = await googleLogin(tokenResponse.access_token, signupData)
+        const data = res.data
+
+        localStorage.setItem("access_token", data.access_token!)
+        if (data.token_type) {
+          localStorage.setItem("token_type", data.token_type)
+        }
+        navigate("/")
+
+      } catch (error: any) {
+        console.error("Signup failed:", error)
+        alert(error.response?.data?.detail || "Signup failed");
+      } finally {
+        setLoading(false);
+      }
+    },
+    onError: () => {
+      console.error("Google Login Failed");
+      alert("Google Login Failed");
+      setLoading(false);
+    }
+  });
+
 
   // Handle form submission
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     handleSubmit(e, async () => {
-      // Validate password length before submission
+      // Validate form fields locally first
+      if (!value.name || !value.team || !value.position || !value.email || !value.password) {
+        alert('Please fill in Name, Team, Position, Email and Password.');
+        return;
+      }
+
       if (value.password.length < 6) {
         alert('Password must be at least 6 characters long!')
         return
       }
 
-      try {
-        setLoading(true)
-        
-        // Find the selected team's ID
-        const selectedTeam = teams.find(
-          (team) => team.team_name === value.team || 
-                    teamMap[value.team as keyof typeof teamMap] === team.team_code
-        )
-        const teamId = selectedTeam ? selectedTeam.id : null
-
-        const payload: SignupPayload = {
-          user: {
-            name: value.name,
-            email: value.email,
-            password: value.password,
-            team: value.team ? teamMap[value.team as keyof typeof teamMap] || value.team : '',
-            position: value.position || '',
-            owner: value.owner || false,
-            icon: value.icon || false,
-            is_alumni: value.is_alumni || false,
-            is_active: true,
-          },
-          player: {
-            player_name: value.name,
-            position: value.position || '',
-            team_id: teamId,
-          },
-        }
-
-        console.log('Sending signup payload:', JSON.stringify(payload, null, 2))
-        const res = await signupUser(payload)
-        console.log('Signup successful:', res.data)
-
-        // Show success message
-        
-
-        // Auto-login after signup to update navbar/auth state
-        const loginPayload: AuthSignin = { email: value.email, password: value.password }
-        const loginRes = await signinUser(loginPayload)
-        const { access_token, token_type } = loginRes.data
-        localStorage.setItem('access_token', access_token)
-        localStorage.setItem('token_type', token_type)
-
-        // Redirect to landing page after signup
-        navigate('/')
-      } catch (error: any) {
-        console.error('Signup failed:', error)
-        
-        // Check if user already exists
-        if (error.response?.status === 400 || error.response?.status === 409) {
-          const errorMessage = error.response?.data?.detail || error.response?.data?.message
-          if (errorMessage && (errorMessage.includes('already') || errorMessage.includes('exists'))) {
-            alert('This email is already registered! Please sign in instead.')
-          } else {
-            alert(errorMessage || 'Signup failed. Please check your information.')
-          }
-        } else if (error.response?.data) {
-          const errorDetail = error.response.data.detail || error.response.data.message || 'Signup failed'
-          alert(errorDetail)
-          console.error('Backend error detail:', JSON.stringify(error.response.data, null, 2))
-        } else {
-          alert('Signup failed. Please try again.')
-        }
-      } finally {
-        setLoading(false)
-      }
+      // Trigger Google Login Flow
+      login();
     })
   }
 
@@ -283,7 +245,7 @@ export default function SignUpForm() {
                     disabled={loading}
                     className='flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600'
                   >
-                    {loading ? "Signing up..." : "Sign Up"}
+                    {loading ? "Verifying with Google..." : "Sign Up"}
                   </button>
                 </div>
               </div>
