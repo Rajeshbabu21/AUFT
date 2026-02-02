@@ -49,216 +49,256 @@ def send_match_email(to_email, home, away, date, time, match_week=None):
     msg["From"] = os.getenv("SMTP_USER")
     msg["To"] = to_email
 
-    # Prepare dynamic HTML snippets for the template
-    # Light Theme Colors: Background #ffffff, Text #0f172a / #334155
-    week_badge = f"""
-    <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="display:inline-block;">
-        <tr>
-            <td style="background:#0ea5e9;background:linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);color:#ffffff;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                WEEK {match_week}
-            </td>
-        </tr>
-    </table>
-    """ if match_week else """
-    <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="display:inline-block;">
-        <tr>
-            <td style="background:#0ea5e9;background:linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);color:#ffffff;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                MATCH DAY
-            </td>
-        </tr>
-    </table>
-    """
-
-    if home_image:
-        home_token = f'<img src="{home_image}" alt="{home}" width="75" height="75" style="display:block;width:75px;height:75px;border-radius:10px;border:3px solid #0ea5e9;object-fit:cover;background-color:#ffffff;">'
-    else:
-        home_token = f'<div style="width:75px;height:75px;border-radius:10px;border:3px solid #0ea5e9;background-color:#ffffff;color:#0ea5e9;font-weight:700;font-size:20px;line-height:75px;text-align:center;font-family:sans-serif;">{home_code}</div>'
-
-    if away_image:
-        away_token = f'<img src="{away_image}" alt="{away}" width="75" height="75" style="display:block;width:75px;height:75px;border-radius:10px;border:3px solid #0ea5e9;object-fit:cover;background-color:#ffffff;">'
-    else:
-        away_token = f'<div style="width:75px;height:75px;border-radius:10px;border:3px solid #0ea5e9;background-color:#ffffff;color:#0ea5e9;font-weight:700;font-size:20px;line-height:75px;text-align:center;font-family:sans-serif;">{away_code}</div>'
-
-    # Optimized Email HTML Template (Pure White Theme, Enforced Light Mode)
+    # HTML content with CSS styling - Dark theme matching website
     html_content = f"""
     <!DOCTYPE html>
-    <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+    <html>
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1">
-        <meta name="x-apple-disable-message-reformatting">
-        <meta name="color-scheme" content="light">
-        <meta name="supported-color-schemes" content="light">
-        <title>⚽ Match Starting Soon</title>
-        <!--[if mso]>
-        <noscript>
-            <xml>
-                <o:OfficeDocumentSettings>
-                    <o:PixelsPerInch>96</o:PixelsPerInch>
-                </o:OfficeDocumentSettings>
-            </xml>
-        </noscript>
-        <![endif]-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
         <style>
-            :root {{
-                color-scheme: light;
-                supported-color-schemes: light;
+            * {{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }}
-            table, td, div, h1, p {{font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}}
-            @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
-            
-            /* Reset styles */
-            body {{margin: 0; padding: 0; word-spacing: normal; background-color: #ffffff;}}
-            table {{border-collapse: collapse;}}
-            
-            /* Mobile Responsive Styles */
-            @media screen and (max-width: 530px) {{
-                .mobile-full-width {{width: 100% !important; max-width: 100% !important;}}
-                .mobile-padding {{padding-left: 15px !important; padding-right: 15px !important;}}
-                .team-badge-img {{width: 50px !important; height: 50px !important;}}
-                .team-name-text {{font-size: 12px !important;}}
-                .vs-text {{font-size: 10px !important;}}
-                .match-time-text {{font-size: 18px !important;}}
+            body {{
+                font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #0f172a;
+                line-height: 1.6;
+            }}
+            .container {{
+                max-width: 650px;
+                width: 100%;
+                margin: 20px auto;
+                background-color: #1e293b;
+                border-radius: 16px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+                overflow: hidden;
+                border: 1px solid #334155;
+            }}
+            .header {{
+                background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+                padding: 25px 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                gap: 15px;
+            }}
+            .header img {{
+                width: 60px;
+                height: 60px;
+                border-radius: 8px;
+                object-fit: cover;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }}
+            .header-title {{
+                flex: 1;
+                text-align: center;
+                color: white;
+            }}
+            .header-title h1 {{
+                font-size: 24px;
+                font-weight: 700;
+                margin: 0;
+                letter-spacing: 0.5px;
+            }}
+            .content {{
+                padding: 35px 25px;
+            }}
+            .section-title {{
+                text-align: center;
+                margin-bottom: 5px;
+            }}
+            .match-week {{
+                background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+                color: white;
+                padding: 6px 14px;
+                border-radius: 20px;
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                display: inline-block;
+                margin-bottom: 12px;
+            }}
+            .match-date {{
+                color: #f1f5f9;
+                font-size: 28px;
+                font-weight: 700;
+                margin-bottom: 20px;
+            }}
+            .match-container {{
+                background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
+                border: 2px solid #0ea5e9;
+                border-radius: 12px;
+                padding: 28px 20px;
+                margin-bottom: 25px;
+            }}
+            .teams-row {{
+                display: grid;
+                grid-template-columns: 1fr auto 1fr;
+                gap: 12px;
+                align-items: center;
+            }}
+            .team {{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }}
+            .team-badge {{
+                width: 75px;
+                height: 75px;
+                border-radius: 10px;
+                border: 3px solid #0ea5e9;
+                object-fit: cover;
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+                box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+            }}
+            .team-badge-placeholder {{
+                width: 75px;
+                height: 75px;
+                border-radius: 10px;
+                border: 3px solid #0ea5e9;
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #0ea5e9;
+                font-weight: 700;
+                font-size: 20px;
+                box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+            }}
+            .team-name {{
+                color: #e0f2fe;
+                font-size: 13px;
+                font-weight: 600;
+                text-align: center;
+            }}
+            .team-code {{
+                color: #7dd3fc;
+                font-size: 10px;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+            }}
+            .vs-box {{
+                text-align: center;
+            }}
+            .vs-text {{
+                color: #0ea5e9;
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                margin-bottom: 6px;
+            }}
+            .match-time {{
+                color: #0ea5e9;
+                font-size: 24px;
+                font-weight: 700;
+            }}
+            .reminder-section {{
+                background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);
+                border: 2px solid #0ea5e9;
+                border-radius: 10px;
+                padding: 22px 18px;
+                text-align: center;
+                margin-bottom: 25px;
+            }}
+            .reminder-icon {{
+                font-size: 36px;
+                margin-bottom: 8px;
+            }}
+            .reminder-title {{
+                color: #e0f2fe;
+                font-size: 14px;
+                font-weight: 700;
+                margin-bottom: 8px;
+                letter-spacing: 0.5px;
+            }}
+            .countdown {{
+                color: #0ea5e9;
+                font-size: 32px;
+                font-weight: 700;
+                margin: 8px 0;
+            }}
+            .reminder-text {{
+                color: #7dd3fc;
+                font-size: 12px;
+                line-height: 1.5;
+            }}
+            .footer {{
+                background-color: #0f172a;
+                padding: 20px;
+                text-align: center;
+                color: #64748b;
+                font-size: 11px;
+                border-top: 1px solid #334155;
+            }}
+            .footer-text {{
+                margin: 3px 0;
+            }}
+            .footer-text strong {{
+                color: #cbd5e1;
             }}
         </style>
     </head>
-    <body style="margin:0;padding:0;background-color:#ffffff;color:#0f172a;">
-        <div role="article" aria-roledescription="email" lang="en" style="text-size-adjust:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#ffffff;">
-            
-            <!-- Main Wrapper -->
-            <table role="presentation" style="width:100%;border:0;border-spacing:0;background-color:#ffffff;">
-                <tr>
-                    <td align="center" style="padding:20px 0;">
-                        
-                        <!-- Container -->
-                        <!--[if mso]>
-                        <table role="presentation" align="center" style="width:600px;">
-                        <tr><td style="padding:0;">
-                        <![endif]-->
-                        <table role="presentation" class="mobile-full-width" style="width:100%;max-width:650px;border-spacing:0;text-align:center;background-color:#ffffff;border-radius:16px;border:1px solid #e2e8f0;overflow:hidden;margin:0 auto;box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-                            
-                            <!-- Header -->
-                            <tr>
-                                <td style="background:#0ea5e9;background:linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);padding:25px 20px;">
-                                    <table role="presentation" style="width:100%;border-spacing:0;">
-                                        <tr>
-                                            <td align="left" style="width:60px;vertical-align:middle;">
-                                                <img src="https://ik.imagekit.io/4uskfr8sji/new%20logo.png?updatedAt=1770060279701" alt="Ligue 26" width="60" style="display:block;width:60px;height:auto;border-radius:8px;">
-                                            </td>
-                                            <td align="center" style="vertical-align:middle;color:#ffffff;">
-                                                <h1 style="margin:0;font-size:24px;font-weight:700;letter-spacing:0.5px;color:#ffffff;font-family:'Outfit', sans-serif;">⚽ Match Reminder</h1>
-                                            </td>
-                                            <td align="right" style="width:60px;vertical-align:middle;">
-                                                <img src="https://ik.imagekit.io/4uskfr8sji/logo%20coloured.png?updatedAt=1770060279670" alt="AUFT" width="60" style="display:block;width:60px;height:auto;border-radius:8px;">
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
+    <body>
+        <div class="container">
+            <div class="header">
+                <img src="https://ik.imagekit.io/4uskfr8sji/new%20logo.png?updatedAt=1770060279701" alt="Ligue 26">
+                <div class="header-title">
+                    <h1>⚽ Match Reminder</h1>
+                </div>
+                <img src="https://ik.imagekit.io/4uskfr8sji/logo%20coloured.png?updatedAt=1770060279670" alt="AUFT">
+            </div>
 
-                            <!-- Body Content -->
-                            <tr>
-                                <td class="mobile-padding" style="padding:35px 25px;">
-                                    
-                                    <!-- Week & Date -->
-                                    <table role="presentation" style="width:100%;border-spacing:0;margin-bottom:25px;">
-                                        <tr>
-                                            <td align="center">
-                                                {week_badge}
-                                                <div style="font-family:'Outfit', sans-serif;color:#0f172a;font-size:28px;font-weight:700;margin-top:12px;text-align:center;">{date}</div>
-                                            </td>
-                                        </tr>
-                                    </table>
+            <div class="content">
+                <div class="section-title">
+                    {f'<div class="match-week">WEEK {match_week}</div>' if match_week else '<div class="match-week">MATCH DAY</div>'}
+                    <div class="match-date">{date}</div>
+                </div>
 
-                                    <!-- Match Card (Horizontal Layout) -->
-                                    <table role="presentation" style="width:100%;border-spacing:0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;margin-bottom:25px;">
-                                        <tr>
-                                            <td style="padding:20px 10px;">
-                                                <table role="presentation" style="width:100%;border-spacing:0;">
-                                                    <tr>
-                                                        <!-- Home Team (Left) -->
-                                                        <td align="center" style="width:35%;vertical-align:top;">
-                                                            <table role="presentation" style="width:100%;border-spacing:0;">
-                                                                <tr>
-                                                                    <td align="center">
-                                                                        {home_token}
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="padding-top:8px;">
-                                                                        <div class="team-name-text" style="font-family:'Outfit', sans-serif;color:#0f172a;font-size:14px;font-weight:600;line-height:1.3;">{home}</div>
-                                                                        <div style="font-family:'Outfit', sans-serif;color:#64748b;font-size:11px;font-weight:700;margin-top:2px;">{home_code}</div>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
+                <div class="match-container">
+                    <div class="teams-row">
+                        <div class="team team-home">
+                            {f'<img src="{home_image}" alt="{home}" class="team-badge">' if home_image else f'<div class="team-badge-placeholder">{home_code}</div>'}
+                            <div>
+                                <div class="team-name">{home}</div>
+                                <div class="team-code">{home_code}</div>
+                            </div>
+                        </div>
 
-                                                        <!-- VS (Center) -->
-                                                        <td align="center" style="width:30%;vertical-align:middle;">
-                                                            <div class="vs-text" style="font-family:'Outfit', sans-serif;color:#0ea5e9;font-size:12px;font-weight:700;letter-spacing:2px;margin-bottom:4px;">VS</div>
-                                                            <div class="match-time-text" style="font-family:'Outfit', sans-serif;color:#0f172a;font-size:22px;font-weight:700;white-space:nowrap;">{time_12hr}</div>
-                                                        </td>
+                        <div class="vs-box">
+                            <div class="vs-text">VS</div>
+                            <div class="match-time">{time_12hr}</div>
+                        </div>
 
-                                                        <!-- Away Team (Right) -->
-                                                        <td align="center" style="width:35%;vertical-align:top;">
-                                                            <table role="presentation" style="width:100%;border-spacing:0;">
-                                                                <tr>
-                                                                    <td align="center">
-                                                                        {away_token}
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="padding-top:8px;">
-                                                                        <div class="team-name-text" style="font-family:'Outfit', sans-serif;color:#0f172a;font-size:14px;font-weight:600;line-height:1.3;">{away}</div>
-                                                                        <div style="font-family:'Outfit', sans-serif;color:#64748b;font-size:11px;font-weight:700;margin-top:2px;">{away_code}</div>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
+                        <div class="team team-away">
+                            {f'<img src="{away_image}" alt="{away}" class="team-badge">' if away_image else f'<div class="team-badge-placeholder">{away_code}</div>'}
+                            <div>
+                                <div class="team-name">{away}</div>
+                                <div class="team-code">{away_code}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                                    <!-- Alert Box -->
-                                    <table role="presentation" style="width:100%;border-spacing:0;background-color:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;">
-                                        <tr>
-                                            <td style="padding:22px 18px;text-align:center;">
-                                                <div style="font-size:36px;line-height:1;margin-bottom:12px;">⏰</div>
-                                                <div style="font-family:'Outfit', sans-serif;color:#0369a1;font-size:14px;font-weight:700;letter-spacing:0.5px;margin-bottom:5px;">MATCH STARTING SOON</div>
-                                                <div style="font-family:'Outfit', sans-serif;color:#0ea5e9;font-size:32px;font-weight:700;margin:10px 0;">30 MINUTES</div>
-                                                <div style="font-family:'Outfit', sans-serif;color:#334155;font-size:12px;line-height:1.5;">Get ready! The match will begin shortly.</div>
-                                            </td>
-                                        </tr>
-                                    </table>
+                <div class="reminder-section">
+                    <div class="reminder-icon">⏰</div>
+                    <div class="reminder-title">MATCH STARTING SOON</div>
+                    <div class="countdown">30 MINUTES</div>
+                    <div class="reminder-text">Get ready! The match will begin shortly. Make sure you're prepared!</div>
+                </div>
+            </div>
 
-                                </td>
-                            </tr>
-
-                            <!-- Footer -->
-                            <tr>
-                                <td style="background-color:#f8fafc;padding:25px 20px;text-align:center;border-top:1px solid #e2e8f0;">
-                                    <table role="presentation" width="100%" style="border-spacing:0;">
-                                        <tr>
-                                            <td align="center">
-                                                <p style="font-family:'Outfit', sans-serif;margin:0 0 5px 0;color:#475569;font-size:11px;font-weight:bold;">Anna University Football Team</p>
-                                                <p style="font-family:'Outfit', sans-serif;margin:0 0 10px 0;color:#64748b;font-size:11px;">Presents: AUFT (AU Football Tournament)</p>
-                                                <p style="font-family:'Outfit', sans-serif;margin:0;color:#94a3b8;font-size:11px;">&copy; 2026 AUFT. All rights reserved.</p>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                        <!--[if mso]>
-                        </td></tr>
-                        </table>
-                        <![endif]-->
-                        
-                    </td>
-                </tr>
-            </table>
+            <div class="footer">
+                <div class="footer-text"><strong>Anna University Football Team</strong></div>
+                <div class="footer-text">Presents: AUFT (AU Football Tournament)</div>
+                <div class="footer-text" style="margin-top: 8px; color: #475569;">© 2026 AUFT. All rights reserved.</div>
+            </div>
         </div>
     </body>
     </html>
