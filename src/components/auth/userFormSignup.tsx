@@ -47,7 +47,7 @@ const useFormSignup = () => {
     setErrors(validationErrors)
 
     if (Object.keys(validationErrors).length === 0) {
-      console.log('Form submitted successfully:', value)
+      // console.log('Form submitted successfully:', value)
 
       // Call success callback
       if (onSuccess) onSuccess()

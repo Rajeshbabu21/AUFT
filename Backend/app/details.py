@@ -159,43 +159,15 @@ async def playersget(team_name: str):
         print(f"[DEBUG] Players response: {players_response.data}")
         
         # Get users data with owner, icon, is_alumni flags
-        # Try to match by team slug variations (including old typos for backward compatibility)
-        team_slugs = [
-            team_name.lower().replace(' ', '-'),  # "dribbling demons" -> "dribbling-demons"
-            team_code.lower(),                     # "DD"
-            team_name,                             # "Dribbling Demons"
-            # Add old typo slugs for backward compatibility
-            "drbling-demons" if "dribbling" in team_name.lower() else None,
-            "jugling-giants" if "juggling" in team_name.lower() else None,
-        ]
-        # Remove None values
-        team_slugs = [slug for slug in team_slugs if slug]
+        # Get ALL users and match by normalized team name
+        users_response = supabase.table("users").select("name, team, owner, icon, is_alumni, position").execute()
         
-        users_response = None
+        print(f"[DEBUG] All users fetched: {len(users_response.data) if users_response.data else 0} users")
         
-        print(f"[DEBUG] Trying team slugs: {team_slugs}")
+        # Normalize team_name for matching (lowercase, replace spaces with hyphens)
+        normalized_team_name = team_name.lower().replace(' ', '-')
         
-        for slug in team_slugs:
-            users_response = (
-                supabase
-                .table("users")
-                .select("name, email, owner, icon, is_alumni, position, team")
-                .eq("team", slug)
-                .execute()
-            )
-            print(f"[DEBUG] Checking slug '{slug}': found {len(users_response.data) if users_response.data else 0} users")
-            if users_response.data and len(users_response.data) > 0:
-                print(f"[DEBUG] Found users with team slug: {slug}")
-                print(f"[DEBUG] Users data: {users_response.data}")
-                break
-        
-        # If no users found with slug matching, try to get all users and log them
-        if not users_response or not users_response.data:
-            print(f"[DEBUG] No users found with slugs. Fetching all users to debug...")
-            all_users = supabase.table("users").select("name, team, owner, icon, is_alumni").execute()
-            print(f"[DEBUG] All users in database: {all_users.data}")
-        
-        print(f"[DEBUG] Final users response: {users_response.data if users_response else 'None'}")
+        print(f"[DEBUG] Normalized team name: {normalized_team_name}")
         
         # Merge player and user data
         merged_data = []
@@ -204,12 +176,13 @@ async def playersget(team_name: str):
             player_name = player.get("player_name", "").strip()
             player_name_lower = player_name.lower()
             
-            # Find matching user by name (case-insensitive and trimmed)
+            # Find matching user by name and team (case-insensitive and trimmed)
             matching_user = None
             if users_response and users_response.data:
                 matching_user = next(
                     (u for u in users_response.data 
-                     if u.get("name", "").strip().lower() == player_name_lower),
+                     if u.get("name", "").strip().lower() == player_name_lower and 
+                        u.get("team", "").lower().replace(' ', '-') == normalized_team_name),
                     None
                 )
             

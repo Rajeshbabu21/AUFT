@@ -22,6 +22,8 @@ from google.auth.transport import requests
 from pydantic import BaseModel
 import os
 from typing import Optional
+from apscheduler.schedulers.background import BackgroundScheduler
+from app.scheduler import check_and_send_reminders
 
 class GoogleSignupData(BaseModel):
     team: str
@@ -38,6 +40,7 @@ class GoogleLoginRequest(BaseModel):
     signup_data: Optional[GoogleSignupData] = None
 
 app=FastAPI()
+scheduler = BackgroundScheduler()
 origins = [
     "https://auft.vercel.app",
     "http://localhost:5173",
@@ -52,6 +55,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event("startup")
+def startup():
+    scheduler.add_job(check_and_send_reminders, "interval", minutes=1)
+    scheduler.start()
+
+@app.on_event("shutdown")
+def shutdown():
+    scheduler.shutdown()
+
+@app.get("/ramainder")
+def health():
+    return {"status": "Supabase match reminder running"}
 
 @app.post("/google_login")
 async def google_login(request: GoogleLoginRequest):
