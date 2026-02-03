@@ -4,7 +4,7 @@ from app.email_service import send_match_email
 
 def check_and_send_reminders():
     now = datetime.now()
-    target = now + timedelta(minutes=5)
+    target = now + timedelta(minutes=30)
 
     matches = supabase.table("matches") \
         .select("*") \
